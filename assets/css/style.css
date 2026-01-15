@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --primary-blue: #2563eb;
+  --sidebar-dark: #1e293b;
+}
+
+body {
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
+  background-color: #f8fafc;
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.bg-math {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+.bg-khmer {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+.bg-physics {
+  background-color: #dcfce7;
+  color: #166534;
+}
