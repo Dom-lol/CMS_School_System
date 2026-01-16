@@ -49,6 +49,17 @@ $academic_year = $student_info['academic_year'] ?? "2023-2024";
         </div>
     </div>
 
+    <!-- Edit don't have database -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <a href="my_timetable.php">
+                <div class=" from-blue-600 to-blue-700 p-6 rounded-2xl text-white shadow-lg border-l-4 border-orange-500 border border-orange-100">
+                <p class="opacity-80 text-sm text-black">ម៉ោងសិក្សាក្នុងថ្ងៃនេះ</p>
+                <!-- មិនទាន់មាន Database -->
+                <h3 class="text-2xl font-bold mt-1 text-black">2</h3> 
+            </div>
+        </a>
+    </div>
+
     <?php if (!$student_info): ?>
     <div class="bg-orange-50 border-l-4 border-orange-500 p-4 text-orange-700 mb-8 rounded-r-xl">
         <p class="font-bold">បញ្ជាក់៖</p>
@@ -72,6 +83,7 @@ $academic_year = $student_info['academic_year'] ?? "2023-2024";
                     <span class="text-slate-500">លេខទូរស័ព្ទ៖</span> 
                     <strong><?php echo $student_info['phone'] ?? '---'; ?></strong>
                 </li>
+                
             </ul>
         </div>
     </div>

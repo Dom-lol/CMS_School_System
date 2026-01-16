@@ -15,7 +15,7 @@ $grades = mysqli_query($conn, $query);
 ?>
 
 <main class="flex-1 p-8 bg-gray-50">
-    <h1 class="text-2xl font-bold text-slate-800 mb-6">លទ្ធផលសិក្សា (Grade Report)</h1>
+    <h1 class="text-2xl font-bold text-slate-800 mb-6">លទ្ធផលសិក្សា</h1>
 
     <div class="bg-white rounded-xl shadow-custom overflow-hidden">
         <table class="w-full text-left">

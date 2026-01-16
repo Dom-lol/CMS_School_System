@@ -26,10 +26,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-clock w-6"></i> 
             <span>កាលវិភាគរៀន</span>
         </a>
+
+        <a href="announcements.php" 
+        class="flex items-center p-3 rounded-lg transition-all <?php echo ($current_page == 'announcements.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50 ' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fas fa-bullhorn w-6"></i>
+            <span class="font-medium">សេចក្ដីជូនដំណឹង</span>
+        </a>
     </nav>
 
     <div class="p-4 border-t border-slate-800">
-        <a href="../../actions/auth/logout.php" class="flex items-center p-3 rounded-lg text-red-400 hover:bg-red-500/10 transition">
+        <a href="../../actions/auth/logout.php" class="flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-500/10 transition">
             <i class="fas fa-sign-out-alt w-6"></i> ចាកចេញ
         </a>
     </div>

@@ -35,9 +35,9 @@ $days_kh = [
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-900 text-white">
-                        <th class="px-6 py-4 font-bold border-r border-slate-700 w-40 text-center">ថ្ងៃ</th>
-                        <th class="px-6 py-4 font-bold">ព័ត៌មានម៉ោងបង្រៀន (ថ្នាក់ - មុខវិជ្ជា - ម៉ោង)</th>
+                    <tr class="bg-blue-700 text-white">
+                        <th class="px-6 py-4  border-r border-slate-700 w-40 text-center">ថ្ងៃ</th>
+                        <th class="px-6 py-4 ">ព័ត៌មានម៉ោងបង្រៀន (ថ្នាក់ - មុខវិជ្ជា - ម៉ោង)</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200">

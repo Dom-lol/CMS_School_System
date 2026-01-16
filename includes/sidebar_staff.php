@@ -24,7 +24,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span class="font-medium">បន្ថែមសិស្សថ្មី</span>
         </a>
 
-     
+        <a href="teachers_list.php" 
+        class="flex items-center p-3 mb-1 rounded-xl transition-all <?php echo ($current_page == 'teachers_list.php') ? 'bg-blue-600 text-white' : 'hover:bg-blue-50 text-slate-600'; ?>">
+            <i class="fas fa-users w-8 text-lg"></i>
+            <span class="font-medium">បញ្ជីគ្រូបង្រៀន</span>
+        </a>
+
+        <a href="add_teacher.php" 
+        class="flex items-center p-3 mb-4 rounded-xl transition-all <?php echo ($current_page == 'add_teacher.php') ? 'bg-blue-600 text-white' : 'hover:bg-blue-50 text-slate-600'; ?>">
+            <i class="fas fa-user-plus w-8 text-lg"></i>
+            <span class="font-medium">បន្ថែមគ្រូថ្មី</span>
+        </a>
+        
+        <a href="timetable.php" 
+        class="flex items-center p-3 rounded-xl transition-all <?php echo ($current_page == 'timetable.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-blue-600 hover:text-white'; ?>">
+            <i class="fas fa-calendar-week w-8 text-lg"></i> 
+            <span class="font-medium">កាលវិភាគបង្រៀន</span>
+        </a>
+            
 
         <a href="student_list.php" 
            class="flex items-center p-3 rounded-xl transition-all duration-300 <?php echo ($current_page == 'student_list.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-blue-600 hover:text-white'; ?>">

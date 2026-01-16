@@ -21,7 +21,7 @@ $students = mysqli_query($conn, $sql);
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">គ្រប់គ្រងសិស្ស</h1>
             <p class="text-slate-500 mt-1">អ្នកអាចគ្រប់គ្រងព័ត៌មាន និងពិនិត្យមើលស្ថានភាពសិស្សទាំងអស់</p>
         </div>
-        <a href="add_student.php" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-red-200 transition flex items-center">
+        <a href="add_student.php" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition flex items-center">
             <i class="fas fa-user-plus mr-2 text-sm"></i> បន្ថែមសិស្សថ្មី
         </a>
     </div>
@@ -46,7 +46,7 @@ $students = mysqli_query($conn, $sql);
                             <td class="px-6 py-4 font-mono font-bold text-blue-600"><?php echo $row['student_id']; ?></td>
                             <td class="px-6 py-4">
                                 <div class="font-bold text-slate-800"><?php echo $row['full_name']; ?></div>
-                                <div class="text-xs text-slate-400 italic">@<?php echo $row['username']; ?></div>
+                               
                             </td>
                             <td class="px-6 py-4 text-center"><?php echo $row['gender']; ?></td>
                             <td class="px-6 py-4">

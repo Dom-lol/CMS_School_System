@@ -34,6 +34,12 @@ $total_absent_today = 5; // ឧទាហរណ៍៖ ទាញពី table atten
             <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">អវត្តមានថ្ងៃនេះ</p>
             <h3 class="text-3xl font-black text-blue-600 mt-2"><?php echo $total_absent_today; ?> នាក់</h3>
         </div>
+        <a href="add_student.php">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">បន្ថែមគ្រូ</p>
+                <h3 class="text-3xl font-black text-slate-800 mt-2"><?php echo $total_students; ?></h3>
+            </div>
+        </a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

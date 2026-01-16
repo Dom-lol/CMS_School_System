@@ -17,7 +17,7 @@
         </a>
     </nav>
     <div class="p-4 border-t border-slate-800">
-        <a href="../../actions/auth/logout.php" class="flex items-center p-3 rounded-lg text-red-400 hover:bg-red-500/10 transition">
+        <a href="../../actions/auth/logout.php" class="flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-500/10 transition">
             <i class="fas fa-sign-out-alt w-6"></i> ចាកចេញ
         </a>
     </div>
