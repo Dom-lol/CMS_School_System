@@ -7,26 +7,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password']; 
     $role     = mysqli_real_escape_string($conn, $_POST['role']);
 
+    // ១. ស្វែងរក Username និង Role ឱ្យចំ
     $query = "SELECT * FROM users WHERE username = '$username' AND role = '$role' LIMIT 1";
     $result = mysqli_query($conn, $query);
 
     if ($row = mysqli_fetch_assoc($result)) {
-        // ផ្ទៀងផ្ទាត់ Password (បើប្រើ hash ត្រូវប្រើ password_verify)
+        // ២. ផ្ទៀងផ្ទាត់ Password ត្រង់ៗ (ID === ID)
         if ($password === $row['password']) {
             $_SESSION['user_id']   = $row['id'];
             $_SESSION['role']      = $row['role'];
             $_SESSION['full_name'] = $row['full_name'];
-            $_SESSION['username']  = $row['username']; // បន្ថែមជួរនេះដើម្បីបាត់ Error "Undefined index"
+            $_SESSION['username']  = $row['username'];
 
-            // ឆែកមើល Folder ក្នុង views (តាមរូបភាពរបស់អ្នកគឺគ្មានអក្សរ s ទេ)
+            // ៣. បែងចែកផ្លូវតាម Role
             if ($row['role'] === 'teacher') {
                 header("Location: ../../views/teacher/dashboard.php");
-            } else {
+            } elseif ($row['role'] === 'student') {
                 header("Location: ../../views/student/dashboard.php");
+            } else {
+                header("Location: ../../views/admin/dashboard.php");
             }
             exit();
         }
     }
-    header("Location: ../../index.php?error=invalid");
+    
+    // បើមកដល់ត្រង់នេះ មានន័យថាទិន្នន័យខុស
+    header("Location: ../../index.php?error=1");
     exit();
 }
