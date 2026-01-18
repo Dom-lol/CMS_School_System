@@ -10,8 +10,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
 $s_id = $_SESSION['username'] ?? '';
 $display_name = $_SESSION['full_name'] ?? $s_id;
 
+// កែសម្រួលការទាញយកឈ្មោះឱ្យច្បាស់លាស់
+$s_id = $_SESSION['username'] ?? '';
 $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_query);
+
+// 優先 (Priority): ប្រើឈ្មោះក្នុង Table students បើគ្មានទើបប្រើឈ្មោះក្នុង Session
+$full_name_kh = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 
 $class_name = $student_info['class_name'] ?? "មិនទាន់មានថ្នាក់";
 $status = $student_info['status'] ?? "Active";
