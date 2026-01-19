@@ -84,7 +84,7 @@ include '../../includes/header.php';
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right hidden sm:block">
+                <div class="text-right">
                     <p class="text-base font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
                     <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>

@@ -4,10 +4,20 @@ require_once '../../config/session.php';
 is_logged_in();
 
 $u_id = $_SESSION['user_id'];
-// ១. ទាញយក student_id ពី user_id ដែលកំពុង Login
-$student_query = mysqli_query($conn, "SELECT student_id FROM students WHERE user_id = '$u_id'");
-$st_data = mysqli_fetch_assoc($student_query);
-$st_id = $st_data['student_id'] ?? 0;
+$s_id = $_SESSION['username'] ?? ''; // ចាប់យក username ជា s_id
+
+// ១. ទាញយកព័ត៌មានសិស្សពេញលេញ (ដើម្បីយក display_name, s_id និង profile_img)
+$student_info_query = mysqli_query($conn, "SELECT * FROM students WHERE user_id = '$u_id' LIMIT 1");
+$student_info = mysqli_fetch_assoc($student_info_query);
+
+$st_id = $student_info['student_id'] ?? 0;
+$display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
+
+// រៀបចំ Path រូបភាព Profile
+$profile_path = "../../assets/uploads/profiles/";
+$current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
+               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+               : null;
 
 // ២. ចាប់យក Filter ចំនួន ៣ (Month, Year, Subject)
 $selected_month = $_GET['month'] ?? date('m');
@@ -16,7 +26,7 @@ $selected_sub = $_GET['subject_id'] ?? 'all';
 
 $months = ["01" => "មករា", "02" => "កុម្ភៈ", "03" => "មីនា", "04" => "មេសា", "05" => "ឧសភា", "06" => "មិថុនា", "07" => "កក្កដា", "08" => "សីហា", "09" => "កញ្ញា", "10" => "តុលា", "11" => "វិច្ឆិកា", "12" => "ធ្នូ"];
 
-// ៣. គណនាចំណាត់ថ្នាក់ (Ranking) ផ្អែកលើ total_score ក្នុង table scores
+// ៣. គណនាចំណាត់ថ្នាក់ (Ranking)
 $rank_q = "SELECT student_id, AVG(total_score) as avg_score 
            FROM scores 
            WHERE MONTH(created_at) = '$selected_month' 
@@ -38,31 +48,44 @@ include '../../includes/header.php';
 
 <div class="flex h-screen w-full overflow-hidden bg-slate-100 font-khmer">
     <?php include '../../includes/sidebar_student.php'; ?>
-      <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0 z-50">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-colors">
+                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h1 class="text-xl font-bold text-slate-800 hidden md:block uppercase tracking-tight">Dashboard</h1>
+                <h1 class="text-xl font-bold text-slate-800 hidden md:block uppercase tracking-tight italic">Result List</h1>
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right hidden sm:block">
+                <div class="text-right">
                     <p class="text-base font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
                     <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg border-4 border-white">
-                    <?php echo mb_substr($display_name, 0, 1); ?>
+                <div class="relative group">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg border-4 border-white overflow-hidden">
+                        <?php if($current_img): ?>
+                            <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <?php echo mb_substr($display_name, 0, 1); ?>
+                        <?php endif; ?>
+                    </div>
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data">
+                        <label class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                            <i class="fas fa-camera text-white text-sm"></i>
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        </label>
+                    </form>
                 </div>
             </div>
         </header>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <header class="bg-white border-b h-16 flex items-center justify-between px-6 flex-shrink-0 z-40">
-            <h1 class="text-sm font-black text-slate-800 uppercase">លទ្ធផលសិក្សា</h1>
+            <h1 class="text-sm font-black text-slate-800 uppercase">លទ្ធផលសិក្សាប្រចាំខែ</h1>
         </header>
 
-        <div class="flex-1 overflow-y-auto bg-[#2563eb] p-4 md:p-8">
+        <div class="flex-1 overflow-y-auto bg-blue-600 p-4 md:p-8">
             <div class="max-w-5xl mx-auto">
                 
                 <div class="mb-6 flex flex-col gap-4">
@@ -80,7 +103,7 @@ include '../../includes/header.php';
                         <select name="subject_id" onchange="this.form.submit()" class="bg-transparent text-white font-bold text-xs outline-none px-4 py-2 appearance-none flex-1">
                             <option value="all" class="text-slate-800">គ្រប់មុខវិជ្ជា</option>
                             <?php
-                            $sub_list = mysqli_query($conn, "SELECT id, subject_name FROM subjects"); //
+                            $sub_list = mysqli_query($conn, "SELECT id, subject_name FROM subjects");
                             while($s = mysqli_fetch_assoc($sub_list)):
                                 $sel = ($selected_sub == $s['id']) ? 'selected' : '';
                                 echo "<option value='{$s['id']}' $sel class='text-slate-800'>{$s['subject_name']}</option>";
@@ -91,14 +114,14 @@ include '../../includes/header.php';
 
                     <div class="relative">
                         <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-white/50 text-xs"></i>
-                        <input type="text" id="subjectSearch" placeholder="ស្វែងរកមុខវិជ្ជា (វាយ 'ខ' រក 'ខ្មែរ')..." 
+                        <input type="text" id="subjectSearch" placeholder="ស្វែងរកមុខវិជ្ជា..." 
                                class="w-full pl-12 pr-6 py-4 bg-white/10 border border-white/20 rounded-3xl text-white text-sm outline-none shadow-xl">
                     </div>
                 </div>
 
                 <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl mb-8 border-b-8 border-orange-400">
                     <?php
-                    $sum_q = mysqli_query($conn, "SELECT AVG(total_score) as avg, SUM(total_score) as total, SUM(exam_score) as e_total FROM scores WHERE student_id = '$st_id' AND MONTH(created_at) = '$selected_month' AND YEAR(created_at) = '$selected_year'");
+                    $sum_q = mysqli_query($conn, "SELECT AVG(total_score) as avg, SUM(total_score) as total FROM scores WHERE student_id = '$st_id' AND MONTH(created_at) = '$selected_month' AND YEAR(created_at) = '$selected_year'");
                     $sum = mysqli_fetch_assoc($sum_q);
                     $avg = number_format($sum['avg'] ?? 0, 2);
                     ?>
@@ -154,7 +177,12 @@ include '../../includes/header.php';
 </div>
 
 <script>
-// Search Function for Khmer
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('-translate-x-full');
+}
+
+// Search Function
 document.getElementById('subjectSearch').addEventListener('input', function() {
     let input = this.value.toLowerCase().trim();
     let cards = document.getElementsByClassName('subject-card');

@@ -7,8 +7,28 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
 }
 
+$u_id = $_SESSION['user_id'];
 $s_id = $_SESSION['username'] ?? '';
-$display_name = $_SESSION['full_name'] ?? $s_id;
+
+// --- ដំណោះស្រាយ៖ ទាញព័ត៌មានសិស្សពី Database ដើម្បីបង្ហាញឈ្មោះឱ្យបានត្រឹមត្រូវ ---
+$student_info_query = mysqli_query($conn, "SELECT full_name, profile_img FROM students WHERE user_id = '$u_id' LIMIT 1");
+
+if ($student_info_query && mysqli_num_rows($student_info_query) > 0) {
+    $student_data = mysqli_fetch_assoc($student_info_query);
+    $display_name = $student_data['full_name']; // នេះគឺជាឈ្មោះពិត (ឧទាហរណ៍៖ សុខ សាន)
+    $profile_img_name = $student_data['profile_img'];
+} else {
+    // បើរកមិនឃើញក្នុង DB ឱ្យបង្ហាញ Username (អត្តលេខ) ជំនួស ដើម្បីកុំឱ្យទទេ
+    $display_name = $s_id; 
+    $profile_img_name = null;
+}
+
+// រៀបចំ Path រូបភាព Profile
+$profile_path = "../../assets/uploads/profiles/";
+$current_img = (!empty($profile_img_name) && file_exists($profile_path . $profile_img_name)) 
+               ? $profile_path . $profile_img_name . "?v=" . time() 
+               : null;
+
 $current_page = 'announcements.php';
 ?>
 
@@ -38,12 +58,25 @@ $current_page = 'announcements.php';
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right hidden sm:block">
-                    <p class="text-base font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">Student Portal</p>
+                <div class="text-right">
+                    <p class="text-base font-bold text-slate-900 leading-tight"><?php echo htmlspecialchars($display_name); ?></p>
+                    <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                <div class="w-[60px] h-[60px] bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-xl shadow-blue-200 border-4 border-white">
-                    <?php echo mb_substr($display_name, 0, 1); ?>
+                
+                <div class="relative group">
+                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
+                        <?php if($current_img): ?>
+                            <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
+                            <i class="fas fa-camera text-[10px]"></i>
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        </label>
+                    </form>
                 </div>
             </div>
         </header>
@@ -51,7 +84,7 @@ $current_page = 'announcements.php';
         <main class="flex-1 overflow-y-auto p-6 md:p-10">
             <div class="max-w-7xl mx-auto">
                 
-                <div class="mb-10">
+                <div class="mb-10 text-center md:text-left">
                     <h1 class="text-3xl md:text-4xl font-bold text-slate-900">សេចក្ដីជូនដំណឹង</h1>
                     <p class="text-slate-500 mt-2 text-lg italic">តាមដានព័ត៌មាន និងការប្រកាសថ្មីៗពីសាលារៀន</p>
                 </div>
@@ -61,7 +94,7 @@ $current_page = 'announcements.php';
                     $query = "SELECT * FROM announcements ORDER BY created_at DESC";
                     $result = mysqli_query($conn, $query);
                     
-                    if(mysqli_num_rows($result) > 0):
+                    if($result && mysqli_num_rows($result) > 0):
                         while($row = mysqli_fetch_assoc($result)): 
                     ?>
                         <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-all duration-300">
@@ -115,16 +148,22 @@ $current_page = 'announcements.php';
                     <?php endif; ?>
                 </div>
 
-                <div class="h-20"></div> </div>
+                <div class="h-20"></div> 
+            </div>
         </main>
     </div>
 
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('-translate-x-full');
+            }
+            // ប្រសិនបើមាន overlay ក្នុង sidebar លោកគ្រូអាចថែមនៅទីនេះ
             const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+            if (overlay) {
+                overlay.classList.toggle('hidden');
+            }
         }
     </script>
 </body>
