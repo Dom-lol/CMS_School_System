@@ -1,37 +1,38 @@
 <?php
 require_once '../../config/db.php';
-$teacher_sql = "INSERT INTO teachers (teacher_id, user_id, subjects, phone) 
-                VALUES ('$teacher_id', '$new_user_id', '$subjects', '$phone')";
-mysqli_query($conn, $teacher_sql);
+require_once '../../config/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // ១. ទទួលទិន្នន័យពី Form (ថែម teacher_id)
-    $teacher_id = mysqli_real_escape_string($conn, $_POST['teacher_id']);
+    $t_id       = mysqli_real_escape_string($conn, $_POST['teacher_id']);
     $full_name  = mysqli_real_escape_string($conn, $_POST['full_name']);
-    $username   = mysqli_real_escape_string($conn, $_POST['email']); 
-    $password   = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $subjects   = mysqli_real_escape_string($conn, $_POST['subjects']); 
+    $subjects   = mysqli_real_escape_string($conn, $_POST['subjects']);
     $phone      = mysqli_real_escape_string($conn, $_POST['phone']);
+    $password   = '123'; // Password លំនាំដើម [cite: 2026-01-20]
 
-    // ២. ចាប់ផ្ដើម Transaction
+    // ១. ចាត់ចែងការ Upload រូបភាព [cite: 2026-01-20]
+    $image_name = 'default_user.png';
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
+        $ext = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
+        $image_name = 'T_' . $t_id . '_' . time() . '.' . $ext;
+        move_uploaded_file($_FILES['profile_image']['tmp_name'], "../../assets/uploads/teachers/" . $image_name);
+    }
+
     mysqli_begin_transaction($conn);
     try {
-        // បញ្ចូលទៅតារាង users
-        $user_sql = "INSERT INTO users (full_name, username, password, role) 
-                     VALUES ('$full_name', '$username', '$password', 'teacher')";
-        mysqli_query($conn, $user_sql);
+        // ២. បញ្ចូលទៅ Table Users [cite: 2026-01-20]
+        $sql1 = "INSERT INTO users (username, password, full_name, role) VALUES ('$t_id', '$password', '$full_name', 'teacher')";
+        mysqli_query($conn, $sql1);
         $new_user_id = mysqli_insert_id($conn);
 
-        // ៣. បញ្ចូលទៅតារាង teachers (ត្រូវថែម teacher_id ទៅក្នុង SQL នេះ)
-        $teacher_sql = "INSERT INTO teachers (teacher_id, user_id, subjects, phone) 
-                        VALUES ('$teacher_id', '$new_user_id', '$subjects', '$phone')";
-        mysqli_query($conn, $teacher_sql);
+        // ៣. បញ្ចូលទៅ Table Teachers [cite: 2026-01-20]
+        $sql2 = "INSERT INTO teachers (teacher_id, user_id, full_name, subjects, phone, profile_image) 
+                 VALUES ('$t_id', '$new_user_id', '$full_name', '$subjects', '$phone', '$image_name')";
+        mysqli_query($conn, $sql2);
 
         mysqli_commit($conn);
         header("Location: ../../views/staff/teachers_list.php?status=success");
-        exit();
     } catch (Exception $e) {
         mysqli_rollback($conn);
         die("Error: " . $e->getMessage());
     }
-}// ផ្នែកមួយនៃ create.php
+}

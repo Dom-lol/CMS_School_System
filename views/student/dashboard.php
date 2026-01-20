@@ -73,7 +73,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 md:p-10">
+        <main class="flex-1 overflow-y-auto overflow-hidden p-6 md:p-10">
             <div class="max-w-7xl mx-auto">
                 
                 <div class="mb-10">

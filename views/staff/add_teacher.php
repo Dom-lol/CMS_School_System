@@ -2,83 +2,61 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 is_logged_in();
-
-$current_page = 'timetable.php';
 include '../../includes/header.php';
-include '../../includes/sidebar_staff.php';
-
-// ទាញយកបញ្ជីមុខវិជ្ជា និងថ្នាក់ ដើម្បីដាក់ក្នុង Dropdown
-$subjects = mysqli_query($conn, "SELECT * FROM subjects");
-$classes = mysqli_query($conn, "SELECT * FROM classes");
 ?>
 
-<main class="flex-1 p-8 bg-gray-50 min-h-screen font-['Kantumruy_Pro']">
-    <div class="max-w-2xl mx-auto">
-        <div class="mb-6 flex items-center gap-2">
-            <a href="timetable.php" class="text-slate-500 hover:text-blue-600 transition"><i class="fas fa-arrow-left"></i> ត្រឡប់ក្រោយ</a>
-        </div>
+<div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden font-['Kantumruy_Pro']">
+    <?php include '../../includes/sidebar_staff.php'; ?>
 
-        <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-100">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
-                <i class="fas fa-calendar-plus text-blue-600"></i> បន្ថែមម៉ោងបង្រៀនថ្មី
-            </h2>
+    <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-10 shrink-0">
+            <h2 class="text-xl font-bold text-slate-800 italic uppercase">បន្ថែមគ្រូបង្រៀនថ្មី</h2>
+        </header>
 
-            <form action="../../actions/timetable/create.php" method="POST" class="space-y-5">
-                <div class="grid grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">ថ្ងៃបង្រៀន</label>
-                        <select name="day_of_week" required class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="ច័ន្ទ">ច័ន្ទ</option>
-                            <option value="អង្គារ">អង្គារ</option>
-                            <option value="ពុធ">ពុធ</option>
-                            <option value="ព្រហស្បតិ៍">ព្រហស្បតិ៍</option>
-                            <option value="សុក្រ">សុក្រ</option>
-                            <option value="សៅរ៍">សៅរ៍</option>
-                            <option value="អាទិត្យ">អាទិត្យ</option>
-                        </select>
-                    </div>
+        <main class="flex-1 overflow-y-auto p-10">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-10">
+                    
+                    <form action="../../actions/teachers/create.php" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <div class="flex flex-col items-center mb-8">
+                            <div id="preview" class="w-32 h-32 bg-slate-100 rounded-[2rem] border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden mb-4">
+                                <i class="fas fa-user-tie text-4xl text-slate-300"></i>
+                            </div>
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-6 py-2 rounded-xl font-black text-xs">
+                                <i class="fas fa-camera mr-2"></i> ជ្រើសរើសរូបថត
+                                <input type="file" name="profile_image" class="hidden" accept="image/*" onchange="showPreview(this)">
+                            </label>
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">ថ្នាក់រៀន</label>
-                        <select name="class_id" required class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                            <?php while($c = mysqli_fetch_assoc($classes)): ?>
-                                <option value="<?= $c['id'] ?>"><?= $c['class_name'] ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <input type="text" name="teacher_id" placeholder="អត្តលេខគ្រូ (Username)" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
+                            <input type="text" name="full_name" placeholder="ឈ្មោះពេញ" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            <input type="text" name="subjects" placeholder="ឯកទេស" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
+                            <input type="text" name="phone" placeholder="លេខទូរស័ព្ទ" class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
+                        </div>
+
+                        <button type="submit" class="w-full py-6 bg-slate-900 text-white rounded-[1.8rem] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl">
+                            <i class="fas fa-save mr-2"></i> រក្សាទុក
+                        </button>
+                    </form>
+
                 </div>
-
-                <div class="grid grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">ម៉ោងចាប់ផ្ដើម</label>
-                        <input type="time" name="start_time" required class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">ម៉ោងបញ្ចប់</label>
-                        <input type="time" name="end_time" required class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">មុខវិជ្ជា</label>
-                    <select name="subject_id" required class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php while($s = mysqli_fetch_assoc($subjects)): ?>
-                            <option value="<?= $s['id'] ?>"><?= $s['subject_name'] ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">លេខបន្ទប់ / ទីតាំង</label>
-                    <input type="text" name="room_number" placeholder="ឧទាហរណ៍៖ បន្ទប់ A1" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">
-                    <i class="fas fa-save mr-2"></i> រក្សាទុកកាលវិភាគ
-                </button>
-            </form>
-        </div>
+            </div>
+        </main>
     </div>
-</main>
+</div>
 
-<?php include '../../includes/footer.php'; ?>
+<script>
+function showPreview(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').innerHTML = '<img src="'+e.target.result+'" class="w-full h-full object-cover">';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

@@ -2,32 +2,26 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 
-if (isset($_GET['id'])) {
-    $user_id = mysqli_real_escape_string($conn, $_GET['id']);
+$u_id = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : '';
 
-    // ចាប់ផ្ដើម Transaction ដើម្បីការពារកំហុស
+if (!empty($u_id)) {
+    $res = mysqli_query($conn, "SELECT profile_image FROM teachers WHERE user_id = '$u_id'");
+    $row = mysqli_fetch_assoc($res);
+    $img = $row['profile_image'];
+
     mysqli_begin_transaction($conn);
-
     try {
-        // ១. លុបក្នុងតារាង teachers ជាមុន
-        $del_teacher = "DELETE FROM teachers WHERE user_id = '$user_id'";
-        mysqli_query($conn, $del_teacher);
+        mysqli_query($conn, "DELETE FROM teachers WHERE user_id = '$u_id'");
+        mysqli_query($conn, "DELETE FROM users WHERE id = '$u_id'");
+        
+        if ($img && $img != 'default_user.png') {
+            @unlink("../../assets/uploads/teachers/" . $img);
+        }
 
-        // ២. លុបក្នុងតារាង users តាមក្រោយ
-        $del_user = "DELETE FROM users WHERE id = '$user_id'";
-        mysqli_query($conn, $del_user);
-
-        // បើជោគជ័យទាំងពីរ
         mysqli_commit($conn);
         header("Location: ../../views/staff/teachers_list.php?status=deleted");
-        exit();
-
     } catch (Exception $e) {
-        // បើមានបញ្ហា មិនអនុញ្ញាតឱ្យលុប
         mysqli_rollback($conn);
-        die("Error deleting record: " . $e->getMessage());
+        die("Error: " . $e->getMessage());
     }
-} else {
-    header("Location: ../../views/staff/teachers_list.php");
-    exit();
 }
