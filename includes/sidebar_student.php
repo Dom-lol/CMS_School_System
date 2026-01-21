@@ -10,7 +10,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white">
             <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-6 h-6 object-contain">
         </div>
-            <span class="tracking-wider uppercase text-xl">វិទ្យាល័យលំដាប់ពិភពលោក</span>
+            <span class="tracking-wider uppercase text-[17px] lg:text-xl">វិទ្យាល័យលំដាប់ពិភពលោក</span>
         </div>
         <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
             <i class="fas fa-times text-2xl"></i>
@@ -35,8 +35,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span class="font-medium">សេចក្ដីជូនដំណឹង</span>
         </a>
 
-          <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teacher.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fas fa-bullhorn w-5 text-center"></i>
+          <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teachers.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fa-solid fa-users"></i>
             <span class="font-medium">បញ្ជីគ្រូ</span>
         </a>
     </nav>

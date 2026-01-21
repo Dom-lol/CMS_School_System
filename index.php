@@ -11,7 +11,8 @@
 </head>
 <body class="bg-slate-100 min-h-screen flex flex-col">
     
-    <div class="text-center text-2xl md:text-4xl px-4 pt-10 md:pt-20 font-bold text-blue-700">
+    <div class="flex items-center justify-center gap-5 text-center text-2xl md:text-4xl px-4 pt-10 lg:pt-20 md:pt-20 font-bold text-blue-700">
+        <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-[70px] h-[70px] object-contain">
         វិទ្យាល័យលំដាប់ពិភពលោក
     </div>
 
@@ -24,7 +25,7 @@
 
             <form action="actions/auth/login_user.php" method="POST" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">តួនាទី (Role)</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">តួនាទី</label>
                     <select name="role" class="w-full border border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 transition-all">
                         <option value="teacher">Teacher</option>
                         <option value="student">Student</option>
@@ -45,7 +46,7 @@
 
                 <div class="pt-2">
                     <button type="submit" class="w-full bg-blue-600 text-white p-3.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 active:scale-[0.98] transition-all">
-                        ចូលប្រើប្រាស់ (Login)
+                        ចូលប្រើប្រាស់ 
                     </button>
                 </div>
             </form>

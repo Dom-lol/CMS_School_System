@@ -43,6 +43,13 @@ if($rank_res){
     }
 }
 
+// កំណត់ Path រូបភាព
+$profile_path = "../../assets/uploads/profiles/";
+$current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
+               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+               : null;
+
+
 include '../../includes/header.php';
 ?>
 
@@ -50,30 +57,31 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0 z-50">
+         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
+                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h1 class="text-xl font-bold text-slate-800 hidden md:block uppercase tracking-tight italic">Result List</h1>
+                
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right">
-                    <p class="text-base font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
+                <div class="text-right ">
+                    <p class="text-[25px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
+                
                 <div class="relative group">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg border-4 border-white overflow-hidden">
+                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
                         <?php else: ?>
-                            <?php echo mb_substr($display_name, 0, 1); ?>
+                            <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
-                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data">
-                        <label class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-                            <i class="fas fa-camera text-white text-sm"></i>
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
+                            <i class="fas fa-camera text-[10px]"></i>
                             <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
                         </label>
                     </form>

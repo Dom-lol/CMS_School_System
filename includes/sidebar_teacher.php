@@ -28,7 +28,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span class="font-medium">ថ្នាក់រៀនរបស់ខ្ញុំ</span>
         </a>
 
-        <a href="input_scores.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'input_scores.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+        <a href="scores.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'scores.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-pen-nib w-5 text-center text-lg"></i>
             <span class="font-medium">បញ្ចូលពិន្ទុសិស្ស</span>
         </a>
@@ -36,6 +36,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a href="teaching_schedule.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'teaching_schedule.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-calendar-alt w-5 text-center text-lg"></i>
             <span class="font-medium">កាលវិភាគបង្រៀន</span>
+        </a>
+
+         <a href="attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+          <i class="fa-solid fa-clipboard-user"></i>
+            <span class="font-medium">អវត្តមាន</span>
         </a>
     </nav>
 

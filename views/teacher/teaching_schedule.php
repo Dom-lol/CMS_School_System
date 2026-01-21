@@ -1,11 +1,10 @@
 <?php 
-// ១. ចាប់ផ្ដើម Session និងភ្ជាប់ Database [cite: 2026-01-20]
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 include_once '../../config/db.php'; 
 
-// ២. ទាញយក teacher_id ពី Session (ការពារបើមិនទាន់ Login) [cite: 2026-01-20]
+
 $u_id = $_SESSION['user_id'] ?? 0;
 if ($u_id == 0) {
     header("Location: ../../login.php");
@@ -18,7 +17,6 @@ $t_id = $teacher_data['teacher_id'] ?? 0;
 
 include '../../includes/header.php';
 
-// ៣. បង្កើតបញ្ជីថ្ងៃជាភាសាខ្មែរឱ្យត្រូវនឹងទិន្នន័យក្នុង Database [cite: 2026-01-20]
 $days_kh = [
     'Monday'    => 'ច័ន្ទ',
     'Tuesday'   => 'អង្គារ',

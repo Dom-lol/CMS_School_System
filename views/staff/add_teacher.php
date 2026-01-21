@@ -29,7 +29,7 @@ include '../../includes/header.php';
                         </div>
 
                         <div class="grid grid-cols-2 gap-6">
-                            <input type="text" name="teacher_id" placeholder="អត្តលេខគ្រូ (Username)" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
+                            <input type="text" name="teacher_id" placeholder="អត្តលេខគ្រូ" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
                             <input type="text" name="full_name" placeholder="ឈ្មោះពេញ" required class="w-full p-5 bg-slate-50 border-none rounded-2xl font-bold">
                         </div>
 

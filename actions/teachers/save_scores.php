@@ -1,25 +1,29 @@
 <?php
 require_once '../../config/db.php';
-header('Content-Type: application/json');
+require_once '../../config/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $class_id = $_POST['class_id'];
     $subject_id = $_POST['subject_id'];
-    $student_ids = $_POST['student_id'];
-    $m_scores = $_POST['monthly_score'];
-    $e_scores = $_POST['exam_score'];
+    $month = $_POST['month'];
+    $scores = $_POST['scores'] ?? [];
 
-    foreach ($student_ids as $key => $st_id) {
-        $m = (float)$m_scores[$key];
-        $e = (float)$e_scores[$key];
-        $total = $m + $e;
+    foreach ($scores as $student_id => $val) {
+        if ($val === '') continue; 
 
-        // Logic និទ្ទេស
-        $grade = ($total >= 45) ? 'A' : (($total >= 40) ? 'B' : (($total >= 35) ? 'C' : (($total >= 25) ? 'D' : 'E')));
-
-        $sql = "INSERT INTO scores (student_id, subject_id, monthly_score, exam_score, total_score, grade, created_at) 
-                VALUES ('$st_id', '$subject_id', '$m', '$e', '$total', '$grade', NOW())
-                ON DUPLICATE KEY UPDATE monthly_score='$m', exam_score='$e', total_score='$total', grade='$grade'";
-        mysqli_query($conn, $sql);
+        // ពិនិត្យមើលពិន្ទុក្នុងតារាង scores
+        $check = mysqli_query($conn, "SELECT id FROM scores WHERE student_id='$student_id' AND subject_id='$subject_id' AND month='$month'");
+        
+        if (mysqli_num_rows($check) > 0) {
+            // បើមានហើយ UPDATE
+            mysqli_query($conn, "UPDATE scores SET score_value='$val' WHERE student_id='$student_id' AND subject_id='$subject_id' AND month='$month'");
+        } else {
+            // បើមិនទាន់មាន INSERT
+            mysqli_query($conn, "INSERT INTO scores (student_id, subject_id, class_id, month, score_value) VALUES ('$student_id', '$subject_id', '$class_id', '$month', '$val')");
+        }
     }
-    echo json_encode(['status' => 'success']);
+
+    // រុញត្រឡប់ទៅ Views Folder វិញ
+    header("Location: ../../views/teacher/input_grades.php?class_id=$class_id&subject_id=$subject_id&month=$month&status=success");
+    exit();
 }

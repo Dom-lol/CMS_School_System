@@ -13,9 +13,10 @@ $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = 
 $student_info = mysqli_fetch_assoc($student_query);
 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
-$class_name = $student_info['class_name'] ?? "មិនទាន់មានថ្នាក់";
+$class_id = $student_info['class_id'] ?? "មិនទាន់មានថ្នាក់";
 $status = $student_info['status'] ?? "Active";
 $academic_year = $student_info['academic_year'] ?? "2024-2025";
+
 
 // កំណត់ Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
@@ -51,8 +52,8 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
 
             <div class="flex items-center gap-5">
                 <div class="text-right ">
-                    <p class="text-base font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[11px] text-blue-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
+                    <p class="text-[25px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
                 
                 <div class="relative group">
@@ -92,33 +93,24 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                         <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
                     </div>
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 border-l-[6px] border-l-emerald-500 flex flex-col justify-center">
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">ថ្នាក់រៀន</p>
-                        <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $class_name; ?></h3>
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">រៀនថ្នាក់ទី</p>
+                        <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $class_id; ?></h3>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1  gap-8">
                     <div onclick="openInfoModal()" class="lg:col-span-2 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-10 cursor-pointer hover:border-blue-300 transition-all group relative">
-                        <div class="flex items-center justify-between mb-8 border-b border-slate-50 pb-6">
+                        <div class="flex items-center justify-between border-b border-slate-50 ">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
                                     <i class="fas fa-id-card text-xl"></i>
                                 </div>
                                 <h2 class="text-xl font-bold text-slate-800 italic uppercase">ព័ត៌មានលម្អិតផ្ទាល់ខ្លួន</h2>
                             </div>
-                            <span class="text-blue-500 text-xs font-bold uppercase italic">បង្ហាញលម្អិត <i class="fas fa-chevron-right ml-1"></i></span>
+                            <span class="text-blue-500 text-xs font-bold uppercase italic">បង្ហាញលម្អិត <i class="fas fa-chevron-right "></i></span>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                            <div class="flex flex-col gap-1 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                                <span class="text-slate-400 text-xs font-bold uppercase italic">អត្តលេខសិស្ស</span>
-                                <span class="text-blue-600 font-bold text-lg italic"><?php echo $s_id; ?></span>
-                            </div>
-                            <div class="flex flex-col gap-1 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                                <span class="text-slate-400 text-xs font-bold uppercase italic">ភេទ</span>
-                                <span class="text-slate-800 font-bold text-lg italic"><?php echo $student_info['gender'] ?? '---'; ?></span>
-                            </div>
-                        </div>
+                       
                     </div>
 
                     <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
@@ -141,20 +133,26 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
         </main>
     </div>
 
+
+
+    <!-- Modal student -->
     <div id="infoModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white w-full max-w-2xl  shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="p-8 border-b flex justify-between items-center bg-slate-50/50">
                 <h3 class="font-black text-slate-800 italic uppercase tracking-wider">ព័ត៌មានលម្អិតទាំងស្រុង</h3>
                 <button onclick="closeInfoModal()" class="w-10 h-10 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-all"><i class="fas fa-times"></i></button>
             </div>
             
             <div class="p-8 overflow-y-auto space-y-6">
-                <div class="flex items-center gap-6 p-6 bg-slate-900 rounded-[2rem] text-white">
-                    <img src="<?php echo $current_img ?? '../../assets/img/default.png'; ?>" class="w-24 h-24 rounded-[1.5rem] object-cover border-2 border-slate-700">
+                <div class="flex items-center gap-6 p-6 text-white justify-center">
+                    <img src="<?php echo $current_img ?? '../../assets/img/default.png'; ?>" class="w-[150px] h-[150px] rounded-[50%] object-cover border-2 border-slate-700">
                     <div>
-                        <h4 class="text-2xl font-black italic uppercase text-blue-400"><?php echo $display_name; ?></h4>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">លេខសម្គាល់: <?php echo $s_id; ?></p>
                     </div>
+                </div>
+
+                <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100"> 
+                    <h4 class="text-2xl font-black italic uppercase text-blue-400"><?php echo $display_name; ?></h4>
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">លេខសម្គាល់: <?php echo $s_id; ?></p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

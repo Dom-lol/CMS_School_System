@@ -1,34 +1,51 @@
 <?php 
 require_once '../../config/db.php';
 require_once '../../config/session.php';
-// ប្រាកដថាបាន Login ជា Staff រួចរាល់ [cite: 2026-01-20]
+// ប្រាកដថាបាន Login ជា Staff រួចរាល់
 is_logged_in();
 
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php'; 
 
-// ១. ចាប់យកតម្លៃថ្នាក់ និងសារលទ្ធផលពីការ Import [cite: 2026-01-20]
+// ១. ចាប់យកតម្លៃថ្នាក់ និងសារលទ្ធផលពីការ Import
 $active_grade = isset($_GET['grade']) ? mysqli_real_escape_string($conn, $_GET['grade']) : ''; 
 $msg = isset($_GET['msg']) ? $_GET['msg'] : '';
 $count = isset($_GET['count']) ? $_GET['count'] : 0;
 
-// ២. SQL ទាញទិន្នន័យសម្រាប់គ្រប់ថ្ងៃទាំងអស់ដោយប្រើ JOIN
-$sql = "SELECT t.*, s.subject_name as s_name, te.full_name as t_name
+// ២. SQL ទាញទិន្នន័យ (កែសម្រួលឱ្យ Join ជាមួយ classes ដើម្បីស្វែងរកតាមឈ្មោះថ្នាក់ "7" បាន)
+$sql = "SELECT t.*, s.subject_name as s_name, te.full_name as t_name, c.class_name
         FROM timetable t
         LEFT JOIN subjects s ON t.subject_id = s.id
         LEFT JOIN teachers te ON t.teacher_id = te.teacher_id
-        WHERE t.class_id = '$active_grade' AND t.is_deleted = 0 
+        LEFT JOIN classes c ON t.class_id = c.id
+        WHERE (t.class_id = '$active_grade' OR c.class_name = '$active_grade') 
+        AND t.is_deleted = 0 
         ORDER BY t.start_time ASC";
 
 $result = mysqli_query($conn, $sql);
 
-// ៣. រៀបចំទិន្នន័យជា Matrix (ម៉ោងសិក្សា x ថ្ងៃ) [cite: 2026-01-20]
+// ៣. រៀបចំទិន្នន័យជា Matrix
+$days_mapping = [
+    'Monday'    => 'ច័ន្ទ',
+    'Tuesday'   => 'អង្គារ',
+    'Wednesday' => 'ពុធ',
+    'Thursday'  => 'ព្រហស្បតិ៍',
+    'Friday'    => 'សុក្រ',
+    'Saturday'  => 'សៅរ៍'
+];
+
 $timetable_matrix = [];
 $time_slots = [];
+
 if ($result) {
     while($row = mysqli_fetch_assoc($result)) {
         $time_key = date('H:i', strtotime($row['start_time'])) . ' - ' . date('H:i', strtotime($row['end_time']));
-        $timetable_matrix[$time_key][$row['day_of_week']] = $row;
+        
+        // បម្លែងថ្ងៃពី English មក Khmer ដើម្បីឱ្យត្រូវជាមួយ Column ក្នុងតារាង UI
+        $db_day = $row['day_of_week'];
+        $kh_day = $days_mapping[$db_day] ?? $db_day; // បើក្នុង DB ជាខ្មែរស្រាប់ វានឹងយកខ្មែរ
+
+        $timetable_matrix[$time_key][$kh_day] = $row;
         
         if (!in_array($time_key, $time_slots)) {
             $time_slots[] = $time_key;
