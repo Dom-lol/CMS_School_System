@@ -62,7 +62,7 @@ while($row = mysqli_fetch_assoc($result_matrix)) {
     if (!in_array($time_key, $time_slots)) $time_slots[] = $time_key;
 }
 
-// កំណត់ Path រូបភាព
+// Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() : null;
@@ -71,7 +71,7 @@ include '../../includes/header.php';
 ?>
 
 <style>
-    /* ដោះស្រាយបញ្ហា Height sidebar */
+    
     html, body { height: 100%; margin: 0; overflow: hidden; }
     
     @media print {
@@ -91,7 +91,7 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
-        
+        <!-- ==== header profile img ===== -->
         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0 no-print">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
@@ -100,7 +100,7 @@ include '../../includes/header.php';
             </div>
             <div class="flex items-center gap-5">
                 <div class="text-right">
-                    <p class="text-[25px] font-bold text-slate-900 leading-tight"><?= $display_name ?></p>
+                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?= $display_name ?></p>
                     <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?= $s_id ?></p>
                 </div>
                 <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
@@ -147,7 +147,7 @@ include '../../includes/header.php';
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-[10px] text-slate-400 font-bold block uppercase">បន្ទប់</span>
+                                    <span class="text-[10px] text-slate-400 font-bold block uppercase">ថ្នាក់ទី</span>
                                     <span class="text-3xl font-black text-slate-200"><?= htmlspecialchars($row['room_number']) ?></span>
                                 </div>
                             </div>

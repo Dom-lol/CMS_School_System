@@ -18,16 +18,16 @@ if (function_exists('student_access')) {
 $u_id = $_SESSION['user_id'];
 $s_id = $_SESSION['username'] ?? '';
 
-// ១. ទាញព័ត៌មានសិស្ស
+// ទាញព័ត៌មានសិស្ស
 $student_info_query = mysqli_query($conn, "SELECT * FROM students WHERE user_id = '$u_id' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_info_query);
 $display_name = $student_info['full_name'] ?? $s_id;
 
-// ២. ទាញបញ្ជីគ្រូ
+// ទាញបញ្ជីគ្រូ
 $sql = "SELECT teacher_id, full_name, subjects, phone, profile_image FROM teachers ORDER BY full_name ASC";
 $teacher_q = mysqli_query($conn, $sql);
 
-// កំណត់ Path រូបភាព
+// Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
@@ -40,6 +40,7 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
+        <!-- ===== header profile img ====== -->
          <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
@@ -50,7 +51,7 @@ include '../../includes/header.php';
 
             <div class="flex items-center gap-5">
                 <div class="text-right ">
-                    <p class="text-[25px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
                     <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
                 
@@ -72,18 +73,19 @@ include '../../includes/header.php';
             </div>
         </header>
         <div class="flex-1 overflow-y-auto p-4 md:p-8">
+            <!-- controll profile img -->
             <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
                 <div id="teacherList">
                     <?php if(mysqli_num_rows($teacher_q) > 0): ?>
                         <?php while($t = mysqli_fetch_assoc($teacher_q)): ?>
                         <div class="teacher-row flex items-center justify-between p-5 border-b border-slate-100 hover:bg-blue-50/30 transition-all">
                             <div class="flex items-center gap-4">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white border border-slate-200 flex items-center justify-center shadow-sm">
+                                <div class="w-[80px] h-[80px] rounded-[50%] overflow-hidden bg-white border border-slate-200 flex items-center justify-center shadow-sm">
                                    <?php 
                                      $img_path = "../../assets/uploads/teachers/";
                                      $file_name = !empty($t['profile_image']) ? $t['profile_image'] : 'default_user.png';
                                      
-                                     // ឆែកមើលឯកសារពិតប្រាកដ ដើម្បីការពារការញាក់រូបភាព
+                                     
                                      if (!file_exists($img_path . $file_name)) {
                                          $file_name = 'default_user.png';
                                      }
@@ -95,7 +97,7 @@ include '../../includes/header.php';
                                     <p class="text-slate-500 text-sm italic leading-tight"><?= $t['subjects'] ?></p>
                                 </div>
                             </div>
-                            <a href="tel:<?= $t['phone'] ?>" class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center border border-green-100 active:scale-90 transition-all">
+                            <a href="tel:<?= $t['phone'] ?>" class="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center border border-green-100 hover:bg-green-100 active:scale-90 transition-all">
                                 <i class="fas fa-phone-alt"></i>
                             </a>
                         </div>
