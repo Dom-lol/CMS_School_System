@@ -10,7 +10,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white">
                 <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-6 h-6 object-contain">
             </div>
-            <span class="text-lg tracking-wide uppercase">Teacher</span>
+            <span class="text-lg tracking-wide uppercase">លោកគ្រូ អ្នកគ្រូ</span>
         </div>
         <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white transition-colors">
             <i class="fas fa-times text-2xl"></i>
@@ -20,7 +20,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <nav class="flex-1 px-4 py-8 space-y-3 overflow-y-auto custom-scrollbar">
         <a href="dashboard.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'dashboard.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-th-large w-5 text-center text-lg"></i>
-            <span class="font-medium">Dashboard</span>
+            <span class="font-medium">ទំព័រដើម</span>
         </a>
 
         <a href="my_classes.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'my_classes.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
@@ -41,6 +41,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
          <a href="attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
           <i class="fa-solid fa-clipboard-user"></i>
             <span class="font-medium">អវត្តមាន</span>
+        </a>
+
+         <a href="student_list.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'student_list.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+          <i class="fa-solid fa-clipboard-user"></i>
+            <span class="font-medium">List</span>
         </a>
     </nav>
 

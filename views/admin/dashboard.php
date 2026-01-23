@@ -2,90 +2,123 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 
-// ឆែកមើលថាជា Admin ឬអត់
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../../index.php?error=unauthorized");
-    exit();
-}
+// ១. ទាញទិន្នន័យសរុបសម្រាប់បង្ហាញលើ Card [cite: 2026-01-20]
+$total_students = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) as total FROM students"))['total'];
+$total_teachers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(teacher_id) as total FROM teachers"))['total'];
+$total_classes  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) as total FROM classes"))['total'];
 
-include '../../includes/header.php';
-include '../../includes/sidebar_admin.php'; 
+// ២. ទាញបញ្ជីសិស្ស ៥ នាក់ចុងក្រោយ [cite: 2026-01-20]
+$st_query = "SELECT s.*, c.class_name FROM students s 
+             LEFT JOIN classes c ON s.class_id = c.id 
+             ORDER BY s.id DESC LIMIT 5";
+$students = mysqli_query($conn, $st_query);
 
-// ទាញទិន្នន័យគ្រូទាំងអស់ពី Database
-$sql = "SELECT * FROM users WHERE role = 'teacher' ORDER BY id DESC";
-$result = mysqli_query($conn, $sql);
-$total_teachers = mysqli_num_rows($result);
+include '../../includes/header.php'; 
 ?>
 
-<main class="flex-1 p-8 bg-gray-50 min-h-screen">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-800">គ្រប់គ្រងគ្រូបង្រៀន</h1>
-            <p class="text-slate-500 text-sm">បង្ហាញបញ្ជីឈ្មោះគ្រូបង្រៀនទាំងអស់នៅក្នុងប្រព័ន្ធ</p>
-        </div>
+<div class="flex h-screen w-full bg-[#f3f4f9] overflow-hidden">
+    <?php include '../../includes/sidebar_admin.php'; ?>
+
+    <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto custom-scrollbar p-10">
         
-        <a href="../../actions/teachers/add.php" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl transition shadow-md shadow-blue-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            បន្ថែមគ្រូថ្មី
-        </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-            <div class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">គ្រូបង្រៀនសរុប</div>
-            <div class="text-3xl font-black text-blue-600"><?php echo $total_teachers; ?> <span class="text-sm font-medium text-slate-400">នាក់</span></div>
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-black text-slate-800 uppercase italic">Admin Dashboard</h1>
+            <div class="flex items-center gap-4 bg-white p-2 pr-6 rounded-full shadow-sm border border-slate-100">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <span class="font-bold text-slate-700">Admin</span>
+            </div>
         </div>
-    </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-100 text-slate-600 text-sm uppercase font-bold">
-                        <th class="px-6 py-4">អត្តលេខ / Username</th>
-                        <th class="px-6 py-4">ឈ្មោះពេញ</th>
-                        <th class="px-6 py-4">តួនាទី</th>
-                        <th class="px-6 py-4 text-right">សកម្មភាព</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50 text-slate-700">
-                    <?php if ($total_teachers > 0): ?>
-                        <?php while($row = mysqli_fetch_assoc($result)): ?>
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="px-6 py-4 font-mono text-sm text-blue-600"><?php echo $row['username']; ?></td>
-                            <td class="px-6 py-4 font-medium"><?php echo $row['full_name']; ?></td>
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-bold">
-                                    <?php echo strtoupper($row['role']); ?>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-gradient-to-br from-blue-600 to-blue-400 p-8 rounded-[2.5rem] text-white shadow-xl shadow-blue-200 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i class="fas fa-user-graduate text-2xl opacity-80"></i>
+                        <p class="font-bold text-xs uppercase tracking-widest">Total Students</p>
+                    </div>
+                    <h3 class="text-5xl font-black italic"><?= number_format($total_students) ?></h3>
+                </div>
+                <i class="fas fa-user-graduate absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 transition-transform"></i>
+            </div>
+
+            <div class="bg-gradient-to-br from-cyan-500 to-blue-400 p-8 rounded-[2.5rem] text-white shadow-xl shadow-cyan-100 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i class="fas fa-chalkboard-teacher text-2xl opacity-80"></i>
+                        <p class="font-bold text-xs uppercase tracking-widest">Total Teachers</p>
+                    </div>
+                    <h3 class="text-5xl font-black italic"><?= number_format($total_teachers) ?></h3>
+                </div>
+                <i class="fas fa-chalkboard-teacher absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 transition-transform"></i>
+            </div>
+
+            <div class="bg-gradient-to-br from-indigo-500 to-blue-400 p-8 rounded-[2.5rem] text-white shadow-xl shadow-indigo-100 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i class="fas fa-school text-2xl opacity-80"></i>
+                        <p class="font-bold text-xs uppercase tracking-widest">Total Classes</p>
+                    </div>
+                    <h3 class="text-5xl font-black italic"><?= number_format($total_classes) ?></h3>
+                </div>
+                <i class="fas fa-school absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 transition-transform"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[3rem] p-10 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-black text-slate-800 uppercase italic">Student Management</h2>
+                <a href="add_student.php" class="bg-blue-600 hover:bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-blue-100">
+                    <i class="fas fa-plus"></i> Add Student
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-50">
+                            <th class="pb-6 pr-4">ID</th>
+                            <th class="pb-6 pr-4">Name</th>
+                            <th class="pb-6 pr-4 text-center">Gender</th>
+                            <th class="pb-6 pr-4 text-center">Class</th>
+                            <th class="pb-6 pr-4 text-center">Status</th>
+                            <th class="pb-6 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        <?php while($row = mysqli_fetch_assoc($students)): ?>
+                        <tr class="group hover:bg-slate-50/50 transition-all">
+                            <td class="py-6 font-bold text-blue-600 text-sm italic">#<?= $row['student_id'] ?></td>
+                            <td class="py-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-100">
+                                        <img src="../../assets/upload/profiles/<?= $row['profile_image'] ?: 'default.png' ?>" class="w-full h-full object-cover">
+                                    </div>
+                                    <span class="font-bold text-slate-700"><?= $row['full_name'] ?></span>
+                                </div>
+                            </td>
+                            <td class="py-6 text-center">
+                                <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase <?= $row['gender'] == 'ស្រី' ? 'bg-pink-50 text-pink-500' : 'bg-blue-50 text-blue-500' ?>">
+                                    <i class="fas <?= $row['gender'] == 'ស្រី' ? 'fa-female' : 'fa-male' ?> mr-1"></i> <?= $row['gender'] ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-right flex justify-end gap-2">
-                                <a href="../../actions/teachers/edit.php?id=<?php echo $row['id']; ?>" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="កែសម្រួល">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </a>
-                                <a href="../../actions/teachers/delete.php?id=<?php echo $row['id']; ?>" 
-                                   onclick="return confirm('តើអ្នកពិតជាចង់លុបគ្រូនេះមែនទេ?')"
-                                   class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="លុបចេញ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </a>
+                            <td class="py-6 text-center text-sm font-bold text-slate-500 italic">Grade <?= $row['class_name'] ?></td>
+                            <td class="py-6 text-center">
+                                <span class="px-4 py-1.5 bg-green-50 text-green-500 rounded-xl text-[10px] font-black uppercase">Active</span>
+                            </td>
+                            <td class="py-6">
+                                <div class="flex justify-end gap-2">
+                                    <button class="w-9 h-9 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all"><i class="fas fa-eye text-xs"></i></button>
+                                    <button class="w-9 h-9 flex items-center justify-center bg-orange-50 text-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition-all"><i class="fas fa-edit text-xs"></i></button>
+                                    <button class="w-9 h-9 flex items-center justify-center bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-trash text-xs"></i></button>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="4" class="px-6 py-10 text-center text-slate-400">មិនមានទិន្នន័យគ្រូបង្រៀនឡើយ</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</main>
-
-<?php include '../../includes/footer.php'; ?>
+</div>

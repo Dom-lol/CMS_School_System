@@ -30,19 +30,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-calendar-alt w-5 text-center"></i>
             <span class="font-medium">កាលវិភាគរៀន</span>
         </a>
+        
+         <a href="attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fas fa-calendar-alt w-5 text-center"></i>
+            <span class="font-medium">អវត្តមាន</span>
+        </a>
         <a href="announcements.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'announcements.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-bullhorn w-5 text-center"></i>
             <span class="font-medium">សេចក្ដីជូនដំណឹង</span>
         </a>
 
-          <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teachers.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+        <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teachers.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fa-solid fa-users"></i>
             <span class="font-medium">បញ្ជីគ្រូ</span>
-        </a>
-
-         <a href="my_attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fa-solid fa-users"></i>
-            <span class="font-medium">attendance</span>
         </a>
     </nav>
 

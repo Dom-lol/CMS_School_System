@@ -114,12 +114,12 @@ include '../../includes/header.php';
         </header>
 
         <main class="flex-1 overflow-y-auto student-ui-original no-print">
-            <div class="bg-blue-600 p-8 text-white flex justify-between items-center shadow-lg mx-6 mt-6 rounded-3xl">
+            <div class="bg-blue-600 p-8 text-white flex justify-between items-center shadow-lg mx-2 mt-6 rounded-3xl">
                 <div>
                     <h1 class="text-2xl font-black uppercase">ថ្នាក់ទី <?= htmlspecialchars($active_grade) ?></h1>
                     <p class="opacity-80">កាលវិភាគប្រចាំថ្ងៃ<?= $search_day_kh ?></p>
                 </div>
-                <button onclick="window.print()" class="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-50 transition-all">
+                <button onclick="window.print()" class="text-[15px] bg-white text-blue-600 px-2 lg:px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-50 transition-all">
                     <i class="fas fa-print mr-2"></i> បោះពុម្ពកាលវិភាគ
                 </button>
             </div>

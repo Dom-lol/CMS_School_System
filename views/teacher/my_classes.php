@@ -44,7 +44,7 @@ include '../../includes/header.php';
             <div class="relative w-full h-64 bg-gradient-to-br from-[#0f172a] to-[#334155] rounded-[3rem] p-12 overflow-hidden shadow-2xl mb-12">
                 <div class="relative z-10">
                     <h1 class="text-6xl font-black text-white italic tracking-tighter mb-4 uppercase">My Classes</h1>
-                    <p class="text-slate-300 font-medium text-lg italic">គ្រប់គ្រងបញ្ជីឈ្មោះសិស្ស និងការបញ្ចូលពិន្ទុតាមថ្នាក់រៀន</p>
+                    <p class="text-slate-300 font-medium text-lg italic">ថ្នាក់បង្រៀនរបស់លោកគ្រូ អ្នកគ្រូនៅក្នុងថ្ងៃនេះ</p>
                 </div>
                 <div class="absolute right-[-20px] bottom-[-40px] opacity-10">
                     <i class="fas fa-graduation-cap text-[280px] text-white rotate-12"></i>
