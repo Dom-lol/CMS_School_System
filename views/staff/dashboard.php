@@ -22,7 +22,7 @@ $total_absent_today = 5; // កន្លែងនេះបងអាច Query ព
     <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-3xl font-black text-slate-800 tracking-tight">រដ្ឋបាលសាលា</h1>
-            <p class="text-slate-500 mt-1 italic">សូមស្វាគមន៍មកកាន់ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលសាលារៀន</p>
+            <p class="text-slate-500 mt-1 italic">សូមស្វាគមន៍មកកាន់ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលវិទ្យាល័យលំដាប់ពិភពលោក</p>
         </div>
         <div class="flex gap-3">
             <span class="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-slate-600 text-sm font-bold flex items-center shadow-sm">

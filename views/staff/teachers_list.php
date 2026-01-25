@@ -37,7 +37,7 @@ include '../../includes/header.php';
                                 <td class="p-6">
                                     <div class="flex items-center gap-4">
                                         <img src="../../assets/uploads/teachers/<?= !empty($row['profile_image']) ? $row['profile_image'] : 'default_user.png' ?>" 
-                                             class="w-12 h-12 rounded-2xl object-cover border-2 border-white shadow-sm">
+                                             class="w-[80px] h-[80px] rounded-[50px] object-cover border-2 border-white shadow-sm">
                                         <div>
                                             <div class="font-bold text-slate-800"><?= $row['full_name'] ?></div>
                                             <div class="text-[10px] text-blue-500 font-black italic">USER: <?= $row['username'] ?></div>

@@ -8,7 +8,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="pt-6 p-3  text-xl font-bold text-white border-b border-slate-800 flex justify-between items-center">
         <div class="flex items-center ">
             <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white">
-            <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-6 h-6 object-contain">
+            <img src="../../assets/favicon_v2.ico" alt="Logo" class="w-6 h-6 object-contain">
         </div>
             <span class="tracking-wider uppercase text-[17px] lg:text-xl">វិទ្យាល័យលំដាប់ពិភពលោក</span>
         </div>
@@ -22,28 +22,28 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-th-large w-5 text-center"></i>
             <span class="font-medium">ទំព័រដើម</span>
         </a>
+         <a href="my_attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fa-solid fa-clipboard-user"></i>
+            <span class="font-medium">attendance</span>
+        </a>
+            <a href="my_timetable.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_timetable.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fas fa-calendar-alt w-5 text-center"></i>
+            <span class="font-medium">កាលវិភាគរៀន</span>
+        </a>
         <a href="my_grades.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_grades.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-star w-5 text-center"></i>
             <span class="font-medium">លទ្ធផលសិក្សា</span>
         </a>
-        <a href="my_timetable.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_timetable.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fas fa-calendar-alt w-5 text-center"></i>
-            <span class="font-medium">កាលវិភាគរៀន</span>
+        <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teachers.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fa-solid fa-users"></i>
+            <span class="font-medium">បញ្ជីគ្រូ</span>
         </a>
         <a href="announcements.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'announcements.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-bullhorn w-5 text-center"></i>
             <span class="font-medium">សេចក្ដីជូនដំណឹង</span>
         </a>
 
-          <a href="my_teachers.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_teachers.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fa-solid fa-users"></i>
-            <span class="font-medium">បញ្ជីគ្រូ</span>
-        </a>
-
-         <a href="my_attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fa-solid fa-users"></i>
-            <span class="font-medium">attendance</span>
-        </a>
+        
     </nav>
 
     <div class="p-4 border-t border-slate-800 mb-2">

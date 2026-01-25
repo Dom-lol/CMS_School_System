@@ -8,7 +8,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="p-6 text-xl font-bold text-white border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center">
             <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white">
-                <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-6 h-6 object-contain">
+                <img src="../../assets/favicon_v2.ico" alt="Logo" class="w-6 h-6 object-contain">
             </div>
             <span class="text-lg tracking-wide uppercase">លោកគ្រូ អ្នកគ្រូ</span>
         </div>

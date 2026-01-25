@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ចូលប្រើប្រាស់ប្រព័ន្ធ - School CMS</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon_v2.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro&display=swap" rel="stylesheet">
     <style>body { font-family: 'Kantumruy Pro', sans-serif; }</style>
 </head>
 <body class="bg-slate-100 min-h-screen flex flex-col">
     
-    <div class="flex items-center justify-center gap-5 text-center text-2xl md:text-4xl px-4 pt-10 lg:pt-20 md:pt-20 font-bold text-blue-700">
+    <div class="flex items-center justify-center text-2xl md:text-4xl px-4 pt-10 lg:pt-20 md:pt-20 font-bold text-blue-700">
         <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-[70px] h-[70px] object-contain">
         វិទ្យាល័យលំដាប់ពិភពលោក
     </div>

@@ -92,26 +92,7 @@ include '../../includes/header.php';
 
     <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
         <!-- ==== header profile img ===== -->
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0 no-print">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-            <div class="flex items-center gap-5">
-                <div class="text-right">
-                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?= $display_name ?></p>
-                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?= $s_id ?></p>
-                </div>
-                <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
-                    <?php if($current_img): ?>
-                        <img src="<?= $current_img ?>" class="w-full h-full object-cover">
-                    <?php else: ?>
-                        <span class="text-white text-xl font-bold"><?= mb_substr($display_name, 0, 1) ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </header>
+          
 
         <main class="flex-1 overflow-y-auto student-ui-original no-print">
             <div class="bg-blue-600 p-8 text-white flex justify-between items-center shadow-lg mx-2 mt-6 rounded-3xl">

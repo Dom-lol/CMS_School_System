@@ -66,59 +66,6 @@ include '../../includes/header.php';
             </div>
         </div>
 
-        <div class="bg-white rounded-[3rem] p-10 shadow-sm border border-slate-100">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-black text-slate-800 uppercase italic">Student Management</h2>
-                <a href="add_student.php" class="bg-blue-600 hover:bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-blue-100">
-                    <i class="fas fa-plus"></i> Add Student
-                </a>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-50">
-                            <th class="pb-6 pr-4">ID</th>
-                            <th class="pb-6 pr-4">Name</th>
-                            <th class="pb-6 pr-4 text-center">Gender</th>
-                            <th class="pb-6 pr-4 text-center">Class</th>
-                            <th class="pb-6 pr-4 text-center">Status</th>
-                            <th class="pb-6 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        <?php while($row = mysqli_fetch_assoc($students)): ?>
-                        <tr class="group hover:bg-slate-50/50 transition-all">
-                            <td class="py-6 font-bold text-blue-600 text-sm italic">#<?= $row['student_id'] ?></td>
-                            <td class="py-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-100">
-                                        <img src="../../assets/upload/profiles/<?= $row['profile_image'] ?: 'default.png' ?>" class="w-full h-full object-cover">
-                                    </div>
-                                    <span class="font-bold text-slate-700"><?= $row['full_name'] ?></span>
-                                </div>
-                            </td>
-                            <td class="py-6 text-center">
-                                <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase <?= $row['gender'] == 'ស្រី' ? 'bg-pink-50 text-pink-500' : 'bg-blue-50 text-blue-500' ?>">
-                                    <i class="fas <?= $row['gender'] == 'ស្រី' ? 'fa-female' : 'fa-male' ?> mr-1"></i> <?= $row['gender'] ?>
-                                </span>
-                            </td>
-                            <td class="py-6 text-center text-sm font-bold text-slate-500 italic">Grade <?= $row['class_name'] ?></td>
-                            <td class="py-6 text-center">
-                                <span class="px-4 py-1.5 bg-green-50 text-green-500 rounded-xl text-[10px] font-black uppercase">Active</span>
-                            </td>
-                            <td class="py-6">
-                                <div class="flex justify-end gap-2">
-                                    <button class="w-9 h-9 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all"><i class="fas fa-eye text-xs"></i></button>
-                                    <button class="w-9 h-9 flex items-center justify-center bg-orange-50 text-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition-all"><i class="fas fa-edit text-xs"></i></button>
-                                    <button class="w-9 h-9 flex items-center justify-center bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-trash text-xs"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+       
     </div>
 </div>

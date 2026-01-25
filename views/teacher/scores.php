@@ -47,3 +47,9 @@ $result = mysqli_query($conn, $query);
         </main>
     </div>
 </div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar'); 
+        if(sidebar) sidebar.classList.toggle('-translate-x-full');
+    }
+</script>

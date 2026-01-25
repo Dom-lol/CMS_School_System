@@ -4,10 +4,12 @@ require_once '../../config/session.php';
 
 // ១. ទាញយក student_id របស់សិស្សដែលកំពុង Login
 $u_id = $_SESSION['user_id'];
-$st_query = mysqli_query($conn, "SELECT id, full_name, class_id FROM students WHERE user_id = '$u_id' LIMIT 1");
+$st_query = mysqli_query($conn, "SELECT student_id, full_name, class_id FROM students WHERE user_id = '$u_id' LIMIT 1");
 $st_data = mysqli_fetch_assoc($st_query);
 $real_st_id = $st_data['id'] ?? 0;
 $class_id = $st_data['class_id'] ?? 0;
+
+$display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 
 // ២. ទាញយកស្ថិតិវត្តមានសរុប (Present, Absent, Permission)
 $stats_query = mysqli_query($conn, "
@@ -28,6 +30,12 @@ $att_list = mysqli_query($conn, "
     ORDER BY attendance_date DESC
 ");
 
+// Path រូបភាព
+$profile_path = "../../assets/uploads/profiles/";
+$current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
+               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+               : null;
+
 include '../../includes/header.php'; 
 ?>
 
@@ -35,13 +43,39 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
     
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-10 shrink-0">
-            <h2 class="text-xl font-black text-slate-800 uppercase italic">វត្តមានរបស់ខ្ញុំ</h2>
-            <div class="text-right">
-                <p class="text-xs font-bold text-slate-400 uppercase leading-none">សិស្ស៖ <?= $st_data['full_name'] ?></p>
-                <p class="text-[10px] text-blue-500 font-black mt-1 uppercase">ID: #<?= $real_st_id ?></p>
+          <!-- ===== Header profile img ===== -->
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="text-right ">
+                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                   
+                </div>
+                
+                <div class="relative group">
+                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
+                        <?php if($current_img): ?>
+                            <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
+                            <i class="fas fa-camera text-[10px]"></i>
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        </label>
+                    </form>
+                </div>
             </div>
         </header>
+       
 
         <main class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -101,3 +135,17 @@ include '../../includes/header.php';
         </main>
     </div>
 </div>
+  <script>
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+        function openInfoModal() {
+            const modal = document.getElementById('infoModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeInfoModal() {
+            const modal = document.getElementById('infoModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeInfoModal(); }
+    </script>

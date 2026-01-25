@@ -99,5 +99,11 @@ include '../../includes/header.php';
         </div>
     </main>
 </div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar'); 
+        if(sidebar) sidebar.classList.toggle('-translate-x-full');
+    }
+</script>
 
 <?php include '../../includes/footer.php'; ?>

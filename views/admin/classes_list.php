@@ -45,16 +45,12 @@ include '../../includes/header.php';
                         <tr class="group hover:bg-slate-50/50 transition-all">
                             <td class="p-8">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-14 h-14 rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center font-black text-xl shadow-lg shadow-blue-100 shrink-0">
-                                        <?= mb_substr($row['class_name'], 0, 1, 'UTF-8') ?>
-                                    </div>
+                                   
                                     <div>
-                                        <div class="font-black text-slate-800 text-base italic uppercase tracking-tight">
+                                        <div class="font-black  text-slate-800 text-[18px] italic uppercase tracking-tight">
                                             <?= $row['class_name'] ?>
                                         </div>
-                                        <div class="text-[10px] text-blue-500 font-bold uppercase mt-1 tracking-widest">
-                                            ID: CL-<?= str_pad($row['id'], 3, '0', STR_PAD_LEFT) ?>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </td>

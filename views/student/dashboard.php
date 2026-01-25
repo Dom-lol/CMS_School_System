@@ -2,9 +2,10 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-
+ include '../../includes/header.php'; 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
+   
 }
 
 // ទាញយកព័ត៌មានសិស្សពី Database ផ្ទាល់

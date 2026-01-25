@@ -27,9 +27,26 @@ include '../../includes/header.php';
 <div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden">
     <?php include '../../includes/sidebar_teacher.php'; ?>
     <div class="flex-1 flex flex-col min-w-0 h-full">
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-10 shadow-sm">
-            <h1 class="text-xl font-black text-slate-800 uppercase italic">ជ្រើសរើសមុខវិជ្ជាបង្រៀន</h1>
-            <p class="text-[10px] text-blue-500 font-bold uppercase italic">Teacher ID: <?= $real_t_id ?></p>
+          <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-all">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="text-right">
+                    <p class="text-[20px] font-black text-slate-900 leading-tight"><?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
+                    <p class="text-[12px] text-blue-500 font-bold uppercase italic">Teacher ID: <?php echo $real_t_id; ?></p>
+                </div>
+                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-slate-100 bg-slate-100">
+                    <?php 
+                        $path = "../../assets/uploads/teachers/";
+                        $display_img = (!empty($db_profile_img) && file_exists($path . $db_profile_img)) ? $path . $db_profile_img . "?v=" . time() : $path . 'default_user.png';
+                    ?>
+                    <img src="<?= $display_img ?>" class="w-full h-full object-cover">
+                </div>
+            </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-10 custom-scrollbar">
@@ -59,3 +76,9 @@ include '../../includes/header.php';
         </main>
     </div>
 </div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar'); 
+        if(sidebar) sidebar.classList.toggle('-translate-x-full');
+    }
+</script>

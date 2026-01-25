@@ -1,4 +1,5 @@
 <?php session_start();
+
 ?>
 
 
@@ -9,10 +10,14 @@
     <title>ចូលប្រើប្រាស់ប្រព័ន្ធ - School CMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="./../assets/favicon_v2.ico">
     <style>body { font-family: 'Kantumruy Pro', sans-serif; }</style>
 </head>
 <body class="bg-slate-100 h-screen" >
-    <div class="text-center text-[30px] pt-[100px] fw-bold text-blue-700">វិទ្យាល័យលំដាប់ពិភពលោក</div>
+     <div class="flex items-center justify-center text-2xl md:text-4xl px-4 pt-10 lg:pt-20 md:pt-20 font-bold text-blue-700">
+        <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-[70px] h-[70px] object-contain">
+        វិទ្យាល័យលំដាប់ពិភពលោក
+    </div>
     <div class=" flex items-center justify-center pt-[50px]">   
         <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
             <div class="text-center mb-8">

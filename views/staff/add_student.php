@@ -34,31 +34,31 @@ include '../../includes/sidebar_staff.php';
             <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <div class="md:col-span-2 border-b border-slate-100 pb-2 mb-2">
-                    <h2 class="font-bold text-blue-700 uppercase text-xs tracking-widest flex items-center gap-2">
+                    <h2 class=" text-blue-700 uppercase text-x tracking-widest flex items-center gap-2">
                         <i class="fas fa-key"></i> ព័ត៌មានគណនី
                     </h2>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">អត្តលេខសិស្ស (ID)</label>
-                    <input type="text" name="student_id" required placeholder="ឧទាហរណ៍: S2026001" 
+                    <label class="block text-sm font-bold text-slate-700 mb-2">អត្តលេខសិស្ស​ ID</label>
+                    <input type="text" name="student_id" required placeholder="ID: S2026001" 
                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">លេខសម្ងាត់ (Password)</label>
-                    <input type="password" name="password" required placeholder="••••••••" 
+                    <label class="block text-sm font-bold text-slate-700 mb-2">លេខសម្ងាត់ Password</label>
+                    <input type="password" name="password" required placeholder="Password" 
                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
 
                 <div class="md:col-span-2 border-b border-slate-100 pb-2 mt-4 mb-2">
-                    <h2 class="font-bold text-blue-700 uppercase text-xs tracking-widest flex items-center gap-2">
+                    <h2 class=" text-blue-700 uppercase text-x tracking-widest flex items-center gap-2">
                         <i class="fas fa-user"></i> ព័ត៌មានផ្ទាល់ខ្លួន
                     </h2>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">ឈ្មោះពេញ (ខ្មែរ)</label>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">ឈ្មោះពេញ</label>
                     <input type="text" name="full_name" required placeholder="ឈ្មោះជាភាសាខ្មែរ" 
                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
@@ -90,7 +90,7 @@ include '../../includes/sidebar_staff.php';
                 </div>
 
                 <div class="md:col-span-2 border-b border-slate-100 pb-2 mt-4 mb-2">
-                    <h2 class="font-bold text-blue-700 uppercase text-xs tracking-widest flex items-center gap-2">
+                    <h2 class=" text-blue-700 uppercase text-x tracking-widest flex items-center gap-2">
                         <i class="fas fa-users"></i> ព័ត៌មានការសិក្សា និងគ្រួសារ
                     </h2>
                 </div>

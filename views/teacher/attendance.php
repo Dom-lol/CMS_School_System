@@ -36,24 +36,7 @@ include '../../includes/header.php';
     
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         
-        <header class="bg-white border-b-2 border-slate-100 min-h-24 py-4 flex flex-col md:flex-row items-center justify-between px-6 md:px-10 shrink-0 shadow-sm gap-4">
-            <div class="text-center md:text-left">
-                <h2 class="text-xl font-black text-slate-800 uppercase italic leading-none">ស្រង់វត្តមានសិស្ស</h2>
-                <p class="text-[10px] text-blue-500 font-bold uppercase mt-1">គ្រូ ID: <?= $real_t_id ?> | ថ្ងៃទី: <?= date('d-M-Y', strtotime($date)) ?></p>
-            </div>
-
-            <form method="GET" class="flex flex-wrap justify-center items-center gap-2">
-                <select name="class_id" onchange="this.form.submit()" class="bg-slate-100 border-none rounded-xl px-4 py-2 font-bold text-sm outline-none cursor-pointer hover:bg-slate-200 transition-all">
-                    <option value="">--- ជ្រើសរើសថ្នាក់ ---</option>
-                    <?php mysqli_data_seek($classes_query, 0); while($c = mysqli_fetch_assoc($classes_query)): ?>
-                        <option value="<?= $c['class_id'] ?>" <?= $class_id == $c['class_id'] ? 'selected' : '' ?>>
-                            ថ្នាក់ទី <?= $c['class_name'] ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <input type="date" name="date" value="<?= $date ?>" onchange="this.form.submit()" class="bg-slate-100 border-none rounded-xl px-4 py-2 font-bold text-sm outline-none cursor-pointer hover:bg-slate-200 transition-all">
-            </form>
-        </header>
+     
 
         <main class="flex-1 overflow-y-auto p-4 md:p-10 custom-scrollbar">
             <?php if ($class_id > 0 && $students && mysqli_num_rows($students) > 0): ?>
@@ -123,3 +106,4 @@ include '../../includes/header.php';
 </div>
 
 <?php include '../../includes/footer.php'; ?>
+

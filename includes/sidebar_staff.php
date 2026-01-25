@@ -5,7 +5,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col h-screen sticky top-0 shadow-2xl z-50">
     <div class="p-6 text-xl font-bold text-white border-b border-slate-800 flex items-center">
         <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white">
-            <img src="https://samlouthighschool.com/file/image/logo.png" alt="Logo" class="w-6 h-6 object-contain">
+            <img src="../../assets/favicon_v2.ico" alt="Logo" class="w-6 h-6 object-contain">
         </div>
         រដ្ឋបាលសាលា
     </div>
@@ -26,7 +26,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <button onclick="toggleDropdown('studentMenu', 'studentArrow')" 
                 class="w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 hover:bg-slate-800 <?php echo $is_student_active ? 'text-white bg-slate-800/50' : ''; ?>">
                 <div class="flex items-center">
-                    <i class="fas fa-user-graduate w-8 text-lg"></i> 
+                     <i class="fas fa-user-graduate w-8 text-lg"></i>
                     <span class="font-medium">គ្រប់គ្រងសិស្ស</span>
                 </div>
                 <i id="studentArrow" class="fas fa-chevron-right text-[10px] transition-transform duration-300 <?php echo $is_student_active ? 'rotate-90' : ''; ?>"></i>
