@@ -36,9 +36,9 @@ $total_absent_today = 5; // កន្លែងនេះបងអាច Query ព
         <a href="student_list.php" class="group">
             <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-100 transition-all duration-300 relative overflow-hidden">
                 <div class="absolute -right-2 -top-2 w-16 h-16 bg-blue-50 rounded-full opacity-50 group-hover:scale-150 transition-transform"></div>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">សិស្សសរុប</p>
+                <p class="text-slate-400 text-xl font-bold uppercase tracking-widest">សិស្សសរុប</p>
                 <h3 class="text-4xl font-black text-slate-800 mt-2"><?php echo $total_students; ?></h3>
-                <div class="mt-4 flex items-center text-blue-600 text-xs font-bold">
+                <div class="mt-4 flex items-center text-blue-600 text-sm font-bold">
                     មើលបញ្ជីឈ្មោះ <i class="fas fa-arrow-right ml-2"></i>
                 </div>
             </div>
@@ -48,9 +48,9 @@ $total_absent_today = 5; // កន្លែងនេះបងអាច Query ព
     <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 border-l-[6px] border-l-purple-500 hover:shadow-xl hover:shadow-purple-100 transition-all duration-300">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">ថ្នាក់រៀនសរុប</p>
+                <p class="text-slate-400 text-xl font-bold uppercase tracking-widest">ថ្នាក់រៀនសរុប</p>
                 <h3 class="text-4xl font-black text-slate-800 mt-2"><?php echo $total_classes; ?></h3>
-                <div class="mt-4 flex items-center text-purple-600 text-xs font-bold">
+                <div class="mt-4 flex items-center text-purple-600 text-sm font-bold">
                     មើលបញ្ជីថ្នាក់ <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
@@ -75,7 +75,7 @@ $total_absent_today = 5; // កន្លែងនេះបងអាច Query ព
                 </div>
                 <div>
                     <h3 class="text-xl font-bold">បន្ថែមសិស្ស</h3>
-                    <p class="text-slate-400 text-xs group-hover:text-white/80">បញ្ចូលទិន្នន័យសិស្សថ្មី</p>
+                    <p class="text-slate-400 text-sm group-hover:text-white/80">បញ្ចូលទិន្នន័យសិស្សថ្មី</p>
                 </div>
             </div>
         </a>

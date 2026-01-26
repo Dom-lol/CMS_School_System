@@ -93,7 +93,7 @@ include '../../includes/sidebar_staff.php';
                 </h3>
                 <div class="space-y-4 text-sm">
                     <div class="flex justify-between border-b border-slate-50 pb-2">
-                        <span class="text-slate-400">អត្តលេខសិស្ស:</span>
+                        <span class="text-slate-400 text-xl">អត្តលេខសិស្ស:</span>
                         <span class="font-bold text-slate-700"><?php echo $student['student_id']; ?></span>
                     </div>
                     <div class="flex justify-between border-b border-slate-50 pb-2">

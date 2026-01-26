@@ -22,11 +22,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-th-large w-5 text-center"></i>
             <span class="font-medium">ទំព័រដើម</span>
         </a>
-         <a href="my_attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-            <i class="fa-solid fa-clipboard-user"></i>
-            <span class="font-medium">attendance</span>
+         <a href="my_attendance.php" class=" flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <i class="fa-regular w-5 fa-address-book"></i>
+            <span class="font-medium">អវត្តមាន</span>
         </a>
-            <a href="my_timetable.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_timetable.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
+            <a href=" my_timetable.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all <?php echo ($current_page == 'my_timetable.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
             <i class="fas fa-calendar-alt w-5 text-center"></i>
             <span class="font-medium">កាលវិភាគរៀន</span>
         </a>

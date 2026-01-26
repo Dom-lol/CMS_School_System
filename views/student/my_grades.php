@@ -1,211 +1,171 @@
 <?php 
 require_once '../../config/db.php';
 require_once '../../config/session.php';
-is_logged_in();
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-$u_id = $_SESSION['user_id'];
-$s_id = $_SESSION['username'] ?? ''; // ចាប់យក username ជា s_id
-
-// ១. ទាញយកព័ត៌មានសិស្សពេញលេញ (ដើម្បីយក display_name, s_id និង profile_img)
-$student_info_query = mysqli_query($conn, "SELECT * FROM students WHERE user_id = '$u_id' LIMIT 1");
-$student_info = mysqli_fetch_assoc($student_info_query);
-
-$st_id = $student_info['student_id'] ?? 0;
-$display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
-
-// រៀបចំ Path រូបភាព Profile
-$profile_path = "../../assets/uploads/profiles/";
-$current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
-               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
-               : null;
-
-// ២. ចាប់យក Filter ចំនួន ៣ (Month, Year, Subject)
-$selected_month = $_GET['month'] ?? date('m');
-$selected_year = $_GET['year'] ?? date('Y');
-$selected_sub = $_GET['subject_id'] ?? 'all';
-
-$months = ["01" => "មករា", "02" => "កុម្ភៈ", "03" => "មីនា", "04" => "មេសា", "05" => "ឧសភា", "06" => "មិថុនា", "07" => "កក្កដា", "08" => "សីហា", "09" => "កញ្ញា", "10" => "តុលា", "11" => "វិច្ឆិកា", "12" => "ធ្នូ"];
-
-// ៣. គណនាចំណាត់ថ្នាក់ (Ranking)
-$rank_q = "SELECT student_id, AVG(total_score) as avg_score 
-           FROM scores 
-           WHERE MONTH(created_at) = '$selected_month' 
-           AND YEAR(created_at) = '$selected_year' 
-           GROUP BY student_id 
-           ORDER BY avg_score DESC";
-$rank_res = mysqli_query($conn, $rank_q);
-$rank = 0; $total_st = ($rank_res) ? mysqli_num_rows($rank_res) : 0;
-$count = 0;
-if($rank_res){
-    while($r = mysqli_fetch_assoc($rank_res)){
-        $count++;
-        if($r['student_id'] == $st_id){ $rank = $count; break; }
-    }
+// ១. ឆែកសិទ្ធិចូលប្រើ (សម្រាប់តែសិស្ស)
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../../index.php?error=unauthorized"); exit();
 }
 
-// Path រូបភាព
+// ២. ទាញយកព័ត៌មានសិស្ស
+$s_id = $_SESSION['username'] ?? '';
+$student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
+$student_info = mysqli_fetch_assoc($student_query);
+
+$display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
+
+// ៣. រៀបចំ Path រូបភាព Profile
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
-               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
-               : null;
+                ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+                : null;
 
-
-include '../../includes/header.php';
+// ៤. កំណត់ខែ និងឆ្នាំសម្រាប់ Filter
+$selected_month = $_GET['month'] ?? date('m');
+$selected_year = $_GET['year'] ?? date('Y');
+$months = [
+    "01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីនា", "04"=>"មេសា", 
+    "05"=>"ឧសភា", "06"=>"មិថុនា", "07"=>"កក្កដា", "08"=>"សីហា", 
+    "09"=>"កញ្ញា", "10"=>"តុលា", "11"=>"វិច្ឆិកា", "12"=>"ធ្នូ"
+];
 ?>
 
-<div class="flex h-screen w-full overflow-hidden bg-slate-100 font-khmer">
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>លទ្ធផលសិក្សា - <?= htmlspecialchars($display_name) ?></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kantumruy Pro', sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-[#f8fafc] flex h-screen overflow-hidden">
+
     <?php include '../../includes/sidebar_student.php'; ?>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <!-- header profile img -->
-         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-10">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
+                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                
+                <h1 class="text-xl font-black text-slate-800 uppercase italic leading-tight tracking-tighter">My Academic Results</h1>
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right ">
-                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
+                <div class="text-right hidden sm:block">
+                    <p class="text-[18px] font-black text-slate-900 leading-tight"><?= htmlspecialchars($display_name) ?></p>
+                    <p class="text-[11px] text-blue-600 font-bold uppercase tracking-widest italic">ID: <?= $s_id ?></p>
                 </div>
-                
-                <div class="relative group">
-                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
-                        <?php if($current_img): ?>
-                            <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
-                        <?php else: ?>
-                            <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
-                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
-                            <i class="fas fa-camera text-[10px]"></i>
-                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
-                        </label>
-                    </form>
-                </div>
-            </div>
-        </header>
-
-        <header class="bg-white border-b h-16 flex items-center justify-between px-6 flex-shrink-0 z-40">
-            <h1 class="text-sm font-black text-slate-800 uppercase">លទ្ធផលសិក្សាប្រចាំខែ</h1>
-        </header>
-
-        <div class="flex-1 overflow-y-auto bg-blue-600 p-4 md:p-8">
-            <div class="max-w-5xl mx-auto">
-                
-                <div class="mb-6 flex flex-col gap-4">
-                    <form action="" method="GET" class="flex flex-wrap items-center bg-white/20 p-2 rounded-3xl backdrop-blur-md border border-white/30 gap-2">
-                        <select name="month" onchange="this.form.submit()" class="bg-transparent text-white font-bold text-xs outline-none px-4 py-2 appearance-none">
-                            <?php foreach ($months as $num => $kh): ?>
-                                <option value="<?= $num ?>" <?= ($num == $selected_month) ? 'selected' : '' ?> class="text-slate-800"><?= $kh ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <select name="year" onchange="this.form.submit()" class="bg-transparent text-white font-bold text-xs outline-none px-4 py-2 appearance-none">
-                            <?php for ($y = date('Y'); $y >= 2023; $y--): ?>
-                                <option value="<?= $y ?>" <?= ($y == $selected_year) ? 'selected' : '' ?> class="text-slate-800"><?= $y ?></option>
-                            <?php endfor; ?>
-                        </select>
-                        <select name="subject_id" onchange="this.form.submit()" class="bg-transparent text-white font-bold text-xs outline-none px-4 py-2 appearance-none flex-1">
-                            <option value="all" class="text-slate-800">គ្រប់មុខវិជ្ជា</option>
-                            <?php
-                            $sub_list = mysqli_query($conn, "SELECT id, subject_name FROM subjects");
-                            while($s = mysqli_fetch_assoc($sub_list)):
-                                $sel = ($selected_sub == $s['id']) ? 'selected' : '';
-                                echo "<option value='{$s['id']}' $sel class='text-slate-800'>{$s['subject_name']}</option>";
-                            endwhile;
-                            ?>
-                        </select>
-                    </form>
-
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-white/50 text-xs"></i>
-                        <input type="text" id="subjectSearch" placeholder="ស្វែងរកមុខវិជ្ជា..." 
-                               class="w-full pl-12 pr-6 py-4 bg-white/10 border border-white/20 rounded-3xl text-white text-sm outline-none shadow-xl">
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-[2.5rem] p-8 shadow-2xl mb-8 border-b-8 border-orange-400">
-                    <?php
-                    $sum_q = mysqli_query($conn, "SELECT AVG(total_score) as avg, SUM(total_score) as total FROM scores WHERE student_id = '$st_id' AND MONTH(created_at) = '$selected_month' AND YEAR(created_at) = '$selected_year'");
-                    $sum = mysqli_fetch_assoc($sum_q);
-                    $avg = number_format($sum['avg'] ?? 0, 2);
-                    ?>
-                    <div class="text-center mb-8">
-                        <p class="text-slate-400 text-[10px] font-black uppercase mb-1">មធ្យមភាគប្រចាំខែ <?= $months[$selected_month] ?></p>
-                        <h2 class="text-6xl font-black text-slate-900"><?= $avg ?><span class="text-slate-300 text-2xl">/50</span></h2>
-                    </div>
-
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 border-t pt-8">
-                        <div class="text-center border-r"><p class="text-[10px] text-slate-400 font-bold mb-1">ចំណាត់ថ្នាក់</p><p class="font-black text-orange-500 text-xl"><?= $rank ?>/<?= $total_st ?></p></div>
-                        <div class="text-center md:border-r"><p class="text-[10px] text-slate-400 font-bold mb-1">និទ្ទេស</p><p class="font-black text-green-500 text-xl italic"><?= ($avg >= 45) ? 'A' : ($avg >= 35 ? 'B' : 'C') ?></p></div>
-                        <div class="text-center border-r"><p class="text-[10px] text-slate-400 font-bold mb-1">ពិន្ទុសរុប</p><p class="font-black text-slate-800 text-xl"><?= (int)$sum['total'] ?></p></div>
-                        <div class="text-center"><p class="text-[10px] text-slate-400 font-bold mb-1">អវត្តមាន</p><p class="font-black text-red-500 text-xl">0</p></div>
-                    </div>
-                </div>
-
-                <div id="subjectContainer" class="space-y-3 pb-10">
-                    <?php 
-                    $sub_filter = ($selected_sub != 'all') ? "AND s.subject_id = '$selected_sub'" : "";
-                    $list_q = mysqli_query($conn, "SELECT s.*, sub.subject_name 
-                                                   FROM scores s 
-                                                   JOIN subjects sub ON s.subject_id = sub.id 
-                                                   WHERE s.student_id = '$st_id' 
-                                                   AND MONTH(s.created_at) = '$selected_month' 
-                                                   AND YEAR(s.created_at) = '$selected_year' 
-                                                   $sub_filter");
-                    
-                    if($list_q && mysqli_num_rows($list_q) > 0):
-                        while($row = mysqli_fetch_assoc($list_q)):
-                    ?>
-                    <div class="subject-card flex justify-between items-center bg-white p-5 rounded-[2.2rem] shadow-lg border-l-[10px] border-blue-500 hover:scale-[1.01] transition-all">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 font-black italic">
-                                <?= mb_substr($row['subject_name'], 0, 1) ?>
-                            </div>
-                            <div>
-                                <h4 class="subject-name font-black text-slate-800 text-sm"><?= $row['subject_name'] ?></h4>
-                                <p class="text-[10px] text-slate-400 font-bold">ប្រចាំខែ: <?= (int)$row['monthly_score'] ?> | ប្រឡង: <?= (int)$row['exam_score'] ?></p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-[10px] font-bold text-slate-400 uppercase">សរុប</span>
-                            <span class="font-black text-blue-600 text-lg"><?= (int)$row['total_score'] ?></span>
-                        </div>
-                    </div>
-                    <?php endwhile; else: ?>
-                        <div class="text-center py-20 bg-white/10 rounded-[2.5rem] border-2 border-dashed border-white/20 text-white italic">មិនទាន់មានទិន្នន័យ</div>
+                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center ring-4 ring-slate-50">
+                    <?php if($current_img): ?>
+                        <img src="<?= $current_img ?>" class="w-full h-full object-cover">
+                    <?php else: ?>
+                        <span class="text-white text-xl font-black italic"><?= mb_substr($display_name, 0, 1) ?></span>
                     <?php endif; ?>
                 </div>
             </div>
-        </div>
-    </main>
-</div>
+        </header>
 
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('-translate-x-full');
-}
+        <main class="flex-1 overflow-y-auto p-6 md:p-10">
+            <div class="max-w-6xl mx-auto">
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800 italic uppercase">Report Card</h2>
+                        <p class="text-slate-500 font-medium">តាមដានលទ្ធផលសិក្សារបស់អ្នកប្រចាំខែ</p>
+                    </div>
+                    
+                    <form action="" method="GET" class="flex gap-3 bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                        <div class="flex items-center px-4 gap-2 border-r border-slate-100">
+                            <i class="fas fa-calendar-alt text-blue-500 text-sm"></i>
+                            <select name="month" onchange="this.form.submit()" class="bg-transparent outline-none font-black text-xs uppercase italic cursor-pointer">
+                                <?php foreach ($months as $num => $kh): ?>
+                                    <option value="<?= $num ?>" <?= ($num == $selected_month) ? 'selected' : '' ?>><?= $kh ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="flex items-center px-4 gap-2">
+                            <select name="year" onchange="this.form.submit()" class="bg-transparent outline-none font-black text-xs uppercase italic cursor-pointer">
+                                <?php for ($y = date('Y'); $y >= 2024; $y--): ?>
+                                    <option value="<?= $y ?>" <?= ($y == $selected_year) ? 'selected' : '' ?>><?= $y ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </form>
+                </div>
 
-// Search Function
-document.getElementById('subjectSearch').addEventListener('input', function() {
-    let input = this.value.toLowerCase().trim();
-    let cards = document.getElementsByClassName('subject-card');
-    Array.from(cards).forEach(card => {
-        let name = card.querySelector('.subject-name').innerText.toLowerCase();
-        card.style.display = name.includes(input) ? "flex" : "none";
-    });
-});
-</script>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <?php 
+                    $list_q = mysqli_query($conn, "SELECT s.*, sub.subject_name 
+                                                   FROM scores s 
+                                                   JOIN subjects sub ON s.subject_id = sub.id 
+                                                   WHERE s.student_id = '$s_id' 
+                                                   AND MONTH(s.created_at) = '$selected_month' 
+                                                   AND YEAR(s.created_at) = '$selected_year'
+                                                   ORDER BY s.total_score DESC");
+                    
+                    if(mysqli_num_rows($list_q) > 0):
+                        while($row = mysqli_fetch_assoc($list_q)):
+                            // កំណត់ពណ៌តាម Grade
+                            $gradeColor = "bg-slate-100 text-slate-600";
+                            if($row['grade'] == 'A') $gradeColor = "bg-green-100 text-green-600";
+                            elseif($row['grade'] == 'B') $gradeColor = "bg-blue-100 text-blue-600";
+                            elseif($row['grade'] == 'F') $gradeColor = "bg-red-100 text-red-600";
+                    ?>
+                    <div class="group bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-2xl hover:shadow-blue-200/40 hover:-translate-y-2 transition-all duration-500">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600 rounded-2xl flex items-center justify-center font-black italic shadow-inner group-hover:scale-110 transition-transform">
+                                <?= mb_substr($row['subject_name'], 0, 1) ?>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[9px] font-black text-slate-400 uppercase italic tracking-widest">Total</span>
+                                <p class="text-4xl font-black text-slate-900 leading-none"><?= (int)$row['total_score'] ?></p>
+                                <span class="inline-block mt-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter <?= $gradeColor ?>">
+                                    Grade: <?= $row['grade'] ?>
+                                </span>
+                            </div>
+                        </div>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&display=swap');
-    .font-khmer { font-family: 'Kantumruy Pro', sans-serif; }
-    ::-webkit-scrollbar { display: none; }
-</style>
+                        <h4 class="text-xl font-black text-slate-800 mb-6 uppercase italic truncate border-b border-slate-50 pb-4"><?= $row['subject_name'] ?></h4>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 group-hover:bg-blue-50/50 transition-colors">
+                                <span class="text-[9px] text-slate-400 font-black uppercase block mb-1">Monthly</span>
+                                <p class="font-black text-slate-700 italic"><?= (int)$row['monthly_score'] ?></p>
+                            </div>
+                            <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 group-hover:bg-indigo-50/50 transition-colors">
+                                <span class="text-[9px] text-slate-400 font-black uppercase block mb-1">Exam</span>
+                                <p class="font-black text-slate-700 italic"><?= (int)$row['exam_score'] ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endwhile; else: ?>
+                        <div class="col-span-full py-32 text-center bg-white rounded-[4rem] border-4 border-dashed border-slate-100 shadow-inner">
+                            <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-folder-open text-slate-200 text-4xl"></i>
+                            </div>
+                            <p class="text-slate-400 font-black italic uppercase tracking-widest">មិនទាន់មានទិន្នន័យសម្រាប់ខែនេះទេ</p>
+                            <p class="text-slate-300 text-xs mt-2 font-medium">No results found for <?= $months[$selected_month] ?> <?= $selected_year ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </main>
+    </div>
 
-<?php include '../../includes/footer.php'; ?>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if(sidebar) sidebar.classList.toggle('-translate-x-full');
+        }
+    </script>
+</body>
+</html>

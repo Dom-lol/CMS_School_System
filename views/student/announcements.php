@@ -109,7 +109,7 @@ $current_page = 'announcements.php';
                                 
                                 <div class="flex-shrink-0 flex gap-3 md:flex-col items-center justify-center w-full md:w-28 h-auto md:h-28 bg-blue-600 text-white rounded-[2rem] shadow-xl shadow-blue-100 p-4">
                                     <span class="text-3xl md:text-4xl font-black italic"><?php echo date('d', strtotime($row['created_at'])); ?></span>
-                                    <span class="text-[10px] md:text-xs font-bold uppercase tracking-wider mt-1 opacity-80"><?php echo date('M Y', strtotime($row['created_at'])); ?></span>
+                                    <span class="text-[15px] md:text-xs font-bold uppercase tracking-wider mt-1 opacity-80"><?php echo date('M Y', strtotime($row['created_at'])); ?></span>
                                 </div>
 
                                 <div class="flex-1 min-w-0 flex flex-col justify-center">

@@ -67,7 +67,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                             <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
-                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                    <form action="../../actions/uploads/profiles" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
                         <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
                             <i class="fas fa-camera text-[10px]"></i>
                             <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
@@ -84,21 +84,33 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     <h1 class="text-3xl md:text-4xl font-bold text-slate-900">សួស្ដី, <?php echo $display_name; ?>!</h1>
                     <p class="text-slate-500 mt-2 text-lg italic uppercase">សូមស្វាគមន៍មកកាន់វិទ្យាល័យលំដាប់ពិភពលោក</p>
                 </div>
+                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
+                                <i class="fas fa-clock text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 italic uppercase">កាលវិភាគសិក្សា</h3>
+                        </div>
+                        <!-- <div class="mt-8 flex items-baseline gap-2">
+                            <span class="text-6xl font-black text-slate-900 leading-none italic">?</span>
+                            <span class="text-xl font-bold text-slate-400">ម៉ោង</span>
+                        </div> -->
+                        <a href="my_timetable.php" class="mt-8 w-full py-4 bg-slate-900 text-white rounded-[1.5rem] text-center font-bold hover:bg-slate-800 transition shadow-lg">
+                            មើលកាលវិភាគលម្អិត
+                        </a>
+                    </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-                    <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-blue-200 relative overflow-hidden group">
-                        <i class="fas fa-graduation-cap absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 transition-transform"></i>
-                        <p class="opacity-80 text-sm font-bold uppercase tracking-wider text-white/80">ស្ថានភាពសិក្សា</p>
-                        <h3 class="text-4xl font-bold mt-4 italic"><?php echo $status; ?></h3>
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 pt-[50px]">
+                  
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 border-l-[6px] border-l-purple-500 flex flex-col justify-center">
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">ឆ្នាំសិក្សា</p>
-                        <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
+                       <div> <p class="text-slate-400 text-sm font-bold uppercase tracking-wider pl-[270px]">ឆ្នាំសិក្សា</p></div>
+                       <div​ class="flex justify-between">
+                            <h3 class="text-3xl font-bold text-slate-800 mt-3">ថ្នាក់ទី<?php echo $class_id; ?></h3>
+                            <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
+                         
+                       </div>
                     </div>
-                    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 border-l-[6px] border-l-emerald-500 flex flex-col justify-center">
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-wider">រៀនថ្នាក់ទី</p>
-                        <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $class_id; ?></h3>
-                    </div>
+                   
                 </div>
 
                 <div class="grid grid-cols-1  gap-8">
@@ -116,21 +128,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                        
                     </div>
 
-                    <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
-                        <div>
-                            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
-                                <i class="fas fa-clock text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-800 italic uppercase">កាលវិភាគសិក្សា</h3>
-                        </div>
-                        <!-- <div class="mt-8 flex items-baseline gap-2">
-                            <span class="text-6xl font-black text-slate-900 leading-none italic">?</span>
-                            <span class="text-xl font-bold text-slate-400">ម៉ោង</span>
-                        </div> -->
-                        <a href="my_timetable.php" class="mt-8 w-full py-4 bg-slate-900 text-white rounded-[1.5rem] text-center font-bold hover:bg-slate-800 transition shadow-lg">
-                            មើលកាលវិភាគលម្អិត
-                        </a>
-                    </div>
+                   
                 </div>
             </div>
         </main>

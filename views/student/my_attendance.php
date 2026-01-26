@@ -2,16 +2,19 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 
-// ១. ទាញយក student_id របស់សិស្សដែលកំពុង Login
-$u_id = $_SESSION['user_id'];
-$st_query = mysqli_query($conn, "SELECT student_id, full_name, class_id FROM students WHERE user_id = '$u_id' LIMIT 1");
-$st_data = mysqli_fetch_assoc($st_query);
-$real_st_id = $st_data['id'] ?? 0;
-$class_id = $st_data['class_id'] ?? 0;
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
+// ១. ទាញយកព័ត៌មានសិស្ស (ប្រើ Logic ដូច Dashboard ដែលលោកគ្រូថាដើរ) [cite: 2026-01-20]
+$s_id = $_SESSION['username'] ?? '';
+$student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
+$student_info = mysqli_fetch_assoc($student_query);
+
+// កំណត់ Variable សំខាន់ៗ
+$real_st_id   = $student_info['id'] ?? 0; 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
+$s_id_display = $student_info['student_id'] ?? $s_id;
 
-// ២. ទាញយកស្ថិតិវត្តមានសរុប (Present, Absent, Permission)
+// ២. ទាញយកស្ថិតិវត្តមានសរុប (Query លើ Table attendance) [cite: 2026-01-20]
 $stats_query = mysqli_query($conn, "
     SELECT 
         SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as total_present,
@@ -22,7 +25,7 @@ $stats_query = mysqli_query($conn, "
 ");
 $stats = mysqli_fetch_assoc($stats_query);
 
-// ៣. ទាញយកបញ្ជីវត្តមានលម្អិត រៀបតាមថ្ងៃខែថ្មីបំផុតមកមុន
+// ៣. ទាញយកបញ្ជីវត្តមានលម្អិត [cite: 2026-01-20]
 $att_list = mysqli_query($conn, "
     SELECT attendance_date, status 
     FROM attendance 
@@ -30,66 +33,75 @@ $att_list = mysqli_query($conn, "
     ORDER BY attendance_date DESC
 ");
 
-// Path រូបភាព
+// ៤. រៀបចំ Path រូបភាព (Logic Dashboard) [cite: 2026-01-20]
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
-               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
-               : null;
+                ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+                : null;
 
 include '../../includes/header.php'; 
 ?>
 
-<div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden">
+<div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden font-['Kantumruy_Pro']">
     <?php include '../../includes/sidebar_student.php'; ?>
     
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-          <!-- ===== Header profile img ===== -->
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+        
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                
+                <h2 class="text-xl font-bold text-slate-800 hidden md:block">វត្តមានរបស់ខ្ញុំ</h2>
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right ">
-                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                   
+                <div class="text-right">
+                    <p class="text-[18px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-widest">អត្តលេខ: <?php echo $s_id_display; ?></p>
                 </div>
                 
                 <div class="relative group">
-                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
+                    <div class="w-14 h-14 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
                         <?php else: ?>
                             <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
-                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
-                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" id="profileForm">
+                        <label class="absolute -bottom-1 -right-1 w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-600 hover:text-white transition-all">
                             <i class="fas fa-camera text-[10px]"></i>
-                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="document.getElementById('profileForm').submit()">
                         </label>
                     </form>
                 </div>
             </div>
         </header>
-       
 
         <main class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white p-6 rounded-[2rem] border-2 border-green-100 shadow-sm">
-                    <p class="text-[10px] font-black text-green-500 uppercase">វត្តមានសរុប</p>
-                    <h3 class="text-4xl font-black text-slate-800"><?= $stats['total_present'] ?? 0 ?></h3>
+                <div class="bg-white p-6 rounded-[2rem] border-2 border-green-100 shadow-sm flex items-center gap-5">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center"><i class="fas fa-user-check"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black text-green-500 uppercase">វត្តមានសរុប</p>
+                        <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_present'] ?? 0 ?></h3>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-[2rem] border-2 border-red-100 shadow-sm">
-                    <p class="text-[10px] font-black text-red-500 uppercase">អវត្តមានសរុប</p>
-                    <h3 class="text-4xl font-black text-slate-800"><?= $stats['total_absent'] ?? 0 ?></h3>
+                <div class="bg-white p-6 rounded-[2rem] border-2 border-red-100 shadow-sm flex items-center gap-5">
+                    <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center"><i class="fas fa-user-times"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black text-red-500 uppercase">អវត្តមានសរុប</p>
+                        <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_absent'] ?? 0 ?></h3>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-[2rem] border-2 border-orange-100 shadow-sm">
-                    <p class="text-[10px] font-black text-orange-500 uppercase">ច្បាប់សរុប</p>
-                    <h3 class="text-4xl font-black text-slate-800"><?= $stats['total_permission'] ?? 0 ?></h3>
+                <div class="bg-white p-6 rounded-[2rem] border-2 border-orange-100 shadow-sm flex items-center gap-5">
+                    <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center"><i class="fas fa-file-signature"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black text-orange-500 uppercase">ច្បាប់សរុប</p>
+                        <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_permission'] ?? 0 ?></h3>
+                    </div>
                 </div>
             </div>
 
@@ -108,16 +120,13 @@ include '../../includes/header.php';
                                 <td class="p-6 font-bold text-slate-700">
                                     <?= date('d-M-Y', strtotime($row['attendance_date'])) ?>
                                 </td>
-                                <td class="p-6">
-                                    <div class="flex justify-center">
-                                        <?php if($row['status'] == 'present'): ?>
-                                            <span class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-[10px] font-black uppercase italic">មក</span>
-                                        <?php elseif($row['status'] == 'absent'): ?>
-                                            <span class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase italic">អវត្តមាន</span>
-                                        <?php else: ?>
-                                            <span class="bg-orange-100 text-orange-600 px-4 py-1 rounded-full text-[10px] font-black uppercase italic">ច្បាប់</span>
-                                        <?php endif; ?>
-                                    </div>
+                                <td class="p-6 text-center">
+                                    <?php 
+                                        $s = $row['status'];
+                                        $c = ($s == 'present') ? 'bg-green-100 text-green-600' : (($s == 'absent') ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600');
+                                        $t = ($s == 'present') ? 'មក' : (($s == 'absent') ? 'អវត្តមាន' : 'ច្បាប់');
+                                    ?>
+                                    <span class="<?= $c ?> px-4 py-1 rounded-full text-[10px] font-black uppercase italic"><?= $t ?></span>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
@@ -135,17 +144,10 @@ include '../../includes/header.php';
         </main>
     </div>
 </div>
-  <script>
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
-        function openInfoModal() {
-            const modal = document.getElementById('infoModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-        function closeInfoModal() {
-            const modal = document.getElementById('infoModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-        window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeInfoModal(); }
-    </script>
+
+<script>
+    function toggleSidebar() { 
+        const sidebar = document.getElementById('sidebar');
+        if(sidebar) sidebar.classList.toggle('-translate-x-full'); 
+    }
+</script>

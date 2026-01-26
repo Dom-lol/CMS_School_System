@@ -71,7 +71,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
         <div class="bg-gradient-to-br from-indigo-600 to-blue-700 p-6 rounded-3xl shadow-lg shadow-blue-100 text-white">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">សិស្សសរុប</p>
+                    <p class="text-white text-[15px] font-bold uppercase tracking-wider">សិស្សសរុប</p>
                     <h3 class="text-4xl font-black mt-2"><?php echo $total_students; ?> <span class="text-lg font-normal">នាក់</span></h3>
                 </div>
                 <div class="bg-white/20 p-3 rounded-2xl"><i class="fas fa-users text-2xl"></i></div>
@@ -81,7 +81,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">សិស្សប្រុស</p>
+                    <p class="text-gray-500 text-[15px] font-bold uppercase tracking-wider">សិស្សប្រុស</p>
                     <h3 class="text-4xl font-black mt-2 text-slate-800"><?php echo $male_count; ?> <span class="text-lg font-normal text-slate-400">នាក់</span></h3>
                 </div>
                 <div class="bg-blue-50 p-3 rounded-2xl text-blue-600"><i class="fas fa-mars text-2xl"></i></div>
@@ -91,7 +91,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">សិស្សស្រី</p>
+                    <p class="text-gray-500 text-[15px] font-bold uppercase tracking-wider">សិស្សស្រី</p>
                     <h3 class="text-4xl font-black mt-2 text-slate-800"><?php echo $female_count; ?> <span class="text-lg font-normal text-slate-400">នាក់</span></h3>
                 </div>
                 <div class="bg-pink-50 p-3 rounded-2xl text-pink-600"><i class="fas fa-venus text-2xl"></i></div>
@@ -102,7 +102,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
         <form method="GET" class="flex flex-wrap gap-4 items-end">
             <div class="flex-1 min-w-[250px]">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">ស្វែងរកសិស្ស</label>
+                <label class="block text-[15px] font-bold text-gray-500 uppercase mb-2 ml-1">ស្វែងរកសិស្ស</label>
                 <div class="relative">
                     <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="ឈ្មោះ ឬអត្តលេខសិស្ស..." 
@@ -110,7 +110,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
                 </div>
             </div>
             <div class="w-48">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">ជ្រើសរើសថ្នាក់</label>
+                <label class="block text-[15px]  font-bold text-slate-400 uppercase mb-2 ml-1">ជ្រើសរើសថ្នាក់</label>
                 <select name="class" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">ទាំងអស់</option>
                     <?php while($c = mysqli_fetch_assoc($classes)): ?>
@@ -131,14 +131,14 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-slate-50 border-b border-slate-100">
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase">អត្តលេខ</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase">ឈ្មោះសិស្ស</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase text-center">ភេទ</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase">ថ្ងៃខែឆ្នាំកំណើត</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase">ទីកន្លែងកំណើត / អាសយដ្ឋាន</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase text-center">ថ្នាក់</th>
-                        <th class="px-6 py-4 text-slate-600 font-bold text-xs uppercase text-right">សកម្មភាព</th>
+                    <tr class="bg-gray-100 border-b border-slate-100">
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">អត្តលេខ</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ឈ្មោះសិស្ស</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-center">ភេទ</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ថ្ងៃខែឆ្នាំកំណើត</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ទីកន្លែងកំណើត / អាសយដ្ឋាន</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-center">ថ្នាក់</th>
+                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-right">សកម្មភាព</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -148,15 +148,15 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
                             <td class="px-6 py-4 font-mono font-bold text-blue-600"><?php echo $row['student_id']; ?></td>
                             <td class="px-6 py-4">
                                 <div class="font-bold text-slate-700"><?php echo $row['full_name']; ?></div>
-                                <div class="text-xs text-slate-400 font-medium tracking-wide"><?php echo $row['full_name_en']; ?></div>
+                                <div class="text-xs text-gray-700 font-medium tracking-wide"><?php echo $row['full_name_en']; ?></div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-bold <?php echo ($row['gender'] == 'ប្រុស') ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'; ?>">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold <?php echo ($row['gender'] == 'ប្រុស') ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'; ?>">
                                     <?php echo $row['gender']; ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-slate-600 text-sm italic"><?php echo $row['dob']; ?></td>
-                            <td class="px-6 py-4 text-xs text-slate-500 max-w-[200px] truncate">
+                            <td class="px-6 py-4 text-gray-700 text-sm italic"><?php echo $row['dob']; ?></td>
+                            <td class="px-6 py-4 text-xs text-gray-700 max-w-[200px] truncate">
                                 <span title="<?php echo $row['pob']; ?>">POB: <?php echo $row['pob']; ?></span><br>
                                 <span title="<?php echo $row['address']; ?>" class="text-slate-400">Addr: <?php echo $row['address']; ?></span>
                             </td>
