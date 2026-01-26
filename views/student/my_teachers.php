@@ -40,8 +40,8 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
-        <!-- ===== header profile img ====== -->
-         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+         <!-- ===== Header profile img ===== -->
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
@@ -63,7 +63,7 @@ include '../../includes/header.php';
                             <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
-                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                    <form action="../../actions/uploads/profiles" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
                         <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
                             <i class="fas fa-camera text-[10px]"></i>
                             <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">

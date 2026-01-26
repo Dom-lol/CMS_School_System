@@ -41,13 +41,13 @@ $result = mysqli_query($conn, $query);
                             </div>
                             <div>
                                 <h2 class="text-xl font-bold text-slate-800"><?php echo htmlspecialchars($row['title']); ?></h2>
-                                <span class="text-xs text-slate-400 italic">
+                                <span class="text-[15px] text-slate-400 italic">
                                     <i class="far fa-calendar-alt mr-1"></i>
                                     <?php echo date('d M, Y | h:i A', strtotime($row['created_at'])); ?>
                                 </span>
                             </div>
                         </div>
-                        <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs rounded-full font-bold">ទូទៅ</span>
+                        <span class="px-3 py-1 bg-amber-100 text-amber-700 text-[15px] rounded-full font-bold">ទូទៅ</span>
                     </div>
 
                     <div class="text-slate-600 leading-relaxed border-t border-slate-50 pt-4">
@@ -58,17 +58,17 @@ $result = mysqli_query($conn, $query);
                     </div>
 
                         <div class="mt-6 flex items-center justify-between border-t border-slate-50 pt-4">
-    <span class="text-sm text-slate-500 italic">
+    <span class="text-[15px] text-slate-500 italic">
         <i class="fas fa-user-edit mr-1 text-blue-500"></i> 
         ដោយ៖ <span class="font-semibold text-slate-700"><?php echo htmlspecialchars($row['posted_by']); ?></span>
     </span>
     
     <div class="flex gap-3">
-        <a href="edit_announcement.php?id=<?php echo $row['id']; ?>" class="text-amber-500 hover:text-amber-600">
+        <a href="edit_announcement.php?id=<?php echo $row['id']; ?>" class="text-amber-500 hover:text-amber-600 text-[20px]">
             <i class="fas fa-edit"></i>
         </a>
         <a href="../../actions/announcements/delete.php?id=<?php echo $row['id']; ?>" 
-           onclick="return confirm('តើអ្នកចង់លុបសារនេះមែនទេ?')" class="text-red-500 hover:text-red-600">
+           onclick="return confirm('តើអ្នកចង់លុបសារនេះមែនទេ?')" class="text-red-500 hover:text-red-600 text-[20px]">
             <i class="fas fa-trash"></i>
         </a>
     </div>

@@ -56,10 +56,10 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
             <div class="flex items-center gap-5">
                 <div class="text-right ">
                     <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase ">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
                 
-                <div class="relative group">
+                <div class="relative group cursor-pointer" onclick="openInfoModal()" >
                     <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
@@ -84,26 +84,27 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     <h1 class="text-3xl md:text-4xl font-bold text-slate-900">សួស្ដី, <?php echo $display_name; ?>!</h1>
                     <p class="text-slate-500 mt-2 text-lg italic uppercase">សូមស្វាគមន៍មកកាន់វិទ្យាល័យលំដាប់ពិភពលោក</p>
                 </div>
-                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
+
+               
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 pt-[10px]">
+
+                 <!-- Timetable -->
+                 <div class=" bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
                         <div>
                             <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
                                 <i class="fas fa-clock text-xl"></i>
                             </div>
                             <h3 class="text-lg font-bold text-slate-800 italic uppercase">កាលវិភាគសិក្សា</h3>
                         </div>
-                        <!-- <div class="mt-8 flex items-baseline gap-2">
-                            <span class="text-6xl font-black text-slate-900 leading-none italic">?</span>
-                            <span class="text-xl font-bold text-slate-400">ម៉ោង</span>
-                        </div> -->
+                       
                         <a href="my_timetable.php" class="mt-8 w-full py-4 bg-slate-900 text-white rounded-[1.5rem] text-center font-bold hover:bg-slate-800 transition shadow-lg">
                             មើលកាលវិភាគលម្អិត
                         </a>
                     </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 pt-[50px]">
                   
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 border-l-[6px] border-l-purple-500 flex flex-col justify-center">
-                       <div> <p class="text-slate-400 text-sm font-bold uppercase tracking-wider pl-[270px]">ឆ្នាំសិក្សា</p></div>
+                       <div> <p class="text-slate-400 text-sm font-bold uppercase tracking-wider sm:pl-[270px] lg:pl-[200px]">ឆ្នាំសិក្សា</p></div>
                        <div​ class="flex justify-between">
                             <h3 class="text-3xl font-bold text-slate-800 mt-3">ថ្នាក់ទី<?php echo $class_id; ?></h3>
                             <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
@@ -113,7 +114,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                    
                 </div>
 
-                <div class="grid grid-cols-1  gap-8">
+                <!-- <div class="grid grid-cols-1  gap-8">
                     <div onclick="openInfoModal()" class="lg:col-span-2 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-10 cursor-pointer hover:border-blue-300 transition-all group relative">
                         <div class="flex items-center justify-between border-b border-slate-50 ">
                             <div class="flex items-center gap-4">
@@ -129,7 +130,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     </div>
 
                    
-                </div>
+                </div> -->
             </div>
         </main>
     </div>

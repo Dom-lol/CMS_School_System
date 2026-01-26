@@ -61,14 +61,7 @@ include '../../includes/header.php';
             <?php else: ?>
                 <span class="text-white font-black text-xl italic"><?= mb_substr($t_full_name, 0, 1) ?></span>
             <?php endif; ?>
-        </div>
-    </div>
-</header>
-
-        <main class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
-            <?php if ($students && mysqli_num_rows($students) > 0): ?>
-            <form action="../../actions/teachers/save_attendance.php" method="POST">
-                <input type="hidden" name="class_name" value="7">
+        </div>giass_name" value="7">
                 <input type="hidden" name="date" value="<?= $date ?>">
 
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden mb-24">

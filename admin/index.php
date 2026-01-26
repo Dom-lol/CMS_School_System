@@ -21,11 +21,13 @@
     <div class=" flex items-center justify-center pt-[50px]">   
         <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-slate-800">Welcome</h1>
+                <h1 class="text-[30px] md:text-3xl font-bold text-slate-800">Welcome</h1>
+                <p class="text-slate-500 text-[17px] mt-2">សូមបញ្ចូលព័ត៌មានដើម្បីចូលប្រើប្រាស់</p>
             </div>
+
             <form action="../actions/auth/login_admin.php" method="POST" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700">តួនាទី (Role)</label>
+                    <label class="block text-[17px] font-medium text-slate-700">តួនាទី </label>
                     <select name="role" class="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="admin">Administrator</option>
                         <option value="staff">School Staff</option>

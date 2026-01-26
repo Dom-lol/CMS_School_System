@@ -51,29 +51,38 @@ $months = [
 
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-10">
+        <!-- ===== Header profile img ===== -->
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
+                <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h1 class="text-xl font-black text-slate-800 uppercase italic leading-tight tracking-tighter">My Academic Results</h1>
+                
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right hidden sm:block">
-                    <p class="text-[18px] font-black text-slate-900 leading-tight"><?= htmlspecialchars($display_name) ?></p>
-                    <p class="text-[11px] text-blue-600 font-bold uppercase tracking-widest italic">ID: <?= $s_id ?></p>
+                <div class="text-right ">
+                    <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase tracking-[0.2em]">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                <div class="w-14 h-14 rounded-2xl border-2 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center ring-4 ring-slate-50">
-                    <?php if($current_img): ?>
-                        <img src="<?= $current_img ?>" class="w-full h-full object-cover">
-                    <?php else: ?>
-                        <span class="text-white text-xl font-black italic"><?= mb_substr($display_name, 0, 1) ?></span>
-                    <?php endif; ?>
+                
+                <div class="relative group">
+                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-lg overflow-hidden bg-blue-600 flex items-center justify-center">
+                        <?php if($current_img): ?>
+                            <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <form action="../../actions/uploads/profiles" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
+                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
+                            <i class="fas fa-camera text-[10px]"></i>
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        </label>
+                    </form>
                 </div>
             </div>
         </header>
-
         <main class="flex-1 overflow-y-auto p-6 md:p-10">
             <div class="max-w-6xl mx-auto">
                 

@@ -46,13 +46,12 @@ include '../../includes/header.php';
     <?php include '../../includes/sidebar_student.php'; ?>
     
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        
+        <!-- header profile img -->
         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h2 class="text-xl font-bold text-slate-800 hidden md:block">វត្តមានរបស់ខ្ញុំ</h2>
             </div>
 
             <div class="flex items-center gap-5">
@@ -85,21 +84,21 @@ include '../../includes/header.php';
                 <div class="bg-white p-6 rounded-[2rem] border-2 border-green-100 shadow-sm flex items-center gap-5">
                     <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center"><i class="fas fa-user-check"></i></div>
                     <div>
-                        <p class="text-[10px] font-black text-green-500 uppercase">វត្តមានសរុប</p>
+                        <p class="text-[13px] font-black text-green-500 uppercase">វត្តមានសរុប</p>
                         <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_present'] ?? 0 ?></h3>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-2 border-red-100 shadow-sm flex items-center gap-5">
                     <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center"><i class="fas fa-user-times"></i></div>
                     <div>
-                        <p class="text-[10px] font-black text-red-500 uppercase">អវត្តមានសរុប</p>
+                        <p class="text-[13px] font-black text-red-500 uppercase">អវត្តមានសរុប</p>
                         <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_absent'] ?? 0 ?></h3>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] border-2 border-orange-100 shadow-sm flex items-center gap-5">
                     <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center"><i class="fas fa-file-signature"></i></div>
                     <div>
-                        <p class="text-[10px] font-black text-orange-500 uppercase">ច្បាប់សរុប</p>
+                        <p class="text-[13px] font-black text-orange-500 uppercase">ច្បាប់សរុប</p>
                         <h3 class="text-3xl font-black text-slate-800"><?= $stats['total_permission'] ?? 0 ?></h3>
                     </div>
                 </div>
@@ -109,8 +108,8 @@ include '../../includes/header.php';
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-900 text-white">
                         <tr>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest">ថ្ងៃខែឆ្នាំ</th>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-center">ស្ថានភាព</th>
+                            <th class="p-6 text-[12px] font-bold uppercase tracking-widest">ថ្ងៃខែឆ្នាំ</th>
+                            <th class="p-6 text-[12px] font-bold uppercase tracking-widest text-center">ស្ថានភាព</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
