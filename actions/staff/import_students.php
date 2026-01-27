@@ -19,6 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_data'])) {
                 father_phone, mother_phone, student_id, stream, class_name, status
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active')";
 
+            $sql_u = "INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, 'student')";
+            $stmt_u = $conn->prepare($sql_u);
+            $stmt_u->bind_param("sss", $_POST['student_id'], $_POST['student_id'], $_POST['full_name']);
+            $stmt_u->execute();
+            $u_id = $conn->insert_id;
+
             $stmt = $conn->prepare($sql);
 
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {

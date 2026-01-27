@@ -133,13 +133,13 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-100 border-b border-slate-100">
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">អត្តលេខ</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ឈ្មោះសិស្ស</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-center">ភេទ</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ថ្ងៃខែឆ្នាំកំណើត</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase">ទីកន្លែងកំណើត / អាសយដ្ឋាន</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-center">ថ្នាក់</th>
-                        <th class="px-6 py-4 text-black font-bold text-xl uppercase text-right">សកម្មភាព</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase">អត្តលេខ</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase">ឈ្មោះសិស្ស</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase text-center">ភេទ</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase">ថ្ងៃខែឆ្នាំកំណើត</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase">ទីកន្លែងកំណើត / អាសយដ្ឋាន</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase text-center">ថ្នាក់</th>
+                        <th class="px-6 py-4 text-black font-bold text-[18px] uppercase text-right">សកម្មភាព</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">

@@ -17,13 +17,13 @@ include '../../includes/sidebar_staff.php';
 <main class="flex-1 p-8 bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <h1 class="text-3xl font-bold text-slate-800" style="font-family: 'Khmer OS Muol Light';">ចុះឈ្មោះសិស្សថ្មី</h1>
+            <h1 class="text-3xl font-bold text-slate-800" >ចុះឈ្មោះសិស្សថ្មី</h1>
             <div class="flex gap-3">
-                <button type="button" onclick="document.getElementById('importInput').click()" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:bg-emerald-700 transition flex items-center active:scale-95">
-                    <i class="fas fa-file-excel mr-2"></i> នាំចូលពី Excel (CSV)
+                <button type="button" onclick="document.getElementById('importInput').click()" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:bg-emerald-700 transition flex items-center active:scale-95 cursor-pointer">
+                    <i class="fas fa-file-excel mr-2 text-[20px] pb-1"></i> Import Excel
                 </button>
-                <a href="student_list.php" class="bg-white text-slate-500 px-6 py-3 rounded-2xl font-bold border border-slate-200 hover:bg-slate-50 transition flex items-center">
-                    <i class="fas fa-arrow-left mr-2"></i> បញ្ជីសិស្ស
+                <a href="student_list.php" class="bg-white text-slate-500 px-6 py-3 rounded-2xl font-bold border border-slate-200 hover:bg-slate-50 transition flex items-center cursor-pointer">
+                    <i class="fas fa-arrow-left mr-2 "></i> បញ្ជីសិស្ស
                 </a>
             </div>
         </div>
@@ -54,9 +54,9 @@ include '../../includes/sidebar_staff.php';
                 <div class="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4 bg-blue-50/40 p-5 rounded-3xl border border-blue-100">
                     <div class="col-span-4 text-slate-700 font-bold text-sm uppercase">ទីកន្លែងកំណើត </div>
                     <input type="text" name="pob_v" placeholder="ភូមិ" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
-                    <input type="text" name="pob_c" placeholder="ឃុំ" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
-                    <input type="text" name="pob_d" placeholder="ស្រុក" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
-                    <input type="text" name="pob_p" placeholder="ខេត្ត" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
+                    <input type="text" name="pob_c" placeholder="ឃុំ/សង្កាត់" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
+                    <input type="text" name="pob_d" placeholder="ស្រុក/ខណ្ឌ" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
+                    <input type="text" name="pob_p" placeholder="ខេត្ត/ក្រុង" class="w-full p-3 bg-white border border-slate-200 rounded-xl">
                 </div>
             </div>
 
@@ -94,8 +94,8 @@ include '../../includes/sidebar_staff.php';
             <div class="p-8 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
                 <button type="button" id="prevBtn" onclick="changeStep(-1)" class="invisible font-bold text-slate-400">ថយក្រោយ</button>
                 <div class="flex gap-3">
-                    <button type="button" id="nextBtn" onclick="changeStep(1)" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold active:scale-95 transition">Next</button>
-                    <button type="submit" id="submitBtn" disabled class="btn-disabled hidden text-white px-10 py-4 rounded-2xl font-bold">រក្សាទុក</button>
+                    <button type="button" id="nextBtn" onclick="changeStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold active:scale-95 transition cursor-pointer">Next</button>
+                    <button type="submit" id="submitBtn" disabled class="btn-disabled hidden text-white px-10 py-4 rounded-2xl font-bold cursor-pointer">រក្សាទុក</button>
                 </div>
             </div>
         </form>

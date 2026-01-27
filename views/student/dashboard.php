@@ -55,6 +55,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
             </div>
 
             <div class="flex items-center gap-5">
+                <P class="text-red-700 text-[20px]">Fix modal profile</P>
                 <div class="text-right ">
                     <p class="text-[20px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
                     <p class="text-[12px] text-gray-500 font-bold uppercase ">អត្តលេខ: <?php echo $s_id; ?></p>

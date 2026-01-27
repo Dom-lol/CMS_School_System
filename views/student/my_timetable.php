@@ -91,12 +91,11 @@ include '../../includes/header.php';
 
     <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
         
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 no-print">
+         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h2 class="text-xl font-bold text-slate-800 hidden md:block">កាលវិភាគសិក្សា</h2>
             </div>
 
             <div class="flex items-center gap-5">
@@ -113,6 +112,12 @@ include '../../includes/header.php';
                             <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
+                    <form action="../../actions/students/upload_profile.php" method="POST" enctype="multipart/form-data" id="profileForm">
+                        <label class="absolute -bottom-1 -right-1 w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-600 hover:text-white transition-all">
+                            <i class="fas fa-camera text-[10px]"></i>
+                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="document.getElementById('profileForm').submit()">
+                        </label>
+                    </form>
                 </div>
             </div>
         </header>
