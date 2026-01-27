@@ -47,7 +47,7 @@ include '../../includes/header.php';
     
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <!-- header profile img -->
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0">
+       <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
@@ -55,13 +55,13 @@ include '../../includes/header.php';
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right">
+               
+                <div class="text-right ">
                     <p class="text-[18px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-widest">អត្តលេខ: <?php echo $s_id_display; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase ">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                
                 <div class="relative group">
-                    <div class="w-14 h-14 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
+                    <div onclick="openInfoModal()"  class="w-16 h-16 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
                         <?php else: ?>
@@ -75,6 +75,8 @@ include '../../includes/header.php';
                         </label>
                     </form>
                 </div>
+                
+               
             </div>
         </header>
 

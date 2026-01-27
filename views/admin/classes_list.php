@@ -8,14 +8,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
 include '../../includes/header.php'; 
 ?>
 
-<div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden font-['Kantumruy_Pro']">
+<div class="flex h-screen w-full bg-[#f8fafc] overflow-hidden">
     <?php include '../../includes/sidebar_admin.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-10 shrink-0">
             <div>
-                <h2 class="text-xl font-bold text-slate-800 italic uppercase">គ្រប់គ្រងថ្នាក់រៀន</h2>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">បញ្ជីថ្នាក់ និងការគ្រប់គ្រងសិស្សតាមថ្នាក់</p>
+                <h2 class="text-[25px] font-bold text-slate-800 italic uppercase">គ្រប់គ្រងថ្នាក់រៀន</h2>
+                <p class="text-[15px] text-slate-400  uppercase tracking-widest mt-1">បញ្ជីថ្នាក់ និងការគ្រប់គ្រងសិស្សតាមថ្នាក់</p>
             </div>
             <a href="add_class.php" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-900 shadow-lg shadow-blue-100 transition-all flex items-center gap-3">
                 <i class="fas fa-plus"></i> បង្កើតថ្នាក់ថ្មី
@@ -26,7 +26,7 @@ include '../../includes/header.php';
             <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="bg-slate-50/50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-100">
+                        <tr class="bg-slate-50/50 text-slate-400 text-[15px] font-black uppercase tracking-widest border-b border-slate-100">
                             <th class="p-8">ឈ្មោះថ្នាក់រៀន</th>
                             <th class="p-8">ឆ្នាំសិក្សា</th>
                             <th class="p-8">ស្ថានភាព</th>
@@ -42,7 +42,7 @@ include '../../includes/header.php';
                         if($res && mysqli_num_rows($res) > 0):
                             while($row = mysqli_fetch_assoc($res)): 
                         ?>
-                        <tr class="group hover:bg-slate-50/50 transition-all">
+                        <tr class="group hover:bg-blue-50/50 transition-all">
                             <td class="p-8">
                                 <div class="flex items-center gap-4">
                                    

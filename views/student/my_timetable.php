@@ -4,7 +4,7 @@ require_once '../../config/session.php';
 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-// ១. ទាញព័ត៌មានសិស្ស (កែសម្រួលត្រង់នេះ ដើម្បីឱ្យបង្ហាញ Name, ID, Img)
+// ១. ទាញព័ត៌មានសិស្សតាមរយៈ session username (student_id)
 $s_id_session = $_SESSION['username'] ?? ''; 
 $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id_session' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_query);
@@ -13,10 +13,11 @@ $student_info = mysqli_fetch_assoc($student_query);
 $s_id         = $student_info['student_id'] ?? $s_id_session;
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? 'N/A');
 
-// ២. Logic សម្រាប់ Class ID
-$student_class_id = $student_info['class_id'] ?? '';
-$active_grade_id = ($student_class_id == 7) ? 1 : $student_class_id; 
-$active_grade = ($student_class_id == 7) ? "7" : $student_class_id; 
+// ២. Logic សម្រាប់ Class ID (កែសម្រួលឱ្យត្រូវតាម DB ថ្មី)
+// យក class_id (1,2,3...) ទៅប្រើក្នុង Query កាលវិភាគ
+$active_grade_id = $student_info['class_id'] ?? ''; 
+// យក class_name (7,8,9...) ទៅបង្ហាញលើ UI
+$active_grade    = $student_info['class_name'] ?? 'N/A'; 
 
 // ៣. រៀបចំថ្ងៃជាភាសាខ្មែរ
 $days_mapping = [
@@ -32,11 +33,11 @@ $current_day_en = date('l');
 $active_day_en = isset($_GET['day']) ? mysqli_real_escape_string($conn, $_GET['day']) : ($current_day_en == 'Sunday' ? 'Monday' : $current_day_en);
 $search_day_kh = $days_mapping[$active_day_en] ?? 'ច័ន្ទ';
 
-// ៤. SQL Query ទាញកាលវិភាគ
+// ៤. SQL Query ទាញកាលវិភាគ (ប្រើ $active_grade_id)
 $sql_list = "SELECT t.*, s.subject_name, te.full_name as teacher_name
              FROM timetable t 
              LEFT JOIN subjects s ON t.subject_id = s.id 
-             LEFT JOIN teachers te ON CAST(t.teacher_id AS UNSIGNED) = CAST(te.teacher_id AS UNSIGNED)
+             LEFT JOIN teachers te ON t.teacher_id = te.teacher_id
              WHERE t.class_id = '$active_grade_id' 
              AND t.day_of_week = '$search_day_kh' 
              AND t.is_deleted = 0 
@@ -47,7 +48,7 @@ $result_list = mysqli_query($conn, $sql_list);
 $sql_matrix = "SELECT t.*, s.subject_name, te.full_name as teacher_name
                FROM timetable t 
                LEFT JOIN subjects s ON t.subject_id = s.id 
-               LEFT JOIN teachers te ON CAST(t.teacher_id AS UNSIGNED) = CAST(te.teacher_id AS UNSIGNED)
+               LEFT JOIN teachers te ON t.teacher_id = te.teacher_id
                WHERE t.class_id = '$active_grade_id' AND t.is_deleted = 0 
                ORDER BY t.start_time ASC";
 $result_matrix = mysqli_query($conn, $sql_matrix);
@@ -60,7 +61,7 @@ while($row = mysqli_fetch_assoc($result_matrix)) {
     if (!in_array($time_key, $time_slots)) $time_slots[] = $time_key;
 }
 
-// ៦. រៀបចំ Path រូបភាព (Logic Dashboard)
+// ៦. រៀបចំ Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() : null;
@@ -86,12 +87,12 @@ include '../../includes/header.php';
     .print-area { display: none; }
 </style>
 
-<div class="flex h-screen w-full overflow-hidden font-['Kantumruy_Pro']">
+<div class="flex h-screen w-full overflow-hidden ">
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
         
-         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0">
+        <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
@@ -99,13 +100,12 @@ include '../../includes/header.php';
             </div>
 
             <div class="flex items-center gap-5">
-                <div class="text-right">
+                <div class="text-right ">
                     <p class="text-[18px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
-                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-widest">អត្តលេខ: <?php echo $s_id; ?></p>
+                    <p class="text-[12px] text-gray-500 font-bold uppercase ">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                
                 <div class="relative group">
-                    <div class="w-14 h-14 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
                         <?php else: ?>
@@ -125,7 +125,7 @@ include '../../includes/header.php';
         <main class="flex-1 overflow-y-auto student-ui-original no-print custom-scrollbar">
             <div class="bg-blue-600 p-8 text-white flex justify-between items-center shadow-lg mx-4 mt-6 rounded-3xl">
                 <div>
-                    <h1 class="text-2xl font-black uppercase">ថ្នាក់ទី <?= htmlspecialchars($active_grade) ?></h1>
+                    <h1 class="text-2xl text-white  "><span class="text-white">ថ្នាក់ទី </span><span class= "text-white"><?= htmlspecialchars($active_grade) ?></span></h1>
                     <p class="opacity-80">កាលវិភាគប្រចាំថ្ងៃ<?= $search_day_kh ?></p>
                 </div>
                 <button onclick="window.print()" class="text-[15px] bg-white text-blue-600 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-50 transition-all">

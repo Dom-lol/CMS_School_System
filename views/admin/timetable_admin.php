@@ -50,7 +50,7 @@ $display_name = $class_data ? $class_data['class_name'] : 'ថ្នាក់ទ
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden main-content">
         <header class="bg-white border-b border-slate-100 h-24 flex items-center justify-between px-10 shrink-0 no-print">
             <form method="GET" class="flex items-center gap-3 bg-slate-50 p-2 rounded-2xl border border-slate-200">
-                <span class="pl-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">ជ្រើសរើសថ្នាក់៖</span>
+                <span class="pl-3 text-[12px] font-black text-slate-400 uppercase tracking-widest">ជ្រើសរើសថ្នាក់៖</span>
                 <select name="class_id" onchange="this.form.submit()" class="bg-white border-none rounded-xl px-4 py-2 font-bold text-sm text-slate-700 shadow-sm">
                     <?php 
                     $all_classes = mysqli_query($conn, "SELECT id, class_name FROM classes");

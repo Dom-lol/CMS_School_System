@@ -38,7 +38,6 @@
     --color-blue-50: oklch(97% 0.014 254.604);
     --color-blue-100: oklch(93.2% 0.032 255.585);
     --color-blue-200: oklch(88.2% 0.059 254.128);
-    --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
@@ -987,9 +986,6 @@
   .border-blue-100 {
     border-color: var(--color-blue-100);
   }
-  .border-blue-400 {
-    border-color: var(--color-blue-400);
-  }
   .border-blue-500 {
     border-color: var(--color-blue-500);
   }
@@ -1409,9 +1405,6 @@
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
-  .pt-\[5px\] {
-    padding-top: 5px;
-  }
   .pt-\[10px\] {
     padding-top: 10px;
   }
@@ -1574,11 +1567,11 @@
   .text-\[25px\] {
     font-size: 25px;
   }
-  .text-\[28px\] {
-    font-size: 28px;
-  }
   .text-\[30px\] {
     font-size: 30px;
+  }
+  .text-\[100px\] {
+    font-size: 100px;
   }
   .leading-loose {
     --tw-leading: var(--leading-loose);
@@ -1730,9 +1723,6 @@
   }
   .text-red-600 {
     color: var(--color-red-600);
-  }
-  .text-red-700 {
-    color: var(--color-red-700);
   }
   .text-rose-600 {
     color: var(--color-rose-600);
@@ -2632,11 +2622,6 @@
   .md\:col-span-4 {
     @media (width >= 48rem) {
       grid-column: span 4 / span 4;
-    }
-  }
-  .md\:block {
-    @media (width >= 48rem) {
-      display: block;
     }
   }
   .md\:flex {
