@@ -3,9 +3,9 @@ require_once '../../config/db.php';
 require_once '../../config/session.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
  include '../../includes/header.php'; 
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
-   
 }
 
 // ទាញយកព័ត៌មានសិស្សពី Database ផ្ទាល់
@@ -14,16 +14,20 @@ $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = 
 $student_info = mysqli_fetch_assoc($student_query);
 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
-$class_id = $student_info['class_id'] ?? "មិនទាន់មានថ្នាក់";
+
+// Logic ប្តូរ class_id ទៅជាឈ្មោះថ្នាក់ (1=7, 2=8, ...)
+$cid = $student_info['class_id'] ?? 0;
+$grades = [1 => "៧", 2 => "៨", 3 => "៩", 4 => "១០", 5 => "១១", 6 => "១២"];
+$class_name_display = isset($grades[$cid]) ? $grades[$cid] : "---";
+
 $status = $student_info['status'] ?? "Active";
-$academic_year = $student_info['academic_year'] ?? "2024-2025";
+$academic_year = $student_info['academic_year'] ?? "2025-2026";
 
-
-// Path រូបភាព
+// Path រូបភាព (សិស្សមើលបានតែរូបដែល Staff បញ្ចូលឱ្យពីមុន)
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
-               ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
-               : null;
+                ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
+                : null;
 ?>
 
 <!DOCTYPE html>
@@ -43,14 +47,11 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
 
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
-
-        <!-- ===== Header profile img ===== -->
         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                
             </div>
 
             <div class="flex items-center gap-5">
@@ -67,12 +68,6 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                             <span class="text-white text-xl font-bold"><?php echo mb_substr($display_name, 0, 1); ?></span>
                         <?php endif; ?>
                     </div>
-                    <form action="../../actions/uploads/profiles" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
-                        <label class="w-7 h-7 bg-white text-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-md border border-slate-100 hover:bg-blue-50 transition-all">
-                            <i class="fas fa-camera text-[10px]"></i>
-                            <input type="file" name="profile_img" class="hidden" accept="image/*" onchange="this.form.submit()">
-                        </label>
-                    </form>
                 </div>
             </div>
         </header>
@@ -85,11 +80,8 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     <p class="text-slate-500 mt-2 text-lg italic uppercase">សូមស្វាគមន៍មកកាន់វិទ្យាល័យលំដាប់ពិភពលោក</p>
                 </div>
 
-               
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 pt-[10px]">
 
-                 <!-- Timetable -->
                  <div class=" bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 flex flex-col justify-between">
                         <div>
                             <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
@@ -105,41 +97,19 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                   
                     <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 border-l-[6px] border-l-purple-500 flex flex-col justify-center">
                        <div> <p class="text-slate-400 text-sm font-bold uppercase tracking-wider sm:pl-[270px] lg:pl-[200px]">ឆ្នាំសិក្សា</p></div>
-                       <div​ class="flex justify-between">
-                            <h3 class="text-3xl font-bold text-slate-800 mt-3">ថ្នាក់ទី<?php echo $class_id; ?></h3>
+                       <div class="flex justify-between">
+                            <h3 class="text-3xl font-bold text-slate-800 mt-3">ថ្នាក់ទី <?php echo $class_name_display; ?></h3>
                             <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
-                         
                        </div>
                     </div>
                    
                 </div>
-
-                <!-- <div class="grid grid-cols-1  gap-8">
-                    <div onclick="openInfoModal()" class="lg:col-span-2 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-10 cursor-pointer hover:border-blue-300 transition-all group relative">
-                        <div class="flex items-center justify-between border-b border-slate-50 ">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                    <i class="fas fa-id-card text-xl"></i>
-                                </div>
-                                <h2 class="text-xl font-bold text-slate-800 italic uppercase">ព័ត៌មានលម្អិតផ្ទាល់ខ្លួន</h2>
-                            </div>
-                            <span class="text-blue-500 text-xs font-bold uppercase italic">បង្ហាញលម្អិត <i class="fas fa-chevron-right "></i></span>
-                        </div>
-                        
-                       
-                    </div>
-
-                   
-                </div> -->
             </div>
         </main>
     </div>
 
-
-
-    <!-- Modal student -->
     <div id="infoModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
-        <div class="bg-white w-full max-w-2xl  shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="p-8 border-b flex justify-between items-center bg-slate-50/50">
                 <h3 class="font-black text-slate-800 italic uppercase tracking-wider">ព័ត៌មានលម្អិតទាំងស្រុង</h3>
                 <button onclick="closeInfoModal()" class="w-10 h-10 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-all"><i class="fas fa-times"></i></button>
@@ -148,8 +118,6 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
             <div class="p-8 overflow-y-auto space-y-6">
                 <div class="flex items-center gap-6 p-6 text-white justify-center">
                     <img src="<?php echo $current_img ?? '../../assets/img/default.png'; ?>" class="w-[150px] h-[150px] rounded-[50%] object-cover border-2 border-slate-700">
-                    <div>
-                    </div>
                 </div>
 
                 <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100"> 

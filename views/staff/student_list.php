@@ -61,6 +61,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
             <p class="text-slate-500 mt-1">ពិនិត្យ និងគ្រប់គ្រងទិន្នន័យសិស្សក្នុងប្រព័ន្ធ</p>
         </div>
         <div class="flex gap-3">
+            
             <a href="add_student.php" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition flex items-center">
                 <i class="fas fa-user-plus mr-2"></i> បន្ថែមសិស្ស
             </a>
