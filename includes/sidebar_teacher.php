@@ -39,18 +39,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
 
          <a href="attendance.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'attendance.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-          <i class="fa-solid fa-clipboard-user"></i>
+          <i class="fa-solid fa-clipboard-user w-5 text-center text-lg"></i>
             <span class="font-medium">អវត្តមាន</span>
         </a>
 
          <a href="student_list.php" class="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 <?php echo ($current_page == 'student_list.php') ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'hover:bg-slate-800 hover:text-white'; ?>">
-          <i class="fa-solid fa-clipboard-user"></i>
+          <i class="fa-solid fa-clipboard-user w-5 text-center text-lg"></i>
             <span class="font-medium">List</span>
         </a>
     </nav>
 
     <div class="p-4 border-t border-slate-800 mb-2">
-        <a href="../../actions/auth/logout.php" onclick="return confirm('តើលោកគ្រូពិតជាចង់ចាកចេញមែនទេ?')" class="flex items-center gap-4 p-4 rounded-2xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold">
+        <a href="../../actions/auth/logout.php" onclick="return confirm('តើលោកគ្រូពិតជាចង់ចាកចេញមែនទេ?')" class="flex items-center gap-4 p-4 rounded-2xl text-slate-400 hover:bg-gray-500/10 hover:text-gray-400 transition-all font-bold">
             <i class="fas fa-sign-out-alt w-5 text-center text-lg"></i>
             <span class="font-medium">ចាកចេញ</span>
         </a>

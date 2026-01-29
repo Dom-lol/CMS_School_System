@@ -23,7 +23,7 @@ $class_name_display = isset($grades[$cid]) ? $grades[$cid] : "---";
 $status = $student_info['status'] ?? "Active";
 $academic_year = $student_info['academic_year'] ?? "2025-2026";
 
-// Path រូបភាព (សិស្សមើលបានតែរូបដែល Staff បញ្ចូលឱ្យពីមុន)
+// Path img
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() 

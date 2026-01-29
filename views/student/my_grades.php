@@ -2,33 +2,32 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
+ include '../../includes/header.php'; 
 
-// ១. ឆែកសិទ្ធិចូលប្រើ (សម្រាប់តែសិស្ស)
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
 }
 
-// ២. ទាញយកព័ត៌មានសិស្ស
+// ទាញយកព័ត៌មានសិស្សពី Database ផ្ទាល់
 $s_id = $_SESSION['username'] ?? '';
 $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_query);
 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 
-// ៣. រៀបចំ Path រូបភាព Profile
+// Logic ប្តូរ class_id ទៅជាឈ្មោះថ្នាក់ (1=7, 2=8, ...)
+$cid = $student_info['class_id'] ?? 0;
+$grades = [1 => "៧", 2 => "៨", 3 => "៩", 4 => "១០", 5 => "១១", 6 => "១២"];
+$class_name_display = isset($grades[$cid]) ? $grades[$cid] : "---";
+
+$status = $student_info['status'] ?? "Active";
+$academic_year = $student_info['academic_year'] ?? "2025-2026";
+
+// Path img
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
                 : null;
-
-// ៤. កំណត់ខែ និងឆ្នាំសម្រាប់ Filter
-$selected_month = $_GET['month'] ?? date('m');
-$selected_year = $_GET['year'] ?? date('Y');
-$months = [
-    "01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីនា", "04"=>"មេសា", 
-    "05"=>"ឧសភា", "06"=>"មិថុនា", "07"=>"កក្កដា", "08"=>"សីហា", 
-    "09"=>"កញ្ញា", "10"=>"តុលា", "11"=>"វិច្ឆិកា", "12"=>"ធ្នូ"
-];
 ?>
 
 <!DOCTYPE html>
@@ -36,23 +35,19 @@ $months = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>លទ្ធផលសិក្សា - <?= htmlspecialchars($display_name) ?></title>
+    <title>Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Kantumruy Pro', sans-serif; }
-        ::-webkit-scrollbar { display: none; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Kantumruy Pro', sans-serif; } </style>
 </head>
-<body class="bg-[#f8fafc] flex h-screen overflow-hidden">
+<body class="bg-[#f8fafc] h-screen overflow-hidden">
 
     <?php include '../../includes/sidebar_student.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
-        <!-- ===== Header profile img ===== -->
-      <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
+        <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
                     <i class="fas fa-bars text-xl"></i>
@@ -60,11 +55,12 @@ $months = [
             </div>
 
             <div class="flex items-center gap-5">
+               
                 <div class="text-right ">
                     <p class="text-[18px] font-bold text-slate-900 leading-tight"><?php echo $display_name; ?></p>
                     <p class="text-[12px] text-gray-500 font-bold uppercase ">អត្តលេខ: <?php echo $s_id; ?></p>
                 </div>
-                <div class="relative group">
+                <div class="relative group cursor-pointer">
                     <div onclick="openInfoModal()"  class="w-16 h-16 rounded-full border-4 border-white shadow-md overflow-hidden bg-blue-600 flex items-center justify-center">
                         <?php if($current_img): ?>
                             <img src="<?php echo $current_img; ?>" class="w-full h-full object-cover">
@@ -83,98 +79,117 @@ $months = [
                
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto p-6 md:p-10">
-            <div class="max-w-6xl mx-auto">
+        
+    <div class="bg-white l shadow-sm border border-slate-200 overflow-hidden w-full ">
+        <div class="overflow-x-auto lg:overflow-x-auto">
+            <table class="w-full text-left lg:w-full items-center">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-slate-100​
+                    ">
+                        <th class="px-6 py-4 text-black font-bold text-[14px] uppercase">លរ</th>
+                        <th class="px-3 py-4 text-black font-bold text-[14px] uppercase">មុវវិជ្ជា</th>
+                        <th class="px-3 py-4 text-black font-bold text-[14px] uppercase text-center">ពិន្ទុ</th>
+                        <th class="px-3 py-4 text-black font-bold text-[14px] uppercase">និទ្ទិស</th>
+                        <th class="px-5 py-4 text-black font-bold text-[14px] uppercase">ចំណាត់ថ្នាក់</th>
+                    </tr>
+                </thead>
+                <tbody class=" divide-slate-100​">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group  ">
+                            <td class="px-6 py-4 font-mono font-bold ">1</td>
+                            <td class=" py-4">អក្សរសាស្រ្តខ្មែរ</td>
+                            <td class=" py-4 text-center">99/125</td>
+                            <td class="px-6 py-4 text-green-700 text-bold font-bold ">A</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">5/30</td>
                 
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-                    <div>
-                        <h2 class="text-3xl font-black text-slate-800 italic uppercase">Report Card</h2>
-                        <p class="text-slate-500 font-medium">តាមដានលទ្ធផលសិក្សារបស់អ្នកប្រចាំខែ</p>
-                    </div>
-                    
-                    <form action="" method="GET" class="flex gap-3 bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
-                        <div class="flex items-center px-4 gap-2 border-r border-slate-100">
-                            <i class="fas fa-calendar-alt text-blue-500 text-sm"></i>
-                            <select name="month" onchange="this.form.submit()" class="bg-transparent outline-none font-black text-xs uppercase italic cursor-pointer">
-                                <?php foreach ($months as $num => $kh): ?>
-                                    <option value="<?= $num ?>" <?= ($num == $selected_month) ? 'selected' : '' ?>><?= $kh ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="flex items-center px-4 gap-2">
-                            <select name="year" onchange="this.form.submit()" class="bg-transparent outline-none font-black text-xs uppercase italic cursor-pointer">
-                                <?php for ($y = date('Y'); $y >= 2024; $y--): ?>
-                                    <option value="<?= $y ?>" <?= ($y == $selected_year) ? 'selected' : '' ?>><?= $y ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <?php 
-                    $list_q = mysqli_query($conn, "SELECT s.*, sub.subject_name 
-                                                   FROM scores s 
-                                                   JOIN subjects sub ON s.subject_id = sub.id 
-                                                   WHERE s.student_id = '$s_id' 
-                                                   AND MONTH(s.created_at) = '$selected_month' 
-                                                   AND YEAR(s.created_at) = '$selected_year'
-                                                   ORDER BY s.total_score DESC");
-                    
-                    if(mysqli_num_rows($list_q) > 0):
-                        while($row = mysqli_fetch_assoc($list_q)):
-                            // កំណត់ពណ៌តាម Grade
-                            $gradeColor = "bg-slate-100 text-slate-600";
-                            if($row['grade'] == 'A') $gradeColor = "bg-green-100 text-green-600";
-                            elseif($row['grade'] == 'B') $gradeColor = "bg-blue-100 text-blue-600";
-                            elseif($row['grade'] == 'F') $gradeColor = "bg-red-100 text-red-600";
-                    ?>
-                    <div class="group bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-2xl hover:shadow-blue-200/40 hover:-translate-y-2 transition-all duration-500">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600 rounded-2xl flex items-center justify-center font-black italic shadow-inner group-hover:scale-110 transition-transform">
-                                <?= mb_substr($row['subject_name'], 0, 1) ?>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-[9px] font-black text-slate-400 uppercase italic tracking-widest">Total</span>
-                                <p class="text-4xl font-black text-slate-900 leading-none"><?= (int)$row['total_score'] ?></p>
-                                <span class="inline-block mt-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter <?= $gradeColor ?>">
-                                    Grade: <?= $row['grade'] ?>
-                                </span>
-                            </div>
-                        </div>
-
-                        <h4 class="text-xl font-black text-slate-800 mb-6 uppercase italic truncate border-b border-slate-50 pb-4"><?= $row['subject_name'] ?></h4>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 group-hover:bg-blue-50/50 transition-colors">
-                                <span class="text-[9px] text-slate-400 font-black uppercase block mb-1">Monthly</span>
-                                <p class="font-black text-slate-700 italic"><?= (int)$row['monthly_score'] ?></p>
-                            </div>
-                            <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 group-hover:bg-indigo-50/50 transition-colors">
-                                <span class="text-[9px] text-slate-400 font-black uppercase block mb-1">Exam</span>
-                                <p class="font-black text-slate-700 italic"><?= (int)$row['exam_score'] ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endwhile; else: ?>
-                        <div class="col-span-full py-32 text-center bg-white rounded-[4rem] border-4 border-dashed border-slate-100 shadow-inner">
-                            <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-folder-open text-slate-200 text-4xl"></i>
-                            </div>
-                            <p class="text-slate-400 font-black italic uppercase tracking-widest">មិនទាន់មានទិន្នន័យសម្រាប់ខែនេះទេ</p>
-                            <p class="text-slate-300 text-xs mt-2 font-medium">No results found for <?= $months[$selected_month] ?> <?= $selected_year ?></p>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </main>
+                        </t r>
+                      
+                </tbody>`
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">2</td>
+                            <td class=" py-4">គណិតវិទ្យា</td>
+                            <td class=" py-4 text-center">113/125</td>
+                            <td class="px-6 py-4 text-red-500 text-bold font-bold">B</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">10/30</td>
+                
+                        </tr>                 
+                </tbody>
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">3</td>
+                            <td class=" py-4">រូបវិទ្យា</td>
+                            <td class=" py-4 text-center">67/100</td>
+                            <td class="px-6  py-4 text-orange-500 text-bold font-bold ">C</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">16/30</td>
+                
+                        </tr>
+                      
+                </tbody>
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">4</td>
+                            <td class=" py-4">គីមីវិទ្យា</td>
+                            <td class=" py-4 text-center">90/100</td>
+                            <td class="px-6  py-4 text-green-700 text-bold font-bold ">A</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">5/30</td>
+                
+                        </tr>
+                      
+                </tbody>
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">5</td>
+                            <td class=" py-4">ជីវវិទ្យា</td>
+                            <td class=" py-4 text-center">89/100</td>
+                            <td class="px-6  py-4 text-green-700 text-bold font-bold ">A</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">3/30</td>
+                
+                        </tr>
+                      
+                </tbody>
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">6</td>
+                            <td class=" py-4">ប្រវិត្តវិទ្យា</td>
+                            <td class=" py-4 text-center">70/100</td>
+                            <td class="px-6  py-4 text-orange-500 text-bold font-bold ">C</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">12/30</td>
+                
+                        </tr>
+                      
+                </tbody>
+                <tbody class=" divide-slate-100">
+                   
+                        <tr class="hover:bg-blue-50/40 transition-colors group ">
+                            <td class="px-6 py-4 font-mono font-bold ">7</td>
+                            <td class=" py-4">ផែនដីវិទ្យា</td>
+                            <td class=" py-4 text-center">65/100</td>
+                            <td class="px-6  py-4 text-orange-500 text-bold font-bold ">C</td>
+                            <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">22/30</td>
+                
+                        </tr>
+                      
+                </tbody>
+            </table>
+        </div>
     </div>
 
+    </div>
+   
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if(sidebar) sidebar.classList.toggle('-translate-x-full');
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+        function openInfoModal() {
+            const modal = document.getElementById('infoModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
+      
     </script>
 </body>
 </html>

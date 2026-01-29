@@ -13,10 +13,10 @@ $student_info = mysqli_fetch_assoc($student_query);
 $s_id         = $student_info['student_id'] ?? $s_id_session;
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? 'N/A');
 
-// ២. Logic សម្រាប់ Class ID (កែសម្រួលឱ្យត្រូវតាម DB ថ្មី)
-// យក class_id (1,2,3...) ទៅប្រើក្នុង Query កាលវិភាគ
+// 
+// 
 $active_grade_id = $student_info['class_id'] ?? ''; 
-// យក class_name (7,8,9...) ទៅបង្ហាញលើ UI
+//
 $active_grade    = $student_info['class_name'] ?? 'N/A'; 
 
 // ៣. រៀបចំថ្ងៃជាភាសាខ្មែរ
@@ -33,7 +33,7 @@ $current_day_en = date('l');
 $active_day_en = isset($_GET['day']) ? mysqli_real_escape_string($conn, $_GET['day']) : ($current_day_en == 'Sunday' ? 'Monday' : $current_day_en);
 $search_day_kh = $days_mapping[$active_day_en] ?? 'ច័ន្ទ';
 
-// ៤. SQL Query ទាញកាលវិភាគ (ប្រើ $active_grade_id)
+// 
 $sql_list = "SELECT t.*, s.subject_name, te.full_name as teacher_name
              FROM timetable t 
              LEFT JOIN subjects s ON t.subject_id = s.id 
@@ -44,7 +44,7 @@ $sql_list = "SELECT t.*, s.subject_name, te.full_name as teacher_name
              ORDER BY t.start_time ASC";
 $result_list = mysqli_query($conn, $sql_list);
 
-// ៥. SQL Query សម្រាប់ Matrix (Print)
+// 
 $sql_matrix = "SELECT t.*, s.subject_name, te.full_name as teacher_name
                FROM timetable t 
                LEFT JOIN subjects s ON t.subject_id = s.id 
@@ -61,7 +61,7 @@ while($row = mysqli_fetch_assoc($result_matrix)) {
     if (!in_array($time_key, $time_slots)) $time_slots[] = $time_key;
 }
 
-// ៦. រៀបចំ Path រូបភាព
+//  Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() : null;

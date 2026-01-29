@@ -47,8 +47,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </nav>
 
     <div class="p-4 border-t border-slate-800 mb-2">
-        <a href="../../actions/auth/logout.php" class="flex items-center gap-4 p-4 rounded-2xl text-gray-400 hover:bg-gray-400/10 transition">
-            <i class="fas fa-sign-out-alt w-5 text-center text-lg"></i>
+        <a href="../../actions/auth/logout.php" class="flex items-center gap-4 p-4 rounded-2xl text-gray-400 hover:bg-gray-400/10 transition-all group">
+            <i class="fas fa-sign-out-alt w-5 text-center text-lg group-hover:translate-x-1 transition-transform group"></i>
             <span class="font-medium">ចាកចេញ</span>
         </a>
     </div>
