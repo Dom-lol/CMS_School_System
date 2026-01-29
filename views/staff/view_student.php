@@ -38,12 +38,7 @@ include '../../includes/sidebar_staff.php';
 ?>
 
 <style>
-    @media print {
-        header, aside, .no-print { display: none !important; }
-        body { background: white !important; margin: 0; }
-        .pdf-page { width: 100% !important; padding: 10mm !important; box-shadow: none !important; border: none !important; }
-        * { -webkit-print-color-adjust: exact !important; }
-    }
+  
     .student-card-ui {
         max-width: 900px; margin: 20px auto; background: white;
         border-radius: 40px; padding: 50px; border: 1px solid #eef2f6;
@@ -57,15 +52,13 @@ include '../../includes/sidebar_staff.php';
         <a href="student_list.php" class="bg-white px-5 py-2 rounded-xl text-slate-600 font-bold shadow-sm hover:bg-slate-50 transition flex items-center gap-2">
             <i class="fas fa-arrow-left"></i> បញ្ជីឈ្មោះ
         </a>
-        <button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition flex items-center gap-2">
-            <i class="fas fa-print"></i> បោះពុម្ព PDF
-        </button>
+       
     </div>
 
     <div class="pdf-page student-card-ui animate-step">
         <div class="flex flex-col md:flex-row justify-between items-center md:items-start mb-12 pb-8 border-b-2 border-slate-50 gap-6">
             <div class="flex flex-col md:flex-row items-center gap-8">
-                <div class="w-40 h-40 bg-slate-50 border-4 border-white shadow-xl rounded-[3rem] overflow-hidden">
+                <div class="w-40 h-40 bg-slate-50 border-4 border-white shadow-xl rounded-[50%] overflow-hidden">
                     <img src="<?php echo $display_photo; ?>" class="w-full h-full object-cover">
                 </div>
                 <div class="text-center md:text-left">
@@ -103,7 +96,7 @@ include '../../includes/sidebar_staff.php';
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
                         <span class="text-slate-400 font-medium">កម្រិតថ្នាក់</span>
-                        <span class="font-bold text-blue-600">ថ្នាក់ទី <?php echo $grade_label; ?> (<?php echo $student['class_name']; ?>)</span>
+                        <span class="font-bold text-blue-600">ថ្នាក់ទី <?php echo $grade_label; ?> </span>
                     </div>
                     <div class="pt-2">
                         <span class="text-slate-400 text-xs font-bold uppercase block mb-2">ទីកន្លែងកំណើត</span>

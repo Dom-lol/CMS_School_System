@@ -5,64 +5,61 @@ require_once '../../config/session.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_data'])) {
     $file = $_FILES['excel_data']['tmp_name'];
     
+    // កំណត់ឆ្នាំសិក្សា
+    $academic_year = "2025-2026"; 
+
     if (($handle = fopen($file, "r")) !== FALSE) {
         $conn->begin_transaction();
 
         try {
-            fgetcsv($handle); // រំលង Header ជួរទី១ ក្នុង Excel
+            fgetcsv($handle); // រំលង Header
             $success_count = 0;
             
-            // ១. រៀបចំ Query សម្រាប់បញ្ចូលទៅក្នុងតារាង users
-            $sql_user = "INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, 'student')";
+            // ១. Prepare User Query - ប្រើ INSERT IGNORE ដើម្បីការពារ Error បើមាន User ID ជាន់គ្នា
+            $sql_user = "INSERT IGNORE INTO users (username, password, full_name, role) VALUES (?, ?, ?, 'student')";
             $stmt_user = $conn->prepare($sql_user);
 
-            // ២. រៀបចំ Query សម្រាប់បញ្ចូលទៅក្នុងតារាង students (តាមរូបភាព Database របស់លោកគ្រូ)
+            // ២. Prepare Student Query
             $sql_student = "INSERT INTO students (
                 user_id, student_id, full_name, full_name_en, gender, dob, pob, 
                 address, father_name, mother_name, father_job, mother_job, 
-                father_phone, mother_phone, stream, class_name, class_id, status, photo
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active', 'default.png')";
+                father_phone, mother_phone, stream, class_name, class_id, 
+                academic_year, status, photo
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Active', 'default.png')
+            ON DUPLICATE KEY UPDATE 
+                full_name = VALUES(full_name),
+                class_id = VALUES(class_id),
+                academic_year = VALUES(academic_year)"; // បើមាន ID រួចហើយ វានឹង Update ជំនួសវិញ
+            
             $stmt_student = $conn->prepare($sql_student);
 
-            // តារាងបំប្លែង class_name ទៅជា class_id
             $gradeMap = ["7" => 1, "8" => 2, "9" => 3, "10" => 4, "11" => 5, "12" => 6];
 
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                // រំលងបើគ្មាន Student ID (ជួរទី ១២) ឬ ឈ្មោះ (ជួរទី ០)
+                // ត្រួតពិនិត្យទិន្នន័យចាំបាច់
                 if (empty($data[0]) || empty($data[12])) continue;
 
-                $s_id      = $data[12]; // student_id
-                $s_name_kh = $data[0];  // full_name
-                $c_name    = $data[14]; // class_name (ពី Excel ជួរទី ១៤)
-                
-                // កំណត់ class_id ស្វ័យប្រវត្តិ (បើក្នុង Excel ដាក់ "7" វានឹងឱ្យ id=1)
-                $c_id = isset($gradeMap[$c_name]) ? $gradeMap[$c_name] : NULL;
+                $s_id      = trim($data[12]); 
+                $s_name_kh = trim($data[0]);  
+                $c_name    = trim($data[14]); 
+                $c_id      = isset($gradeMap[$c_name]) ? $gradeMap[$c_name] : NULL;
 
-                // --- ក. បង្កើត User Account (ID ជា Password) ---
+                // --- ក. បង្កើត User Account ---
                 $stmt_user->bind_param("sss", $s_id, $s_id, $s_name_kh);
                 $stmt_user->execute();
-                $new_user_id = $conn->insert_id;
+                
+                // ទាញយក user_id (បើទើបបង្កើតថ្មី ឬមានស្រាប់)
+                $res_user = $conn->query("SELECT id FROM users WHERE username = '$s_id'");
+                $user_data = $res_user->fetch_assoc();
+                $current_user_id = $user_data['id'];
 
                 // --- ខ. បញ្ចូលព័ត៌មានសិស្ស ---
-                // លំដាប់៖ isssssssssssssssi (i=int, s=string)
-                $stmt_student->bind_param("isssssssssssssssi", 
-                    $new_user_id, // user_id
-                    $s_id,        // student_id
-                    $data[0],     // full_name (KH)
-                    $data[1],     // full_name_en
-                    $data[2],     // gender
-                    $data[3],     // dob (6/12/2014)
-                    $data[4],     // pob
-                    $data[5],     // address
-                    $data[6],     // father_name
-                    $data[7],     // mother_name
-                    $data[8],     // father_job
-                    $data[9],     // mother_job
-                    $data[10],    // father_phone
-                    $data[11],    // mother_phone
-                    $data[13],    // stream
-                    $c_name,      // class_name (ឧ. 7)
-                    $c_id         // class_id (ឧ. 1)
+                $stmt_student->bind_param("isssssssssssssssss", 
+                    $current_user_id, 
+                    $s_id, 
+                    $data[0], $data[1], $data[2], $data[3], $data[4], $data[5], 
+                    $data[6], $data[7], $data[8], $data[9], $data[10], $data[11], 
+                    $data[13], $c_name, $c_id, $academic_year
                 );
 
                 if ($stmt_student->execute()) {
@@ -72,14 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_data'])) {
 
             $conn->commit();
             fclose($handle);
-            // ត្រឡប់ទៅកាន់បញ្ជីសិស្សវិញជាមួយសារជោគជ័យ
             header("Location: ../../views/staff/student_list.php?import_success=$success_count");
             exit();
 
         } catch (Exception $e) {
             $conn->rollback();
             if (isset($handle)) fclose($handle);
-            die("បញ្ហាទិន្នន័យ៖ " . $e->getMessage());
+            die("<div style='color:red; font-family:khmer os battambang;'>កំហុស៖ " . $e->getMessage() . "</div>");
         }
     }
 }
