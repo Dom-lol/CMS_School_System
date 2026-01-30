@@ -1,6 +1,7 @@
 <?php 
 require_once '../../config/db.php';
 require_once '../../config/session.php';
+is_logged_in();
 
 // ចាប់យកអត្តលេខសិស្សពី URL
 $sid = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : '';
@@ -14,17 +15,16 @@ if (!$student) {
     die("<div class='text-center py-20 font-bold text-red-500 text-2xl'>រកមិនឃើញទិន្នន័យសិស្សឡើយ!</div>"); 
 }
 
-// === Logic បង្ហាញកម្រិតថ្នាក់ (class_id 1 = ថ្នាក់ទី ៧) ===
+// === Logic បង្ហាញកម្រិតថ្នាក់ ===
 $cid = $student['class_id'];
 $grades = [1 => "៧", 2 => "៨", 3 => "៩", 4 => "១០", 5 => "១១", 6 => "១២"];
 $grade_label = isset($grades[$cid]) ? $grades[$cid] : $cid;
 
-// === Logic រូបភាព (មើលរូបដែលសិស្ស Upload) ===
-$p_img = $student['profile_img']; // រូបភាពដែលសិស្ស upload ខ្លួនឯង
+// === Logic រូបភាព ===
+$p_img = $student['profile_img']; 
 $path_profile = "../../assets/uploads/profiles/" . $p_img;
-$path_staff = "../../uploads/students/" . $student['photo'];
+$path_staff = "../../assets/uploads/students/" . $student['photo'];
 
-// អាទិភាព៖ បើមានរូបក្នុង profiles បង្ហាញរូបនោះ បើអត់ទេបង្ហាញរូបពី staff បើអត់ទៀតបង្ហាញ default
 if (!empty($p_img) && file_exists($path_profile)) {
     $display_photo = $path_profile . "?v=" . time();
 } elseif (!empty($student['photo']) && file_exists($path_staff)) {
@@ -38,13 +38,13 @@ include '../../includes/sidebar_staff.php';
 ?>
 
 <style>
-  
     .student-card-ui {
         max-width: 900px; margin: 20px auto; background: white;
         border-radius: 40px; padding: 50px; border: 1px solid #eef2f6;
         box-shadow: 0 20px 60px rgba(0,0,0,0.02);
     }
     .info-box { background: #fcfdfe; border: 1px solid #f1f5f9; padding: 1.5rem; border-radius: 1.5rem; }
+    @media print { .no-print { display: none; } .student-card-ui { box-shadow: none; border: none; margin: 0; padding: 20px; } }
 </style>
 
 <main class="flex-1 p-8 bg-gray-50 min-h-screen">
@@ -52,7 +52,9 @@ include '../../includes/sidebar_staff.php';
         <a href="student_list.php" class="bg-white px-5 py-2 rounded-xl text-slate-600 font-bold shadow-sm hover:bg-slate-50 transition flex items-center gap-2">
             <i class="fas fa-arrow-left"></i> បញ្ជីឈ្មោះ
         </a>
-       
+        <button onclick="window.print()" class="bg-blue-600 px-5 py-2 rounded-xl text-white font-bold shadow-md hover:bg-blue-700 transition flex items-center gap-2">
+            <i class="fas fa-print"></i> បោះពុម្ព
+        </button>
     </div>
 
     <div class="pdf-page student-card-ui animate-step">
@@ -73,7 +75,7 @@ include '../../includes/sidebar_staff.php';
                 <div class="px-6 py-3 bg-slate-900 text-white rounded-2xl text-sm font-bold mb-3 shadow-md">
                     ID: <?php echo $student['student_id']; ?>
                 </div>
-                <span class="px-4 py-1.5 <?php echo $student['status'] == 'Active' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'; ?> rounded-full text-xs font-black uppercase">
+                <span class="px-4 py-1.5 <?php echo ($student['status'] == 'Active' || $student['status'] == 'កំពុងរៀន') ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'; ?> rounded-full text-xs font-black uppercase">
                     ● <?php echo $student['status']; ?>
                 </span>
             </div>
@@ -83,7 +85,7 @@ include '../../includes/sidebar_staff.php';
             <div class="space-y-6">
                 <h3 class="text-lg font-bold text-slate-800 flex items-center gap-3">
                     <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-sm"><i class="fas fa-user"></i></span>
-                    ព័ត៌មានផ្ទាល់ខ្លួន
+                    ព័ត៌មានផ្ទាល់ខ្លួន & ទំនាក់ទំនង
                 </h3>
                 <div class="info-box space-y-4">
                     <div class="flex justify-between border-b border-slate-100 pb-2">
@@ -98,6 +100,10 @@ include '../../includes/sidebar_staff.php';
                         <span class="text-slate-400 font-medium">កម្រិតថ្នាក់</span>
                         <span class="font-bold text-blue-600">ថ្នាក់ទី <?php echo $grade_label; ?> </span>
                     </div>
+                    <div class="flex justify-between border-b border-slate-100 pb-2">
+                        <span class="text-slate-400 font-medium">ទូរស័ព្ទសិស្ស</span>
+                        <span class="font-bold text-slate-700"><?php echo $student['phone'] ?: '---'; ?></span>
+                    </div>
                     <div class="pt-2">
                         <span class="text-slate-400 text-xs font-bold uppercase block mb-2">ទីកន្លែងកំណើត</span>
                         <p class="text-slate-700 text-sm leading-relaxed"><?php echo $student['pob'] ?: '---'; ?></p>
@@ -111,13 +117,27 @@ include '../../includes/sidebar_staff.php';
                     ព័ត៌មានអាណាព្យាបាល
                 </h3>
                 <div class="info-box space-y-4">
-                    <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ឪពុក</span>
-                        <span class="font-bold text-slate-700"><?php echo $student['father_name'] ?: '---'; ?></span>
+                    <div class="border-b border-slate-100 pb-2">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">ឪពុក</span>
+                            <span class="font-bold text-slate-700"><?php echo $student['father_name'] ?: '---'; ?></span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 italic">មុខរបរ៖ <?php echo $student['father_job'] ?: '---'; ?></span>
+                        </div>
+                    </div>
+                    <div class="border-b border-slate-100 pb-2">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">ម្តាយ</span>
+                            <span class="font-bold text-slate-700"><?php echo $student['mother_name'] ?: '---'; ?></span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 italic">មុខរបរ៖ <?php echo $student['mother_job'] ?: '---'; ?></span>
+                        </div>
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ម្តាយ</span>
-                        <span class="font-bold text-slate-700"><?php echo $student['mother_name'] ?: '---'; ?></span>
+                        <span class="text-slate-400 font-medium">ទូរស័ព្ទអាណាព្យាបាល</span>
+                        <span class="font-bold text-emerald-600"><?php echo $student['parent_phone'] ?: '---'; ?></span>
                     </div>
                     <div class="pt-2">
                         <span class="text-emerald-600 text-xs font-bold uppercase block mb-2">អាសយដ្ឋានបច្ចុប្បន្ន</span>
@@ -129,7 +149,14 @@ include '../../includes/sidebar_staff.php';
             </div>
         </div>
 
-        <div class="mt-20 pt-8 border-t border-slate-50 text-center">
+        <?php if(!empty($student['note'])): ?>
+        <div class="mt-8 p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+            <span class="text-slate-400 text-[10px] font-bold uppercase block mb-1">សម្គាល់បន្ថែម៖</span>
+            <p class="text-slate-600 text-sm italic"><?php echo $student['note']; ?></p>
+        </div>
+        <?php endif; ?>
+
+        <div class="mt-16 pt-8 border-t border-slate-50 text-center">
             <p class="text-slate-300 text-[10px] uppercase tracking-[0.2em] font-bold">
                 Generated by School System • <?php echo date('Y-m-d H:i'); ?>
             </p>

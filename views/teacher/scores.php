@@ -8,45 +8,30 @@ if ($_SESSION['role'] !== 'teacher' && $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// ២. ទាញយកទិន្នន័យគ្រូ (កែសម្រួល៖ ប្រើ teacher_id ជំនួស id ដែលបាត់)
+// ២. ទាញយកទិន្នន័យគ្រូ
 $u_id = $_SESSION['user_id'];
-// កែត្រង់នេះ៖ ដកពាក្យ id ចេញ ទុកតែ teacher_id
 $teacher_query = mysqli_query($conn, "SELECT teacher_id, full_name, profile_image FROM teachers WHERE user_id = '$u_id' LIMIT 1");
-
-if (!$teacher_query) {
-    die("Database Error (Teacher): " . mysqli_error($conn));
-}
-
 $teacher_info = mysqli_fetch_assoc($teacher_query);
 
-if (!$teacher_info) {
-    die("រកមិនឃើញព័ត៌មានគ្រូក្នុងប្រព័ន្ធឡើយ។");
-}
+$real_t_id  = $teacher_info['teacher_id'] ?? 'N/A';
+$full_name  = $teacher_info['full_name'] ?? $_SESSION['full_name'];
+$db_profile_img = $teacher_info['profile_image'] ?? ''; 
 
-// កំណត់ Variable សម្រាប់បង្ហាញក្នុង Header និង Query
-$real_t_id  = $teacher_info['teacher_id']; // ប្រើ teacher_id ជាអត្តលេខផង ជា Key សម្រាប់ Join ផង [cite: 2026-01-20]
-$full_name  = $teacher_info['full_name'];
-$db_img     = $teacher_info['profile_image'];
+// ៣. ទាញយកមុខវិជ្ជាដំបូងសម្រាប់បង្ហាញក្នុង Header (ជំនួស ID)
+$subj_header_query = mysqli_query($conn, "SELECT DISTINCT s.subject_name 
+                                          FROM timetable t 
+                                          INNER JOIN subjects s ON t.subject_id = s.id 
+                                          WHERE t.teacher_id = '$real_t_id' LIMIT 1");
+$subj_data = mysqli_fetch_assoc($subj_header_query);
+$display_subject = $subj_data['subject_name'] ?? 'គ្រូបង្រៀន';
 
-// រៀបចំ Path រូបភាព Profile
-$path = "../../assets/uploads/teachers/";
-$profile_img = (!empty($db_img) && file_exists($path . $db_img)) 
-               ? $path . $db_img . "?v=" . time() 
-               : "../../assets/img/default_user.png";
-
-// ៣. ទាញយកបញ្ជីថ្នាក់រៀនពី Timetable
-// ប្រាកដថា Column teacher_id ក្នុងតារាង timetable ផ្ទុកតម្លៃដូច teacher_id ក្នុងតារាង teachers [cite: 2026-01-20]
+// ៤. ទាញយកបញ្ជីថ្នាក់រៀន
 $sql = "SELECT DISTINCT t.class_id, t.subject_id, c.class_name, s.subject_name 
         FROM timetable t
         INNER JOIN classes c ON t.class_id = c.id
         INNER JOIN subjects s ON t.subject_id = s.id
         WHERE t.teacher_id = '$real_t_id' AND t.is_deleted = 0";
-
 $res = mysqli_query($conn, $sql);
-
-if (!$res) {
-    die("Database Error (Timetable): " . mysqli_error($conn));
-}
 ?>
 
 <!DOCTYPE html>
@@ -58,49 +43,88 @@ if (!$res) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700;900&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Kantumruy Pro', sans-serif; } </style>
+    <style> 
+        body { font-family: 'Kantumruy Pro', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
 </head>
 <body class="bg-[#f8fafc] overflow-hidden">
 
 <div class="flex h-screen w-full">
+    
     <?php include '../../includes/sidebar_teacher.php'; ?>
 
-    <div class="flex-1 flex flex-col min-w-0 h-full">
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 z-50 shadow-sm">
-            <h2 class="text-xl font-black text-slate-800 uppercase italic">Scores System</h2>
+    <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        
+        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-all">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h2 class="hidden md:block text-xl font-black text-slate-800 italic uppercase tracking-tight">
+                    <i class="fas fa-star-half-alt mr-2 text-blue-600"></i> Scores System
+                </h2>
+            </div>
 
             <div class="flex items-center gap-5">
                 <div class="text-right">
-                    <p class="text-[18px] font-black text-slate-900 leading-tight"><?= htmlspecialchars($full_name) ?></p>
-                    <p class="text-[11px] text-blue-500 font-bold uppercase italic tracking-widest">ID: <?= $real_t_id ?></p>
+                    <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
+                        <?= htmlspecialchars($full_name); ?>
+                    </p>
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase italic tracking-widest">
+                         មុខវិជ្ជា: <span class="text-slate-500 font-bold"><?= htmlspecialchars($display_subject) ?></span>
+                    </p>
                 </div>
-                <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white shadow-lg bg-indigo-600 flex items-center justify-center">
-                    <img src="<?= $profile_img ?>" class="w-full h-full object-cover">
+                
+                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-slate-100 shadow-sm bg-slate-50 flex-shrink-0">
+                    <?php 
+                        $path = "../../assets/uploads/teachers/";
+                        $display_img = (!empty($db_profile_img) && file_exists($path . $db_profile_img)) ? $path . $db_profile_img : $path . 'default_user.png';
+                    ?>
+                    <img src="<?= $display_img ?>" class="w-full h-full object-cover">
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-10 custom-scrollbar">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php if (mysqli_num_rows($res) > 0): ?>
+        <main class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+            
+            <div class="mb-10 w-full bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <h1 class="text-3xl md:text-5xl font-black italic mb-2 uppercase tracking-tighter">បញ្ចូលពិន្ទុសិស្ស</h1>
+                    <p class="text-slate-400 text-sm md:text-lg italic opacity-90">សូមជ្រើសរើសថ្នាក់ដែលលោកគ្រូត្រូវបញ្ចូលពិន្ទុសម្រាប់ឆមាសនេះ</p>
+                </div>
+                <i class="fas fa-award absolute right-4 md:right-10 top-1/2 -translate-y-1/2 text-7xl md:text-[12rem] text-white/5 transform rotate-12"></i>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <?php if ($res && mysqli_num_rows($res) > 0): ?>
                     <?php while($row = mysqli_fetch_assoc($res)): ?>
                         <a href="input_grades.php?class_id=<?= $row['class_id'] ?>&subject_id=<?= $row['subject_id'] ?>" 
-                           class="group bg-white p-10 rounded-[3rem] border-2 border-slate-50 hover:border-blue-600 transition-all text-center relative shadow-sm hover:shadow-2xl hover:-translate-y-2">
-                            <h2 class="text-5xl font-black text-slate-800 mb-2 italic"><?= $row['class_name'] ?></h2>
-                            <p class="text-blue-600 font-black uppercase italic text-xs mb-8 tracking-widest"><?= $row['subject_name'] ?></p>
-                            <div class="bg-slate-100 rounded-2xl py-3 text-[10px] font-black uppercase text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
-                                ចុចដើម្បីបញ្ចូលពិន្ទុ
+                           class="group bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border-2 border-slate-50 hover:border-blue-600 transition-all text-center relative shadow-sm hover:shadow-2xl hover:-translate-y-2">
+                            
+                            <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                                <i class="fas fa-file-signature text-2xl md:text-3xl"></i>
+                            </div>
+
+                            <h2 class="text-4xl md:text-5xl font-black text-slate-800 mb-2 italic"><?= htmlspecialchars($row['class_name']) ?></h2>
+                            <p class="text-blue-600 font-black uppercase italic text-[10px] md:text-xs mb-8 tracking-widest"><?= htmlspecialchars($row['subject_name']) ?></p>
+                            
+                            <div class="bg-slate-100 rounded-2xl py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm tracking-tighter">
+                                <i class="fas fa-edit mr-2"></i> ចុចដើម្បីបញ្ចូលពិន្ទុ
                             </div>
                         </a>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <div class="col-span-full bg-white rounded-[3rem] border-4 border-dashed border-slate-100 p-24 text-center">
-                        <i class="fas fa-search text-6xl text-slate-200 mb-6 block"></i>
-                        <h3 class="text-xl font-black text-slate-400 italic">មិនមានទិន្នន័យថ្នាក់បង្រៀន</h3>
-                        <p class="text-slate-400 mt-2 text-sm italic">សូមឆែកក្នុង Database ថាគ្រូ ID <b><?= $real_t_id ?></b> មានក្នុងតារាង <b>timetable</b> ដែរឬទេ?</p>
+                    <div class="col-span-full bg-white rounded-[2rem] border-4 border-dashed border-slate-100 p-16 md:p-24 text-center">
+                        <i class="fas fa-search text-5xl md:text-6xl text-slate-200 mb-6 block"></i>
+                        <h3 class="text-lg md:text-xl font-black text-slate-400 italic uppercase">មិនមានទិន្នន័យថ្នាក់បង្រៀន</h3>
+                        <p class="text-slate-400 mt-2 text-xs md:text-sm italic">សូមទាក់ទងអ្នកគ្រប់គ្រងដើម្បីពិនិត្យតារាងបង្រៀន (Timetable)</p>
                     </div>
                 <?php endif; ?>
             </div>
+
+            <div class="h-10 lg:hidden"></div>
         </main>
     </div>
 </div>
@@ -108,7 +132,9 @@ if (!$res) {
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar'); 
-        if(sidebar) sidebar.classList.toggle('-translate-x-full');
+        if(sidebar) {
+            sidebar.classList.toggle('-translate-x-full');
+        }
     }
 </script>
 
