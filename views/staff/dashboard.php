@@ -3,7 +3,7 @@ require_once '../../config/db.php';
 require_once '../../config/session.php';
 is_logged_in();
 
-// ឆែកសិទ្ធិបុគ្គលិក ឬ Admin
+// check rol-base
 if ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'admin') {
     header("Location: ../../index.php?error=unauthorized");
     exit();
@@ -12,10 +12,10 @@ if ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'admin') {
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php'; 
 
-// ទាញទិន្នន័យសង្ខេបពិតប្រាកដពី Database
+// 
 $total_students = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM students"))['total'];
 $total_classes = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(DISTINCT class_name) as total FROM students WHERE class_name != ''"))['total'];
-$total_absent_today = 5; // កន្លែងនេះបងអាច Query ពី Table attendance តាមក្រោយ
+$total_absent_today = 5; 
 ?>
 
 <main class="flex-1 p-6 md:p-10 bg-[#f8fafc] min-h-screen overflow-y-auto">
@@ -74,14 +74,14 @@ $total_absent_today = 5; // កន្លែងនេះបងអាច Query ព
         </div> -->
 
         <a href="add_student.php" class="group">
-            <div class="bg-slate-900 p-6 rounded-[2rem] shadow-lg shadow-slate-200 text-white hover:bg-blue-700 transition-all duration-300 flex flex-col justify-between h-full">
+            <div class="bg-blue-600 p-6 rounded-[2rem] shadow-lg shadow-slate-200 text-white hover:bg-blue-700 transition-all duration-300 flex flex-col justify-between h-full">
                 <div class="flex justify-between items-start">
                     <i class="fas fa-user-plus text-2xl opacity-50"></i>
                     <i class="fas fa-plus-circle text-xl"></i>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold">បន្ថែមសិស្ស</h3>
-                    <p class="text-gray-400 text-sm group-hover:text-white/80">បញ្ចូលទិន្នន័យសិស្សថ្មី</p>
+                    <p class=" text-sm text-white/80">បញ្ចូលទិន្នន័យសិស្សថ្មី</p>
                 </div>
             </div>
         </a>

@@ -7,9 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $full_name  = mysqli_real_escape_string($conn, $_POST['full_name']);
     $subjects   = mysqli_real_escape_string($conn, $_POST['subjects']);
     $phone      = mysqli_real_escape_string($conn, $_POST['phone']);
-    $password   = '123'; // Password លំនាំដើម [cite: 2026-01-20]
+    
+    // Username និង Password យកតាម ID ទាំងអស់
+    $password   = $t_id; 
 
-    // ១. ចាត់ចែងការ Upload រូបភាព [cite: 2026-01-20]
+    // ចាត់ចែងការ Upload រូបភាព
     $image_name = 'default_user.png';
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
         $ext = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
@@ -19,18 +21,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     mysqli_begin_transaction($conn);
     try {
-        // ២. បញ្ចូលទៅ Table Users [cite: 2026-01-20]
-        $sql1 = "INSERT INTO users (username, password, full_name, role) VALUES ('$t_id', '$password', '$full_name', 'teacher')";
+        // បញ្ចូលទៅ Table Users
+        $sql1 = "INSERT INTO users (username, password, full_name, role) 
+                 VALUES ('$t_id', '$password', '$full_name', 'teacher')";
         mysqli_query($conn, $sql1);
         $new_user_id = mysqli_insert_id($conn);
 
-        // ៣. បញ្ចូលទៅ Table Teachers [cite: 2026-01-20]
+        // បញ្ចូលទៅ Table Teachers
         $sql2 = "INSERT INTO teachers (teacher_id, user_id, full_name, subjects, phone, profile_image) 
                  VALUES ('$t_id', '$new_user_id', '$full_name', '$subjects', '$phone', '$image_name')";
         mysqli_query($conn, $sql2);
 
         mysqli_commit($conn);
+
+        // កែសម្រួល URL ខាងក្រោមនេះឱ្យត្រូវនឹងឈ្មោះ File ក្នុង views/staff/ របស់បង
         header("Location: ../../views/staff/teachers_list.php?status=success");
+        exit();
+
     } catch (Exception $e) {
         mysqli_rollback($conn);
         die("Error: " . $e->getMessage());

@@ -3,7 +3,7 @@ require_once '../../config/db.php';
 require_once '../../config/session.php';
 is_logged_in();
 
-// ឆែកសិទ្ធិបុគ្គលិក
+// Check Role
 if ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'admin') {
     header("Location: ../../index.php?error=unauthorized");
     exit();
@@ -12,11 +12,11 @@ if ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'admin') {
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php'; 
 
-// ស្វែងរកតាមឈ្មោះ ឬថ្នាក់
+// search class
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 $class_filter = isset($_GET['class']) ? mysqli_real_escape_string($conn, $_GET['class']) : '';
 
-// 1. Query ទាញយកទិន្នន័យសិស្ស
+// 
 $query = "SELECT * FROM students WHERE 1=1";
 if ($search) {
     $query .= " AND (full_name LIKE '%$search%' OR full_name_en LIKE '%$search%' OR student_id LIKE '%$search%')";
@@ -27,12 +27,12 @@ if ($class_filter) {
 $query .= " ORDER BY id DESC";
 $students = mysqli_query($conn, $query);
 
-// 2. គណនាស្ថិតិសិស្ស (រាប់ចំនួនសរុប ប្រុស និងស្រី)
+// 
 $total_students = mysqli_num_rows($students);
 $male_count = 0;
 $female_count = 0;
 
-// រក្សាទិន្នន័យទុកក្នុង Array ដើម្បីកុំឱ្យ Query ម្ដងទៀត
+// 
 $student_list = [];
 while($row = mysqli_fetch_assoc($students)) {
     $student_list[] = $row;
@@ -40,7 +40,7 @@ while($row = mysqli_fetch_assoc($students)) {
     if($row['gender'] == 'ស្រី') $female_count++;
 }
 
-// ទាញយកបញ្ជីថ្នាក់សម្រាប់ Select Box
+// 
 $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE class_name != '' ORDER BY class_name ASC");
 ?>
 
@@ -58,7 +58,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
     <div class="mb-8 flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">គ្រប់គ្រងសិស្សានុសិស្ស</h1>
-            <p class="text-slate-500 mt-1">ពិនិត្យ និងគ្រប់គ្រងទិន្នន័យសិស្សក្នុងប្រព័ន្ធ</p>
+           
         </div>
         <div class="flex gap-3">
             

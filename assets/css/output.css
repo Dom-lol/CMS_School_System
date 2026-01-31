@@ -73,10 +73,8 @@
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
-    --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-gray-800: oklch(27.8% 0.033 256.848);
-    --color-gray-900: oklch(21% 0.034 264.665);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -370,6 +368,9 @@
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
+  .left-5 {
+    left: calc(var(--spacing) * 5);
+  }
   .left-6 {
     left: calc(var(--spacing) * 6);
   }
@@ -405,6 +406,9 @@
   }
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
+  }
+  .mx-10 {
+    margin-inline: calc(var(--spacing) * 10);
   }
   .mx-\[-2px\] {
     margin-inline: -2px;
@@ -568,8 +572,14 @@
   .h-20 {
     height: calc(var(--spacing) * 20);
   }
+  .h-22 {
+    height: calc(var(--spacing) * 22);
+  }
   .h-24 {
     height: calc(var(--spacing) * 24);
+  }
+  .h-28 {
+    height: calc(var(--spacing) * 28);
   }
   .h-32 {
     height: calc(var(--spacing) * 32);
@@ -657,6 +667,9 @@
   }
   .w-20 {
     width: calc(var(--spacing) * 20);
+  }
+  .w-22 {
+    width: calc(var(--spacing) * 22);
   }
   .w-24 {
     width: calc(var(--spacing) * 24);
@@ -978,6 +991,10 @@
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
+  .rounded-r-2xl {
+    border-top-right-radius: var(--radius-2xl);
+    border-bottom-right-radius: var(--radius-2xl);
+  }
   .rounded-r-xl {
     border-top-right-radius: var(--radius-xl);
     border-bottom-right-radius: var(--radius-xl);
@@ -1011,10 +1028,6 @@
     border-right-width: 2px;
   }
   .border-b {
-    border-bottom-style: var(--tw-border-style);
-    border-bottom-width: 1px;
-  }
-  .border-b-1 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
@@ -1057,6 +1070,10 @@
   .border-none {
     --tw-border-style: none;
     border-style: none;
+  }
+  .border-solid {
+    --tw-border-style: solid;
+    border-style: solid;
   }
   .border-blue-100 {
     border-color: var(--color-blue-100);
@@ -1177,6 +1194,9 @@
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
+  }
+  .bg-blue-700 {
+    background-color: var(--color-blue-700);
   }
   .bg-emerald-50 {
     background-color: var(--color-emerald-50);
@@ -1485,9 +1505,6 @@
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
   }
-  .pt-3 {
-    padding-top: calc(var(--spacing) * 3);
-  }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
@@ -1512,6 +1529,9 @@
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
   }
+  .pr-5 {
+    padding-right: calc(var(--spacing) * 5);
+  }
   .pr-6 {
     padding-right: calc(var(--spacing) * 6);
   }
@@ -1533,9 +1553,6 @@
   .pb-10 {
     padding-bottom: calc(var(--spacing) * 10);
   }
-  .pb-\[5px\] {
-    padding-bottom: 5px;
-  }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
   }
@@ -1553,6 +1570,9 @@
   }
   .pl-11 {
     padding-left: calc(var(--spacing) * 11);
+  }
+  .pl-14 {
+    padding-left: calc(var(--spacing) * 14);
   }
   .text-center {
     text-align: center;
@@ -1662,9 +1682,6 @@
   .text-\[30px\] {
     font-size: 30px;
   }
-  .text-\[154px\] {
-    font-size: 154px;
-  }
   .leading-loose {
     --tw-leading: var(--leading-loose);
     line-height: var(--leading-loose);
@@ -1739,9 +1756,6 @@
   .whitespace-pre-line {
     white-space: pre-line;
   }
-  .text-\[15ox\] {
-    color: 15ox;
-  }
   .text-amber-500 {
     color: var(--color-amber-500);
   }
@@ -1750,9 +1764,6 @@
   }
   .text-black {
     color: var(--color-black);
-  }
-  .text-blue-50 {
-    color: var(--color-blue-50);
   }
   .text-blue-100 {
     color: var(--color-blue-100);
@@ -1869,6 +1880,12 @@
     color: color-mix(in srgb, #fff 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-white) 5%, transparent);
+    }
+  }
+  .text-white\/80 {
+    color: color-mix(in srgb, #fff 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-white) 80%, transparent);
     }
   }
   .uppercase {
@@ -2098,13 +2115,6 @@
       }
     }
   }
-  .group-hover\:bg-blue-600 {
-    &:is(:where(.group):hover *) {
-      @media (hover: hover) {
-        background-color: var(--color-blue-600);
-      }
-    }
-  }
   .group-hover\:bg-indigo-600 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
@@ -2213,13 +2223,6 @@
       }
     }
   }
-  .hover\:border-blue-600 {
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-blue-600);
-      }
-    }
-  }
   .hover\:bg-amber-100 {
     &:hover {
       @media (hover: hover) {
@@ -2231,6 +2234,16 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-black);
+      }
+    }
+  }
+  .hover\:bg-blue-50\/30 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, oklch(97% 0.014 254.604) 30%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-blue-50) 30%, transparent);
+        }
       }
     }
   }
@@ -2729,11 +2742,6 @@
       height: calc(var(--spacing) * 11);
     }
   }
-  .md\:h-12 {
-    @media (width >= 48rem) {
-      height: calc(var(--spacing) * 12);
-    }
-  }
   .md\:h-14 {
     @media (width >= 48rem) {
       height: calc(var(--spacing) * 14);
@@ -2774,11 +2782,6 @@
       width: calc(var(--spacing) * 11);
     }
   }
-  .md\:w-12 {
-    @media (width >= 48rem) {
-      width: calc(var(--spacing) * 12);
-    }
-  }
   .md\:w-14 {
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 14);
@@ -2797,11 +2800,6 @@
   .md\:w-28 {
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 28);
-    }
-  }
-  .md\:w-38 {
-    @media (width >= 48rem) {
-      width: calc(var(--spacing) * 38);
     }
   }
   .md\:w-40 {
@@ -2926,11 +2924,6 @@
   .md\:rounded-\[1\.5rem\] {
     @media (width >= 48rem) {
       border-radius: 1.5rem;
-    }
-  }
-  .md\:rounded-\[1\.8rem\] {
-    @media (width >= 48rem) {
-      border-radius: 1.8rem;
     }
   }
   .md\:rounded-\[1rem\] {

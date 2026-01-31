@@ -14,8 +14,8 @@ if (isset($_POST['btn_save_teacher'])) {
     $phone  = mysqli_real_escape_string($conn, $_POST['phone']);
     $subject = $_POST['subject_id'];
 
-    $sql = "INSERT INTO teachers (teacher_id, full_name, gender, phone, subject_specialty) 
-            VALUES ('$t_id', '$name', '$gender', '$phone', '$subject')";
+    $sql = "INSERT INTO teachers (, full_name, gender, phone, subject_specialty) 
+            VALUES ('$t_id', '$nameteacher_id', '$gender', '$phone', '$subject')";
 
     if (mysqli_query($conn, $sql)) {
         header("Location: ../../views/staff/teachers_list.php?status=success");

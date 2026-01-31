@@ -29,7 +29,7 @@ include '../../includes/sidebar_staff.php';
         
         <div class="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">កែប្រែព័ត៌មានសិស្ស (ទម្រង់ពេញ)</h1>
+                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">កែប្រែព័ត៌មានសិស្ស </h1>
                 <p class="text-slate-500 mt-1">អត្តលេខ៖ <span class="text-blue-600 font-bold"><?= htmlspecialchars($st['student_id']) ?></span></p>
             </div>
             <a href="student_list.php" class="bg-white text-slate-500 px-6 py-3 rounded-2xl font-bold border border-slate-200 hover:bg-slate-50 transition flex items-center shadow-sm">

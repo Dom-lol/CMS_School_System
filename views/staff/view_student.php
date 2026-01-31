@@ -44,7 +44,7 @@ include '../../includes/sidebar_staff.php';
         box-shadow: 0 20px 60px rgba(0,0,0,0.02);
     }
     .info-box { background: #fcfdfe; border: 1px solid #f1f5f9; padding: 1.5rem; border-radius: 1.5rem; }
-    @media print { .no-print { display: none; } .student-card-ui { box-shadow: none; border: none; margin: 0; padding: 20px; } }
+   
 </style>
 
 <main class="flex-1 p-8 bg-gray-50 min-h-screen">
@@ -52,9 +52,7 @@ include '../../includes/sidebar_staff.php';
         <a href="student_list.php" class="bg-white px-5 py-2 rounded-xl text-slate-600 font-bold shadow-sm hover:bg-slate-50 transition flex items-center gap-2">
             <i class="fas fa-arrow-left"></i> បញ្ជីឈ្មោះ
         </a>
-        <button onclick="window.print()" class="bg-blue-600 px-5 py-2 rounded-xl text-white font-bold shadow-md hover:bg-blue-700 transition flex items-center gap-2">
-            <i class="fas fa-print"></i> បោះពុម្ព
-        </button>
+     
     </div>
 
     <div class="pdf-page student-card-ui animate-step">
@@ -67,7 +65,7 @@ include '../../includes/sidebar_staff.php';
                     <h1 class="text-4xl font-bold text-slate-800 mb-2" style="font-family: 'Khmer OS Muol Light';"><?php echo $student['full_name']; ?></h1>
                     <p class="text-xl text-blue-600 uppercase tracking-widest font-black"><?php echo $student['full_name_en']; ?></p>
                     <div class="mt-3 flex items-center justify-center md:justify-start gap-4">
-                        <span class="text-slate-400 font-bold">ឆ្នាំសិក្សា៖ <span class="text-slate-700"><?php echo $student['academic_year']; ?></span></span>
+                        <span class="text-slate-500 font-bold">ឆ្នាំសិក្សា៖ <span class="text-slate-700"><?php echo $student['academic_year']; ?></span></span>
                     </div>
                 </div>
             </div>
@@ -89,23 +87,23 @@ include '../../includes/sidebar_staff.php';
                 </h3>
                 <div class="info-box space-y-4">
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ភេទ</span>
+                        <span class="text-slate-500 font-medium">ភេទ</span>
                         <span class="font-bold text-slate-700"><?php echo $student['gender']; ?></span>
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ថ្ងៃខែឆ្នាំកំណើត</span>
+                        <span class="text-slate-500 font-medium">ថ្ងៃខែឆ្នាំកំណើត</span>
                         <span class="font-bold text-slate-700"><?php echo date('d-m-Y', strtotime($student['dob'])); ?></span>
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">កម្រិតថ្នាក់</span>
+                        <span class="text-slate-500 font-medium">កម្រិតថ្នាក់</span>
                         <span class="font-bold text-blue-600">ថ្នាក់ទី <?php echo $grade_label; ?> </span>
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ទូរស័ព្ទសិស្ស</span>
+                        <span class="text-slate-500 font-medium">ទូរស័ព្ទសិស្ស</span>
                         <span class="font-bold text-slate-700"><?php echo $student['phone'] ?: '---'; ?></span>
                     </div>
                     <div class="pt-2">
-                        <span class="text-slate-400 text-xs font-bold uppercase block mb-2">ទីកន្លែងកំណើត</span>
+                        <span class="text-slate-500 text-xs font-bold uppercase block mb-2">ទីកន្លែងកំណើត</span>
                         <p class="text-slate-700 text-sm leading-relaxed"><?php echo $student['pob'] ?: '---'; ?></p>
                     </div>
                 </div>
@@ -119,29 +117,29 @@ include '../../includes/sidebar_staff.php';
                 <div class="info-box space-y-4">
                     <div class="border-b border-slate-100 pb-2">
                         <div class="flex justify-between">
-                            <span class="text-slate-400 font-medium">ឪពុក</span>
+                            <span class="text-slate-500 font-medium">ឪពុក</span>
                             <span class="font-bold text-slate-700"><?php echo $student['father_name'] ?: '---'; ?></span>
                         </div>
                         <div class="text-right">
-                            <span class="text-xs text-slate-400 italic">មុខរបរ៖ <?php echo $student['father_job'] ?: '---'; ?></span>
+                            <span class="text-xs text-slate-500 ">មុខរបរ៖ <?php echo $student['father_job'] ?: '---'; ?></span>
                         </div>
                     </div>
                     <div class="border-b border-slate-100 pb-2">
                         <div class="flex justify-between">
-                            <span class="text-slate-400 font-medium">ម្តាយ</span>
+                            <span class="text-slate-500 font-medium">ម្តាយ</span>
                             <span class="font-bold text-slate-700"><?php echo $student['mother_name'] ?: '---'; ?></span>
                         </div>
                         <div class="text-right">
-                            <span class="text-xs text-slate-400 italic">មុខរបរ៖ <?php echo $student['mother_job'] ?: '---'; ?></span>
+                            <span class="text-xs text-slate-500">មុខរបរ៖ <?php echo $student['mother_job'] ?: '---'; ?></span>
                         </div>
                     </div>
                     <div class="flex justify-between border-b border-slate-100 pb-2">
-                        <span class="text-slate-400 font-medium">ទូរស័ព្ទអាណាព្យាបាល</span>
+                        <span class="text-slate-500 font-medium">ទូរស័ព្ទអាណាព្យាបាល</span>
                         <span class="font-bold text-emerald-600"><?php echo $student['parent_phone'] ?: '---'; ?></span>
                     </div>
                     <div class="pt-2">
                         <span class="text-emerald-600 text-xs font-bold uppercase block mb-2">អាសយដ្ឋានបច្ចុប្បន្ន</span>
-                        <p class="text-slate-700 text-sm leading-relaxed italic border-l-2 border-emerald-200 pl-4 bg-emerald-50/30 py-3 rounded-r-xl">
+                        <p class="text-slate-700 text-sm leading-relaxed  border-l-2 border-emerald-200 pl-4 bg-emerald-50/30 py-3 rounded-r-xl">
                             <?php echo $student['address'] ?: 'មិនទាន់មានទិន្នន័យ'; ?>
                         </p>
                     </div>
@@ -156,11 +154,11 @@ include '../../includes/sidebar_staff.php';
         </div>
         <?php endif; ?>
 
-        <div class="mt-16 pt-8 border-t border-slate-50 text-center">
-            <p class="text-slate-300 text-[10px] uppercase tracking-[0.2em] font-bold">
-                Generated by School System • <?php echo date('Y-m-d H:i'); ?>
+        <!-- <div class="mt-16 pt-8 border-t border-slate-50 text-center">
+            <p class="text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+              <?php echo date('Y-m-d H:i'); ?>
             </p>
-        </div>
+        </div> -->
     </div>
 </main>
 
