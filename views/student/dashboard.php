@@ -8,18 +8,19 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
 }
 
-// ទាញយកព័ត៌មានសិស្សពី Database ផ្ទាល់
+// student database
 $s_id = $_SESSION['username'] ?? '';
 $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_query);
 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 
-// Logic ប្តូរ class_id ទៅជាឈ្មោះថ្នាក់ (1=7, 2=8, ...)
+// Logic class_id 
 $cid = $student_info['class_id'] ?? 0;
 $grades = [1 => "៧", 2 => "៨", 3 => "៩", 4 => "១០", 5 => "១១", 6 => "១២"];
 $class_name_display = isset($grades[$cid]) ? $grades[$cid] : "---";
 
+// 
 $status = $student_info['status'] ?? "Active";
 $academic_year = $student_info['academic_year'] ?? "2025-2026";
 
@@ -35,8 +36,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ទំព័រដើម</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Kantumruy Pro', sans-serif; } </style>
@@ -47,6 +47,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
 
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
+    <!-- Header Profile -->
         <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
@@ -107,19 +108,19 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                        <div> <p class="text-slate-400 text-sm font-bold uppercase tracking-wider sm:pl-[270px] lg:pl-[200px]">ឆ្នាំសិក្សា</p></div>
                        <div class="flex justify-between">
                             <h3 class="text-3xl font-bold text-slate-800 mt-3">ថ្នាក់ទី <?php echo $class_name_display; ?></h3>
-                            <h3 class="text-3xl font-bold text-slate-800 mt-3"><?php echo $academic_year; ?></h3>
+                            <h3 class="text-3xl font-bold text-gray-500 mt-3"><?php echo $academic_year; ?></h3>
                        </div>
                     </div>
-                   
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="infoModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
-        <div class="bg-white w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="p-8 border-b flex justify-between items-center bg-slate-50/50">
-                <h3 class="font-black text-slate-800 italic uppercase tracking-wider">ព័ត៌មានលម្អិតទាំងស្រុង</h3>
+    <!-- For Modal Student Detail -->
+    <div id="infoModal" class=" fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
+        <div class="bg-white w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] rounded-[10px]">
+            <div class="p-3 border-b flex justify-between items-center bg-slate-50/50">
+                <h3 class="font-black text-slate-800  uppercase ">ព័ត៌មានលម្អិត</h3>
                 <button onclick="closeInfoModal()" class="w-10 h-10 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-all"><i class="fas fa-times"></i></button>
             </div>
             
@@ -128,31 +129,35 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     <img src="<?php echo $current_img ?? '../../assets/img/default.png'; ?>" class="w-[150px] h-[150px] rounded-[50%] object-cover border-2 border-slate-700">
                 </div>
 
-                <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100"> 
-                    <h4 class="text-2xl font-black italic uppercase text-blue-400"><?php echo $display_name; ?></h4>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">លេខសម្គាល់: <?php echo $s_id; ?></p>
+                <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100"> 
+                    <h4 class="text-2xl font-black  uppercase text-blue-700"><?php echo $display_name; ?></h4>
+                        <p class=" text-[15px] font-bold font-black uppercase  ">លេខសម្គាល់: <?php echo $s_id; ?></p>
+                </div>
+                <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100"> 
+                    <h4 class="text-2xl font-black  uppercase text-blue-700">ថ្នាក់ទី <?php echo $class_name_display; ?></h4>
+                        <p class=" text-[15px] font-bold font-black uppercase  "><?php echo $academic_year; ?></p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span class="text-slate-400 text-[10px] font-black uppercase italic">ថ្ងៃខែឆ្នាំកំណើត</span>
-                        <p class="text-slate-800 font-bold italic"><?php echo $student_info['dob'] ?? '---'; ?></p>
+                    <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100">
+                        <span class="text-slate-400 text-[13px] uppercase text-slate-800">ថ្ងៃខែឆ្នាំកំណើត</span>
+                        <p class=" font-black  font-bold "><?php echo $student_info['dob'] ?? '---'; ?></p>
                     </div>
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span class="text-slate-400 text-[10px] font-black uppercase italic text-sm">ទីកន្លែងកំណើត</span>
-                        <p class="text-slate-800 font-bold italic"><?php echo $student_info['pob'] ?? '---'; ?></p>
+                    <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100">
+                        <span class="text-slate-400 text-[13px]  uppercase  text-sm text-slate-800">ទីកន្លែងកំណើត</span>
+                        <p class=" font-bold  font-black"><?php echo $student_info['pob'] ?? '---'; ?></p>
                     </div>
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span class="text-slate-400 text-[10px] font-black uppercase italic">ឈ្មោះឪពុក</span>
-                        <p class="text-slate-800 font-bold italic"><?php echo $student_info['father_name'] ?? '---'; ?></p>
+                    <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100">
+                        <span class="text-slate-400 text-[13px]  uppercase text-slate-800 ">ឈ្មោះឪពុក</span>
+                        <p class="font-bold font-black"><?php echo $student_info['father_name'] ?? '---'; ?></p>
                     </div>
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span class="text-slate-400 text-[10px] font-black uppercase italic">ឈ្មោះម្ដាយ</span>
-                        <p class="text-slate-800 font-bold italic"><?php echo $student_info['mother_name'] ?? '---'; ?></p>
+                    <div class="p-5 bg-slate-50 rounded-[0.5rem] border border-slate-100">
+                        <span class="text-slate-400 text-[13px]  uppercase text-slate-800">ឈ្មោះម្ដាយ</span>
+                        <p class=" font-bold font-black"><?php echo $student_info['mother_name'] ?? '---'; ?></p>
                     </div>
-                    <div class="md:col-span-2 p-5 bg-blue-50/50 rounded-2xl border border-blue-100">
-                        <span class="text-blue-400 text-[10px] font-black uppercase italic">អាសយដ្ឋានបច្ចុប្បន្ន</span>
-                        <p class="text-slate-800 font-bold italic leading-relaxed text-sm"><?php echo $student_info['address'] ?? 'មិនទាន់មានទិន្នន័យ'; ?></p>
+                    <div class="md:col-span-2 p-5 bg-blue-50/50 rounded-[0.5rem] border border-blue-100">
+                        <span class="text-blue-700 text-[13px]  uppercase ">អាសយដ្ឋានបច្ចុប្បន្ន</span>
+                        <p class="text-slate-800 font-bold leading-relaxed "><?php echo $student_info['address'] ?? 'មិនទាន់មានទិន្នន័យ'; ?></p>
                     </div>
                 </div>
             </div>

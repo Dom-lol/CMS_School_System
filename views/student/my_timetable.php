@@ -41,7 +41,7 @@ $sql_list = "SELECT t.*, s.subject_name, te.full_name as teacher_name
              WHERE t.class_id = '$active_grade_id' 
              AND t.day_of_week = '$search_day_kh' 
              AND t.is_deleted = 0 
-             ORDER BY t.start_time ASC";
+             ORDER BY t.start_time  ASC";
 $result_list = mysqli_query($conn, $sql_list);
 
 // 
@@ -128,9 +128,7 @@ include '../../includes/header.php';
                     <h1 class="text-2xl text-white  "><span class="text-white">ថ្នាក់ទី </span><span class= "text-white"><?= htmlspecialchars($active_grade) ?></span></h1>
                     <p class="opacity-80">កាលវិភាគប្រចាំថ្ងៃ<?= $search_day_kh ?></p>
                 </div>
-                <button onclick="window.print()" class="text-[15px] bg-white text-blue-600 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-blue-50 transition-all">
-                    <i class="fas fa-print mr-2"></i> បោះពុម្ពកាលវិភាគ
-                </button>
+                
             </div>
 
             <div class="flex gap-2 p-6 overflow-x-auto shrink-0 no-print">

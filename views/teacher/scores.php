@@ -2,13 +2,13 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 
-// ១. ឆែកសិទ្ធិចូលប្រើប្រាស់
+// 
 if ($_SESSION['role'] !== 'teacher' && $_SESSION['role'] !== 'admin') {
     header("Location: ../../index.php?error=no_permission");
     exit();
 }
 
-// ២. ទាញយកទិន្នន័យគ្រូ
+// 
 $u_id = $_SESSION['user_id'];
 $teacher_query = mysqli_query($conn, "SELECT teacher_id, full_name, profile_image FROM teachers WHERE user_id = '$u_id' LIMIT 1");
 $teacher_info = mysqli_fetch_assoc($teacher_query);
@@ -17,7 +17,7 @@ $real_t_id  = $teacher_info['teacher_id'] ?? 'N/A';
 $full_name  = $teacher_info['full_name'] ?? $_SESSION['full_name'];
 $db_profile_img = $teacher_info['profile_image'] ?? ''; 
 
-// ៣. ទាញយកមុខវិជ្ជាដំបូងសម្រាប់បង្ហាញក្នុង Header (ជំនួស ID)
+// 
 $subj_header_query = mysqli_query($conn, "SELECT DISTINCT s.subject_name 
                                           FROM timetable t 
                                           INNER JOIN subjects s ON t.subject_id = s.id 
@@ -25,7 +25,7 @@ $subj_header_query = mysqli_query($conn, "SELECT DISTINCT s.subject_name
 $subj_data = mysqli_fetch_assoc($subj_header_query);
 $display_subject = $subj_data['subject_name'] ?? 'គ្រូបង្រៀន';
 
-// ៤. ទាញយកបញ្ជីថ្នាក់រៀន
+// 
 $sql = "SELECT DISTINCT t.class_id, t.subject_id, c.class_name, s.subject_name 
         FROM timetable t
         INNER JOIN classes c ON t.class_id = c.id
@@ -57,14 +57,12 @@ $res = mysqli_query($conn, $sql);
 
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+        <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-all">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h2 class="hidden md:block text-xl font-black text-slate-800 italic uppercase tracking-tight">
-                    <i class="fas fa-star-half-alt mr-2 text-blue-600"></i> Scores System
-                </h2>
+               
             </div>
 
             <div class="flex items-center gap-5">
@@ -72,7 +70,7 @@ $res = mysqli_query($conn, $sql);
                     <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
                         <?= htmlspecialchars($full_name); ?>
                     </p>
-                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase italic tracking-widest">
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase">
                          មុខវិជ្ជា: <span class="text-slate-500 font-bold"><?= htmlspecialchars($display_subject) ?></span>
                     </p>
                 </div>
@@ -91,7 +89,7 @@ $res = mysqli_query($conn, $sql);
             
             <div class="mb-10 w-full bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
                 <div class="relative z-10">
-                    <h1 class="text-3xl md:text-5xl font-black italic mb-2 uppercase tracking-tighter">បញ្ចូលពិន្ទុសិស្ស</h1>
+                    <h1 class="text-2xl md:text-5xl font-black italic mb-2 uppercase tracking-tighter">បញ្ចូលពិន្ទុសិស្ស</h1>
                     <p class="text-slate-400 text-sm md:text-lg italic opacity-90">សូមជ្រើសរើសថ្នាក់ដែលលោកគ្រូត្រូវបញ្ចូលពិន្ទុសម្រាប់ឆមាសនេះ</p>
                 </div>
                 <i class="fas fa-award absolute right-4 md:right-10 top-1/2 -translate-y-1/2 text-7xl md:text-[12rem] text-white/5 transform rotate-12"></i>
@@ -101,16 +99,14 @@ $res = mysqli_query($conn, $sql);
                 <?php if ($res && mysqli_num_rows($res) > 0): ?>
                     <?php while($row = mysqli_fetch_assoc($res)): ?>
                         <a href="input_grades.php?class_id=<?= $row['class_id'] ?>&subject_id=<?= $row['subject_id'] ?>" 
-                           class="group bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border-2 border-slate-50 hover:border-blue-600 transition-all text-center relative shadow-sm hover:shadow-2xl hover:-translate-y-2">
+                           class="group bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border-2  border-blue-600 transition-all text-center relative shadow-sm hover:shadow-2xl hover:-translate-y-2">
                             
-                            <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                                <i class="fas fa-file-signature text-2xl md:text-3xl"></i>
-                            </div>
+                           
 
-                            <h2 class="text-4xl md:text-5xl font-black text-slate-800 mb-2 italic"><?= htmlspecialchars($row['class_name']) ?></h2>
-                            <p class="text-blue-600 font-black uppercase italic text-[10px] md:text-xs mb-8 tracking-widest"><?= htmlspecialchars($row['subject_name']) ?></p>
+                            <h2 class="text-[25px] md:text-3xl font-black text-slate-800 mb-2 "><?= htmlspecialchars($row['class_name']) ?></h2>
+                            <p class="text-blue-600 font-black uppercase text-[15px] md:text-xs mb-6 "><?= htmlspecialchars($row['subject_name']) ?></p>
                             
-                            <div class="bg-slate-100 rounded-2xl py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm tracking-tighter">
+                            <div class=" rounded-2xl py-3 md:py-4 text-[12px] md:text-[15px] font-black uppercase  bg-blue-600 text-white transition-all shadow-sm er">
                                 <i class="fas fa-edit mr-2"></i> ចុចដើម្បីបញ្ចូលពិន្ទុ
                             </div>
                         </a>

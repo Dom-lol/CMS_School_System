@@ -2,24 +2,25 @@
 require_once '../../config/db.php';
 require_once '../../config/session.php';
 
-// ១. ឆែកសិទ្ធិចូលប្រើប្រាស់
+//
 if ($_SESSION['role'] !== 'teacher' && $_SESSION['role'] !== 'admin') {
     header("Location: ../../index.php?error=no_permission");
     exit();
 }
 
-// ២. ទាញយកព័ត៌មានគ្រូ
+// 
 $u_id = $_SESSION['user_id'];
 $teacher_query = mysqli_query($conn, "SELECT teacher_id, full_name, profile_image FROM teachers WHERE user_id = '$u_id' LIMIT 1");
 $teacher_info = mysqli_fetch_assoc($teacher_query);
 $real_t_id = $teacher_info['teacher_id'] ?? 'N/A';
 $t_full_name = $teacher_info['full_name'] ?? $_SESSION['full_name'];
+$db_profile_img = $teacher_info['profile_image'] ?? ''; 
 
-// ៣. ចាប់តម្លៃពី URL
+// 
 $class_id = isset($_GET['class_id']) ? (int)$_GET['class_id'] : 0;
 $subject_id = isset($_GET['subject_id']) ? (int)$_GET['subject_id'] : 0;
 
-// ៤. ទាញយកឈ្មោះថ្នាក់ និងមុខវិជ្ជា
+// 
 $info_q = mysqli_query($conn, "
     SELECT c.class_name, s.subject_name 
     FROM classes c, subjects s 
@@ -29,13 +30,13 @@ $info = mysqli_fetch_assoc($info_q);
 $c_name = $info['class_name'] ?? 'N/A';
 $subject_display = $info['subject_name'] ?? 'N/A';
 
-// ៥. ទាញយកបញ្ជីសិស្ស
+// 
 $student_sql = "SELECT id, student_id, full_name, gender FROM students 
                 WHERE class_id = '$class_id' AND status = 'Active' 
                 ORDER BY gender DESC, full_name ASC";
 $students = mysqli_query($conn, $student_sql);
 
-// ៦. បញ្ជីខែខ្មែរ
+// 
 $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីនា", "04"=>"មេសា", "05"=>"ឧសភា", "06"=>"មិថុនា", "07"=>"កក្កដា", "08"=>"សីហា", "09"=>"កញ្ញា", "10"=>"តុលា", "11"=>"វិច្ឆិកា", "12"=>"ធ្នូ"];
 ?>
 
@@ -64,27 +65,30 @@ $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីន
 
     <div class="flex-1 flex flex-col min-w-0 h-full relative">
         
-        <header class="bg-white border-b border-slate-100 h-14 md:h-24 flex items-center justify-between px-4 md:px-10 shrink-0 z-40">
-            <div class="flex items-center gap-2 md:gap-4">
-                <a href="scores.php" class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all">
-                    <i class="fas fa-chevron-left text-xs md:text-lg"></i>
-                </a>
-                <div class="leading-tight">
-                    <h2 class="text-[11px] md:text-xl font-black text-slate-800 uppercase italic">Input Point</h2>
-                    <p class="text-[8px] md:text-sm text-blue-600 font-bold uppercase italic">Class: <?= $c_name ?></p>
-                </div>
+           <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-all">
+                    <i class="fas fa-bars text-xl"></i>
+
+                </button>
+                <a href="scores.php?class_id=">back</a>
+               
             </div>
 
-            <div class="flex items-center gap-3">
-                <div class="text-right leading-none">
-                    <p class="text-[12px] md:text-[20px] font-black text-slate-900"><?= htmlspecialchars($t_full_name); ?></p>
-                    <p class="text-[9px] md:text-[12px] text-slate-400 font-bold italic mt-1 uppercase"><?= htmlspecialchars($subject_display) ?></p>
+            <div class="flex items-center gap-5">
+                <div class="text-right">
+                    <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
+                        <?= htmlspecialchars($t_full_name); ?>
+                    </p>
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase">
+                         មុខវិជ្ជា: <span class="text-slate-500 font-bold"><?= htmlspecialchars($subject_display) ?></span>
+                    </p>
                 </div>
-                <div class="w-9 h-9 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-slate-50 bg-slate-100 shrink-0 shadow-sm">
+                
+                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-slate-100 shadow-sm bg-slate-50 flex-shrink-0">
                     <?php 
                         $path = "../../assets/uploads/teachers/";
-                        $img = $teacher_info['profile_image'];
-                        $display_img = (!empty($img) && file_exists($path . $img)) ? $path . $img : "../../assets/img/default_user.png";
+                        $display_img = (!empty($db_profile_img) && file_exists($path . $db_profile_img)) ? $path . $db_profile_img : $path . 'default_user.png';
                     ?>
                     <img src="<?= $display_img ?>" class="w-full h-full object-cover">
                 </div>
@@ -95,11 +99,11 @@ $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីន
             
             <div class="bg-slate-900 p-5 md:p-12 rounded-2xl md:rounded-[3rem] text-white shadow-xl mb-4 md:mb-8 relative overflow-hidden border-b-4 md:border-b-8 border-blue-600">
                 <div class="relative z-10">
-                    <p class="text-[8px] md:text-[12px] opacity-50 uppercase font-black tracking-[0.2em] mb-1">Manual Entry Mode</p>
-                    <h1 class="text-xl md:text-5xl font-black italic uppercase leading-none mb-2">ថ្នាក់ទី <?= $c_name ?></h1>
+                   
+                    <h1 class="text-xl md:text-3xl font-black italic uppercase leading-none mb-2"><?= $c_name ?></h1>
                     <div class="flex items-center gap-2">
-                        <span class="bg-blue-600 text-[8px] md:text-[11px] px-2 py-0.5 rounded-full font-black uppercase">Subject</span>
-                        <p class="text-blue-400 font-bold uppercase italic text-[10px] md:text-lg"><?= $subject_display ?></p>
+                       
+                        <p class="text-blue-400 font-bold uppercase  text-[12px] md:text-lg"><?= $subject_display ?></p>
                     </div>
                 </div>
                 <i class="fas fa-edit absolute -right-5 -bottom-5 text-6xl md:text-9xl opacity-10 -rotate-12"></i>
@@ -110,7 +114,7 @@ $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីន
                 <input type="hidden" name="subject_id" value="<?= $subject_id ?>">
 
                 <div class="flex flex-wrap gap-2 md:gap-4 mb-4 md:mb-8 bg-white p-3 md:p-6 rounded-xl md:rounded-[2rem] border border-slate-100 shadow-sm">
-                    <select name="input_month" required class="flex-1 md:flex-none bg-slate-50 border-none rounded-lg md:rounded-xl px-4 md:px-8 py-2 md:py-4 text-[10px] md:text-sm font-black uppercase italic outline-none focus:ring-2 focus:ring-blue-100 cursor-pointer">
+                    <select name="input_month" required class="flex-1 md:flex-none bg-slate-50 border-none rounded-lg md:rounded-xl px-4 md:px-8 py-2 md:py-4 text-[12px] md:text-[15px] font-black uppercase italic outline-none focus:ring-2 focus:ring-blue-100 cursor-pointer">
                         <?php foreach ($months_kh as $m_num => $m_kh): ?>
                             <option value="<?= $m_num ?>" <?= ($m_num == date('m')) ? 'selected' : '' ?>>ខែ <?= $m_kh ?></option>
                         <?php endforeach; ?>
@@ -147,7 +151,7 @@ $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីន
                             <div class="shrink-0">
                                 <input type="number" name="grade[<?= $row['student_id'] ?>]" 
                                        min="0" max="100" step="0.1" required placeholder="PT"
-                                       class="w-16 md:w-48 bg-slate-50 border-2 border-transparent focus:border-blue-600 focus:bg-white rounded-lg md:rounded-[1.8rem] py-2 md:py-5 text-center text-[15px] md:text-3xl font-black text-slate-800 outline-none transition-all shadow-inner">
+                                       class="w-16 md:w-48 bg-slate-50 border-2 border-transparent focus:border-blue-600 focus:bg-white rounded-lg md:rounded-[1rem] py-2 md:py-5 text-center text-[15px] md:text-3xl font-black text-slate-800 outline-none transition-all shadow-inner">
                             </div>
 
                         </div>
@@ -156,7 +160,7 @@ $months_kh = ["01"=>"មករា", "02"=>"កុម្ភៈ", "03"=>"មីន
                 </div>
 
                 <div class="fixed bottom-4 left-4 right-4 md:bottom-10 md:right-10 md:left-auto z-50">
-                    <button type="submit" class="w-full md:w-auto bg-blue-600 text-white px-8 py-4 md:px-14 md:py-6 rounded-xl md:rounded-full font-black uppercase text-[10px] md:text-xs tracking-[0.2em] shadow-2xl hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-3">
+                    <button type="submit" class="w-full md:w-auto bg-blue-600 text-white px-8 py-4 md:px-14 md:py-6 rounded-xl md:rounded-full font-black uppercase text-[13px] md:text-[18px]  shadow-2xl hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-3">
                         <i class="fas fa-save text-lg"></i>
                         <span>រក្សាទុកទិន្នន័យ</span>
                     </button>

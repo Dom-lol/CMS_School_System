@@ -53,7 +53,7 @@ include '../../includes/header.php';
 
     <div class="flex-1 flex flex-col min-w-0 h-full">
         
-       <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+       <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
                     <i class="fas fa-bars text-xl"></i>
@@ -66,7 +66,7 @@ include '../../includes/header.php';
                     <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
                         <?= htmlspecialchars($display_name); ?>
                     </p>
-                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase italic tracking-widest">
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase">
                          មុខវិជ្ជា: <span class="text-slate-500"><?= htmlspecialchars($display_subject) ?></span>
                     </p>
                 </div>
@@ -84,8 +84,8 @@ include '../../includes/header.php';
     
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-6 md:p-8 rounded-[2rem] text-white shadow-xl flex-1 border-b-4 md:border-b-8 border-blue-600">
-            <h1 class="text-xl md:text-3xl italic">ថ្នាក់ទី <?= $current_grade ?></h1>
-            <p class="text-slate-400 font-bold text-[10px] md:text-sm mt-2 uppercase tracking-widest">
+            <h1 class="text-xl md:text-3xl "><span class="text-white">ថ្នាក់ទី <?= $current_grade ?></span><h1>
+            <p class="text-slate-400 font-bold text-[12px] md:text-sm mt-2 uppercase tracking-widest">
                 <i class="far fa-calendar-alt mr-2"></i> <?= date('D, d M Y') ?>
             </p>
         </div>
@@ -110,16 +110,16 @@ include '../../includes/header.php';
             <table class="w-full text-left">
                 <thead class="bg-slate-50 border-b border-slate-100">
                     <tr>
-                        <th class="p-8 font-black uppercase text-[11px] text-slate-400 tracking-widest">អត្តលេខ</th>
-                        <th class="p-8 font-black uppercase text-[11px] text-slate-400 tracking-widest">ឈ្មោះសិស្ស</th>
-                        <th class="p-8 font-black uppercase text-[11px] text-slate-400 tracking-widest text-center">ភេទ</th>
+                        <th class="p-8 font-black uppercase text-[17px] text-slate-500 ">អត្តលេខ</th>
+                        <th class="p-8 font-black uppercase text-[17px] text-slate-500 ">ឈ្មោះសិស្ស</th>
+                        <th class="p-8 font-black uppercase text-[17px] text-slate-500 text-center">ភេទ</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     <?php mysqli_data_seek($students, 0); while($row = mysqli_fetch_assoc($students)): ?>
                     <tr class="hover:bg-blue-50/40 transition-all group">
-                        <td class="p-8 text-sm font-black text-blue-600 italic">#<?= htmlspecialchars($row['student_id']) ?></td>
-                        <td class="p-8 font-bold text-slate-800 uppercase italic"><?= htmlspecialchars($row['full_name']) ?></td>
+                        <td class="p-8 text-sm font-black text-blue-600 ">#<?= htmlspecialchars($row['student_id']) ?></td>
+                        <td class="p-8 font-bold text-slate-800 uppercase "><?= htmlspecialchars($row['full_name']) ?></td>
                         <td class="p-8 text-center text-xs font-bold text-slate-500 uppercase"><span class="px-4 py-1 bg-slate-100 rounded-full"><?= $row['gender'] ?></span></td>
                     </tr>
                     <?php endwhile; ?>
@@ -133,11 +133,11 @@ include '../../includes/header.php';
                 <div class="flex items-center gap-3">
                    
                     <div>
-                        <h4 class="font-bold text-slate-800 text-sm uppercase"><?= htmlspecialchars($row['full_name']) ?></h4>
-                        <p class="text-[10px] text-blue-500 font-bold uppercase">ID: <?= $row['student_id'] ?></p>
+                        <h4 class="font-bold text-slate-800 text-[16px] uppercase"><?= htmlspecialchars($row['full_name']) ?></h4>
+                        <p class="text-[12px] text-blue-500 font-bold uppercase">ID: <?= $row['student_id'] ?></p>
                     </div>
                 </div>
-                <div class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">
+                <div class="text-[13px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">
                     <?= $row['gender'] ?>
                 </div>
             </div>

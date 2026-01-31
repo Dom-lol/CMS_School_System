@@ -7,14 +7,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: ../../index.php?error=unauthorized"); exit();
 }
 
-// ១. ទាញយកព័ត៌មានសិស្សតាម student_id (ដូច Dashboard ប្អូន)
+//  student_id
 $s_id = $_SESSION['username'] ?? '';
 $student_query = mysqli_query($conn, "SELECT * FROM students WHERE student_id = '$s_id' LIMIT 1");
 $student_info = mysqli_fetch_assoc($student_query);
 
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 
-// ២. Path រូបភាព (Logic ដូច Dashboard បេះដាក់)
+// path img 
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
@@ -28,7 +28,7 @@ $current_page = 'announcements.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>សេចក្ដីជូនដំណឹង | Student Portal</title>
+    <title>សេចក្ដីជូនដំណឹង </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
@@ -45,6 +45,7 @@ $current_page = 'announcements.php';
 
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         
+    <!-- Header profile -->
         <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200">
@@ -81,7 +82,7 @@ $current_page = 'announcements.php';
                 
                 <div class="mb-10 text-center md:text-left">
                     <h1 class="text-3xl md:text-4xl font-bold text-slate-900 uppercase">សេចក្ដីជូនដំណឹង</h1>
-                    <p class="text-slate-500 mt-2 text-lg italic">ព័ត៌មាន និងការប្រកាសសំខាន់ៗពីសាលារៀន</p>
+                    <!-- <p class="text-slate-500 mt-2 text-lg italic">ព័ត៌មាន និងការប្រកាសសំខាន់ៗពីសាលារៀន</p> -->
                 </div>
 
                 <div class="grid grid-cols-1 gap-6">
@@ -91,7 +92,7 @@ $current_page = 'announcements.php';
                     
                     if($result && mysqli_num_rows($result) > 0):
                         while($row = mysqli_fetch_assoc($result)): 
-                            // រៀបចំ data សម្រាប់ JavaScript Modal
+                            // data for JavaScript Modal
                             $title = addslashes($row['title']);
                             $content = addslashes(str_replace(["\r", "\n"], ' ', $row['content']));
                             $posted_by = addslashes($row['posted_by']);
@@ -141,8 +142,9 @@ $current_page = 'announcements.php';
         </main>
     </div>
 
+    <!-- For Modal detail announcement -->
     <div id="detailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-all">
+        <div class="bg-white w-full max-w-2xl rounded-[0.5rem] shadow-2xl overflow-hidden transform transition-all">
             <div class="p-8 md:p-12">
                 <div class="flex justify-between items-start mb-6">
                     <div id="modalDate" class="text-blue-600 font-bold text-sm uppercase tracking-widest"></div>
@@ -163,7 +165,7 @@ $current_page = 'announcements.php';
                         </div>
                     </div>
                     <button onclick="closeModal()" class="px-8 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
-                        បិទវិញ
+                        ចាកចេញ
                     </button>
                 </div>
             </div>
@@ -173,11 +175,13 @@ $current_page = 'announcements.php';
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden backdrop-blur-sm"></div>
 
     <script>
+        // for menu
         function toggleSidebar() {
             document.getElementById('sidebar')?.classList.toggle('-translate-x-full');
             document.getElementById('sidebar-overlay')?.classList.toggle('hidden');
         }
 
+        // for modal
         function viewDetail(title, content, author, date) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalContent').innerText = content;

@@ -14,7 +14,7 @@ $real_st_id   = $student_info['id'] ?? 0;
 $display_name = $student_info['full_name'] ?? ($_SESSION['full_name'] ?? $s_id);
 $s_id_display = $student_info['student_id'] ?? $s_id;
 
-// ២. ទាញយកស្ថិតិវត្តមានសរុប (Query លើ Table attendance) [cite: 2026-01-20]
+// Query លើ Table attendance
 $stats_query = mysqli_query($conn, "
     SELECT 
         SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as total_present,
@@ -25,7 +25,7 @@ $stats_query = mysqli_query($conn, "
 ");
 $stats = mysqli_fetch_assoc($stats_query);
 
-// ៣. ទាញយកបញ្ជីវត្តមានលម្អិត [cite: 2026-01-20]
+
 $att_list = mysqli_query($conn, "
     SELECT attendance_date, status 
     FROM attendance 
@@ -33,7 +33,7 @@ $att_list = mysqli_query($conn, "
     ORDER BY attendance_date DESC
 ");
 
-// ៤. រៀបចំ Path រូបភាព (Logic Dashboard) [cite: 2026-01-20]
+// ៤. រៀបចំ Path រូបភាព
 $profile_path = "../../assets/uploads/profiles/";
 $current_img = (!empty($student_info['profile_img']) && file_exists($profile_path . $student_info['profile_img'])) 
                 ? $profile_path . $student_info['profile_img'] . "?v=" . time() 
@@ -110,8 +110,8 @@ include '../../includes/header.php';
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-slate-900 text-white">
                         <tr>
-                            <th class="p-6 text-[12px] font-bold uppercase tracking-widest">ថ្ងៃខែឆ្នាំ</th>
-                            <th class="p-6 text-[12px] font-bold uppercase tracking-widest text-center">ស្ថានភាព</th>
+                            <th class="p-6 text-[15px] font-bold uppercase tracking-widest">ថ្ងៃខែឆ្នាំ</th>
+                            <th class="p-6 text-[15px] font-bold uppercase tracking-widest text-center">ស្ថានភាព</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -121,10 +121,10 @@ include '../../includes/header.php';
                                 <td class="p-6 font-bold text-slate-700">
                                     <?= date('d-M-Y', strtotime($row['attendance_date'])) ?>
                                 </td>
-                                <td class="p-6 text-center">
+                                <td class="p-6 text-center ">
                                     <?php 
                                         $s = $row['status'];
-                                        $c = ($s == 'present') ? 'bg-green-100 text-green-600' : (($s == 'absent') ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600');
+                                        $c = ($s == 'present') ? 'bg-green-100 text-green-600 text-[12px]' : (($s == 'absent') ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600');
                                         $t = ($s == 'present') ? 'មក' : (($s == 'absent') ? 'អវត្តមាន' : 'ច្បាប់');
                                     ?>
                                     <span class="<?= $c ?> px-4 py-1 rounded-full text-[10px] font-black uppercase italic"><?= $t ?></span>

@@ -54,10 +54,10 @@ $students = mysqli_query($conn, $st_query);
 
     <?php include '../../includes/sidebar_teacher.php'; ?>
 
-    <main class="flex-1 overflow-y-auto p-4 md:p-10 custom-scrollbar bg-[#f8fafc]">
+    <main class="flex-1 overflow-y-auto custom-scrollbar bg-[#f8fafc]">
     
         
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+        <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-50 text-slate-500 rounded-2xl">
                     <i class="fas fa-bars text-xl"></i>
@@ -65,12 +65,12 @@ $students = mysqli_query($conn, $st_query);
                
             </div>
 
-            <div class="flex items-center gap-5">
+            <div class="flex items-center gap-5 ">
                 <div class="text-right">
-                    <p class="text-[16px] md:text-[20px] font-black text-slate-900 leading-tight">
+                    <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
                         <?= htmlspecialchars($t_full_name); ?>
                     </p>
-                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase italic tracking-widest mt-1">
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase ">
                         មុខវិជ្ជា: <span class="text-slate-500"><?= htmlspecialchars($display_subject) ?></span>
                     </p>
                 </div>
@@ -85,9 +85,9 @@ $students = mysqli_query($conn, $st_query);
         </header>
 
     
-    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 p-4 ">
         <div>
-            <p class="text-slate-400 font-bold text-xs md:text-sm mt-2 uppercase tracking-widest">
+            <p class="text-black font-bold text-xs md:text-sm mt-2 uppercase ">
                 <i class="far fa-calendar-alt mr-2"></i> <?= date('D, d M Y', strtotime($date)) ?>
             </p>
         </div>
@@ -117,13 +117,13 @@ $students = mysqli_query($conn, $st_query);
         <input type="hidden" name="class_id" value="<?= $target_class_id ?>">
         <input type="hidden" name="date" value="<?= $date ?>">
 
-        <div class="hidden md:block bg-white rounded-[2.5rem] shadow-xl border-2 border-slate-100 overflow-hidden mb-28">
+        <div class=" hidden md:block bg-white rounded-[1.5rem] shadow-xl border-2 border-slate-100 overflow-hidden ">
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-slate-900 text-white border-b-4 border-blue-600">
-                        <th class="p-6 text-sm font-black uppercase italic tracking-widest">Student Information</th>
-                        <th class="p-6 text-sm font-black uppercase italic tracking-widest text-center">Gender</th>
-                        <th class="p-6 text-sm font-black uppercase italic tracking-widest text-center">Attendance</th>
+                        <th class="p-6 text-[16px] font-black uppercase">ព័ត៏មានសិស្ស</th>
+                        <th class="p-6 text-[16px] font-black uppercase  text-center">ភេទ</th>
+                        <th class="p-6 text-[16px]m font-black uppercase  text-center">វត្តមាន</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y-2 divide-slate-50">
@@ -166,7 +166,7 @@ $students = mysqli_query($conn, $st_query);
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h4 class="font-black text-slate-800 uppercase italic"><?= htmlspecialchars($row['full_name']) ?></h4>
-                        <p class="text-[10px] text-slate-400 font-bold">ID: <?= $row['student_id'] ?> | <?= $row['gender'] ?></p>
+                        <p class="text-[12px]  text-blue-600 font-bold">ID: <?= $row['student_id'] ?> | <?= $row['gender'] ?></p>
                     </div>
                 </div>
                 

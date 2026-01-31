@@ -87,7 +87,7 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
 <div class="flex-1 h-screen overflow-y-auto bg-slate-50">
     <section class="w-full px-4 py-8">
     
-        <h1 class="text-center font-bold text-2xl md:text-3xl mb-10 text-slate-800">
+        <h1 class="text-center font-bold text-2xl md:text-3xl mb-2 text-slate-800">
             បញ្ជីឈ្មោះគ្រូបង្រៀន
         </h1>
 
@@ -100,8 +100,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                        
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors ">ជា ឧត្តម</p>
-                        <p class="text-xs md:text-sm text-slate-500">អក្សរសាស្រ្តខ្មែរ</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors ">ជា ឧត្តម</p>
+                        <p class="text-[14px] md:text-sm text-slate-500">អក្សរសាស្រ្តខ្មែរ</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
@@ -119,13 +119,13 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                       
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors">ចាន់ ថា</p>
-                        <p class="text-xs md:text-sm text-slate-500">គណិតវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors">ចាន់ ថា</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">គណិតវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
                     <div class="font-mono font-semibold text-slate-600 text-xs md:text-base">012 345 678</div>
-                    <a href="https://t.me/+855968263627" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-sm">
+                    <a href="https://t.me/+85566686543" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-sm">
                         <i class="fa-solid fa-phone"></i>
                     </a>
                 </div>
@@ -138,8 +138,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                       
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors">ហេង ឡុង</p>
-                        <p class="text-xs md:text-sm text-slate-500">រូបវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors">ហេង ឡុង</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">រូបវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
@@ -157,8 +157,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                        
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors"> ម៉ារី យ៉ា</p>
-                        <p class="text-xs md:text-sm text-slate-500">គីមីវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors"> ម៉ារី យ៉ា</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">គីមីវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
@@ -176,8 +176,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                         
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base  transition-colors"> វណ្ណ ឌី</p>
-                        <p class="text-xs md:text-sm text-slate-500">ជីវវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base  transition-colors"> វណ្ណ ឌី</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">ជីវវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
@@ -195,8 +195,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                        
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors">ស្រីមុំ</p>
-                        <p class="text-xs md:text-sm text-slate-500">ប្រវត្តិវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors">ស្រីមុំ</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">ប្រវត្តិវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
@@ -214,8 +214,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                        
                     </div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm md:text-base transition-colors">ញឹប កុសល</p>
-                        <p class="text-xs md:text-sm text-slate-500">ផែនដីវិទ្យា</p>
+                        <p class="font-bold text-slate-800 text-[17px] md:text-base transition-colors">ញឹប កុសល</p>
+                        <p class="text-[14px]  md:text-sm text-slate-500">ផែនដីវិទ្យា</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">

@@ -87,7 +87,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                     <tr class="bg-gray-100 border-b border-slate-100​
                     ">
                         <th class="px-6 py-4 text-black font-bold text-[14px] uppercase">លរ</th>
-                        <th class="px-3 py-4 text-black font-bold text-[14px] uppercase">មុវវិជ្ជា</th>
+                        <th class="px-3 py-4 text-black font-bold text-[14px] uppercase">មុខវិជ្ជា</th>
                         <th class="px-3 py-4 text-black font-bold text-[14px] uppercase text-center">ពិន្ទុ</th>
                         <th class="px-3 py-4 text-black font-bold text-[14px] uppercase">និទ្ទិស</th>
                         <th class="px-5 py-4 text-black font-bold text-[14px] uppercase">ចំណាត់ថ្នាក់</th>
@@ -97,7 +97,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                    
                         <tr class="hover:bg-blue-50/40 transition-colors group  ">
                             <td class="px-6 py-4 font-mono font-bold ">1</td>
-                            <td class=" py-4">អក្សរសាស្រ្តខ្មែរ</td>
+                            <td class=" py-4 ">អក្សរសាស្រ្តខ្មែរ</td>
                             <td class=" py-4 text-center">99/125</td>
                             <td class="px-6 py-4 text-green-700 text-bold font-bold ">A</td>
                             <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">5/30</td>
@@ -156,7 +156,7 @@ $current_img = (!empty($student_info['profile_img']) && file_exists($profile_pat
                    
                         <tr class="hover:bg-blue-50/40 transition-colors group ">
                             <td class="px-6 py-4 font-mono font-bold ">6</td>
-                            <td class=" py-4">ប្រវិត្តវិទ្យា</td>
+                            <td class=" py-4">ប្រវត្តិវិទ្យា</td>
                             <td class=" py-4 text-center">70/100</td>
                             <td class="px-6  py-4 text-orange-500 text-bold font-bold ">C</td>
                             <td class="px-9 py-4 text-[15px] text-red-600 max-w-[200px] truncate font-bold">12/30</td>

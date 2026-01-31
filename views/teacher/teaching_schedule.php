@@ -62,12 +62,12 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
     <?php include '../../includes/sidebar_teacher.php'; ?>
 
     <main class="flex-1 flex flex-col min-w-0 h-full relative">
-        <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
+        <header class="bg-white border-b-2 border-slate-100 h-20 flex items-center justify-between px-6 md:px-10 shrink-0 shadow-sm z-20">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-slate-100 text-slate-600 rounded-2xl">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h2 class="hidden md:block text-xl font-black text-slate-800 italic uppercase">Dashboard</h2>
+      
             </div>
 
             <div class="flex items-center gap-5">
@@ -75,7 +75,7 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
                     <p class="text-[18px] md:text-[20px] font-black text-slate-900 leading-tight">
                         <?= htmlspecialchars($_SESSION['full_name']); ?>
                     </p>
-                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase italic tracking-widest">
+                    <p class="text-[11px] md:text-[12px] text-blue-600 font-bold uppercase ">
                          មុខវិជ្ជា: <span class="text-slate-500"><?= htmlspecialchars($display_subject) ?></span>
                     </p>
                 </div>
@@ -89,6 +89,7 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
             </div>
         </header>
 
+        <!-- big screen -->
         <div class="flex-1 overflow-y-auto p-4 md:p-10 custom-scrollbar">
             
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -107,11 +108,12 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
                 </form>
             </div>
 
+            <!-- for small screen -->
             <div class="block md:hidden space-y-6">
                 <?php foreach ($days_kh as $day): ?>
                     <div class="space-y-3">
                         <div class="flex items-center gap-3">
-                            <span class="bg-slate-900 text-white px-4 py-1 rounded-full text-[10px] font-black italic uppercase tracking-widest"><?= $day ?></span>
+                            <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-[12px] font-black uppercase "><?= $day ?></span>
                             <div class="h-px bg-slate-200 flex-1"></div>
                         </div>
                         <div class="grid gap-2">
@@ -126,18 +128,18 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
                                 $data = mysqli_fetch_assoc($res);
                             ?>
                                 <?php if($data): ?>
-                                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between border-l-4 border-l-blue-600">
+                                <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm flex items-center justify-between border-l-4 border-l-blue-600">
                                     <div class="flex items-center gap-4">
-                                        <div class="text-[10px] font-black text-slate-400 italic leading-none border-r pr-4 border-slate-100"><?= $start ?></div>
+                                        <div class="text-[12px] font-black text-blue-600  leading-none border-r pr-4 border-blue-600"><?= $start ?></div>
                                         <div>
-                                            <div class="text-[14px] font-black text-slate-800 uppercase italic"><?= htmlspecialchars($data['subject_name']) ?></div>
+                                            <div class="text-[14px] font-black text-slate-800 uppercase"><?= htmlspecialchars($display_subject) ?></div>
                                             <div class="flex items-center gap-2 mt-1">
-                                                <span class="text-[8px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold uppercase">Room: <?= htmlspecialchars($data['room_number']) ?></span>
-                                                <span class="text-[8px] text-slate-300 font-bold uppercase">#ID: <?= $data['id'] ?></span>
+                                                <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold uppercase">Room: <?= htmlspecialchars($data['room_number']) ?></span>
+                                                
                                             </div>
                                         </div>
                                     </div>
-                                    <i class="fas fa-bookmark text-blue-50 text-xl"></i>
+                                    <i class="fas fa-bookmark text-blue-400 text-xl"></i>
                                 </div>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -146,21 +148,22 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
                 <?php endforeach; ?>
             </div>
 
-            <div class="hidden md:block bg-white rounded-[2.5rem] shadow-xl border-2 border-slate-100 overflow-hidden mb-10">
+            <!-- for big screen -->
+            <div class="hidden md:block bg-white rounded-[1.5rem] shadow-xl border-2 border-slate-100 overflow-hidden mb-10">
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse">
                         <thead>
                             <tr class="bg-slate-900 text-white border-b-4 border-blue-600">
-                                <th class="p-6 border-r border-slate-800 text-xl font-black italic text-center uppercase tracking-widest">Time</th>
+                                <th class="p-6 border-r border-slate-800 text-[16px] font-black  text-center uppercase ">ម៉ោងសិក្សា</th>
                                 <?php foreach ($days_kh as $day): ?>
-                                    <th class="p-6 border-r border-slate-800 text-xl font-black italic text-center uppercase"><?= $day ?></th>
+                                    <th class="p-6 border-r border-slate-800 text-[16px] font-black text-center uppercase"><?= $day ?></th>
                                 <?php endforeach; ?>
                             </tr>
                         </thead>
                         <tbody class="divide-y-2 divide-slate-50">
                             <?php foreach ($time_slots as $slot): ?>
                             <tr>
-                                <td class="p-6 border-r-2 border-slate-100 bg-slate-50 text-center text-lg font-black italic text-slate-600"><?= $slot ?></td>
+                                <td class="p-2 border-r-2 border-slate-100 bg-slate-50 text-center text-[15px] font-black italic text-blue-600"><?= $slot ?></td>
                                 <?php foreach ($days_kh as $day): 
                                     list($start, $end) = explode(' - ', $slot);
                                     $sql = "SELECT s.subject_name, t.room_number, t.id FROM timetable t 
@@ -173,10 +176,10 @@ $days_kh = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ�
                                 ?>
                                 <td class="p-5 text-center min-w-[150px]">
                                     <?php if ($data): ?>
-                                        <div class="text-2xl font-black text-slate-800 italic uppercase"><?= htmlspecialchars($data['subject_name']) ?></div>
+                                        <div class="text-[18px] font-black text-slate-800  uppercase"><?= htmlspecialchars($data['subject_name']) ?></div>
                                         <div class="mt-2 flex flex-col items-center gap-1">
-                                            <span class="inline-block bg-blue-50 text-blue-600 px-4 py-1 rounded-full text-[10px] font-black uppercase italic border border-blue-100">Room: <?= htmlspecialchars($data['room_number']) ?></span>
-                                            <span class="text-[9px] text-slate-300 font-bold uppercase tracking-widest">Timetable ID: #<?= $data['id'] ?></span>
+                                            <span class="inline-block bg-blue-50 text-blue-600 px-4 py-1 rounded-full text-[10px] font-black uppercase  border border-blue-100">Room: <?= htmlspecialchars($data['room_number']) ?></span>
+                                           
                                         </div>
                                     <?php else: ?>
                                         <span class="text-slate-100">---</span>
