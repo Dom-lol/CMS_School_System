@@ -17,7 +17,7 @@ include '../../includes/sidebar_staff.php';
 <main class="flex-1 p-8 bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <h1 class="text-3xl font-bold text-slate-800">ចុះឈ្មោះសិស្សថ្មី</h1>
+            <h1 class="text-2xl font-bold text-slate-800">ចុះឈ្មោះសិស្សថ្មី</h1>
             <div class="flex gap-3">
                 <button type="button" onclick="document.getElementById('importInput').click()" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:bg-emerald-700 transition flex items-center active:scale-95 cursor-pointer">
                     <i class="fas fa-file-excel mr-2 text-[20px] pb-1"></i> Import Excel

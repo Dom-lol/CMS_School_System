@@ -78,7 +78,7 @@ include '../../includes/header.php';
                     <thead class="bg-slate-50 border-b-2 border-slate-100">
                         <tr>
                             <th class="p-6 text-[15px] font-black text-slate-700 uppercase">គ្រូបង្រៀន</th>
-                            <th class="p-6 text-[15px] font-black text-slate-700 uppercase">អត្តលេខ</th>
+                            <th class=" text-[15px] font-black text-slate-700 uppercase">អត្តលេខ</th>
                             <th class="p-6 text-[15px] font-black text-slate-700 uppercase text-center">ឯកទេស</th>
                             <th class="p-6 text-[15px] font-black text-slate-700 uppercase text-center">សកម្មភាព</th>
                         </tr>
@@ -89,7 +89,7 @@ include '../../includes/header.php';
                             <td class="p-6">
                                 <div class="flex items-center gap-4">
                                     <img src="../../assets/uploads/teachers/<?= !empty($row['profile_image']) ? $row['profile_image'] : 'default_user.png' ?>" 
-                                         class="w-22 h-22 rounded-[50%] object-cover shadow-sm group-hover:scale-110 transition-transform">
+                                         class="w-22 h-22 rounded-[50%] object-cover shadow-sm ">
                                     <div>
                                         <div class="font-bold text-slate-800"><?= $row['full_name'] ?></div>
                                         <div class="text-[13px] text-slate-700"><?= $row['phone'] ?></div>

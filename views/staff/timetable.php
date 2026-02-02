@@ -1,30 +1,32 @@
 <?php 
 require_once '../../config/db.php';
 require_once '../../config/session.php';
-// ប្រាកដថាបាន Login ជា Staff រួចរាល់
+
+// Login User Role_base
 is_logged_in();
 
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php'; 
 
-// ១. ចាប់យកតម្លៃថ្នាក់ និងសារលទ្ធផលពីការ Import
-$active_grade = isset($_GET['grade']) ? mysqli_real_escape_string($conn, $_GET['grade']) : ''; 
+//
+$search_input = isset($_GET['grade']) ? mysqli_real_escape_string($conn, $_GET['grade']) : ''; 
 $msg = isset($_GET['msg']) ? $_GET['msg'] : '';
 $count = isset($_GET['count']) ? $_GET['count'] : 0;
 
-// ២. SQL ទាញទិន្នន័យ (កែសម្រួលឱ្យ Join ជាមួយ classes ដើម្បីស្វែងរកតាមឈ្មោះថ្នាក់ "7" បាន)
+
+// 
 $sql = "SELECT t.*, s.subject_name as s_name, te.full_name as t_name, c.class_name
         FROM timetable t
         LEFT JOIN subjects s ON t.subject_id = s.id
         LEFT JOIN teachers te ON t.teacher_id = te.teacher_id
-        LEFT JOIN classes c ON t.class_id = c.id
-        WHERE (t.class_id = '$active_grade' OR c.class_name = '$active_grade') 
+        INNER JOIN classes c ON t.class_id = c.id
+        WHERE (t.class_id = '$search_input' OR c.class_name = '$search_input') 
         AND t.is_deleted = 0 
         ORDER BY t.start_time ASC";
 
 $result = mysqli_query($conn, $sql);
 
-// ៣. រៀបចំទិន្នន័យជា Matrix
+// 
 $days_mapping = [
     'Monday'    => 'ច័ន្ទ',
     'Tuesday'   => 'អង្គារ',
@@ -36,14 +38,15 @@ $days_mapping = [
 
 $timetable_matrix = [];
 $time_slots = [];
+$final_class_label = $search_input; 
 
-if ($result) {
+if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-        $time_key = date('H:i', strtotime($row['start_time'])) . ' - ' . date('H:i', strtotime($row['end_time']));
+        // 
+        $final_class_label = $row['class_name']; 
         
-        // បម្លែងថ្ងៃពី English មក Khmer ដើម្បីឱ្យត្រូវជាមួយ Column ក្នុងតារាង UI
-        $db_day = $row['day_of_week'];
-        $kh_day = $days_mapping[$db_day] ?? $db_day; // បើក្នុង DB ជាខ្មែរស្រាប់ វានឹងយកខ្មែរ
+        $time_key = date('H:i', strtotime($row['start_time'])) . ' - ' . date('H:i', strtotime($row['end_time']));
+        $kh_day = $days_mapping[$row['day_of_week']] ?? $row['day_of_week'];
 
         $timetable_matrix[$time_key][$kh_day] = $row;
         
@@ -83,7 +86,7 @@ $days = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស�
     <?php if($msg == 'success'): ?>
         <div class="no-print bg-green-500 text-white p-4 rounded-xl mb-6 flex items-center gap-3 animate-bounce">
             <i class="fas fa-check-circle"></i>
-            <span class="font-bold text-sm">បានបញ្ចូលទិន្នន័យកាលវិភាគចំនួន <?= $count ?> ជួរដោយជោគជ័យ!</span>
+            <span class="font-bold text-sm">បានបញ្ចូលទិន្នន័យកាលវិភាគចំនួន <?= (int)$count ?> ជួរដោយជោគជ័យ!</span>
         </div>
     <?php endif; ?>
     
@@ -91,7 +94,7 @@ $days = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស�
         <div class="w-48">
             <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1 italic">ស្វែងរកតាមថ្នាក់</label>
             <form method="GET" class="flex gap-2">
-                <input type="text" name="grade" value="<?= htmlspecialchars($active_grade) ?>" 
+                <input type="text" name="grade" value="<?= htmlspecialchars($search_input) ?>" 
                        placeholder="ឧ: 7" 
                        class="w-full border-2 border-blue-100 rounded-xl px-4 py-2 font-bold focus:border-blue-500 outline-none transition-all">
                 <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold italic">ស្វែងរក</button>
@@ -115,10 +118,10 @@ $days = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស�
     </div>
 
     <div class="max-w-full">
-        <?php if($active_grade): ?>
+        <?php if($search_input): ?>
             <div class="timetable-card">
                 <div class="text-center mb-6">
-                    <h1 class="text-2xl font-black italic uppercase underline decoration-blue-500 decoration-4 underline-offset-8">កាលវិភាគសិក្សាថ្នាក់ទី <?= htmlspecialchars($active_grade) ?></h1>
+                    <h1 class="text-2xl font-black italic uppercase underline decoration-blue-500 decoration-4 underline-offset-8">កាលវិភាគសិក្សាថ្នាក់ទី <?= htmlspecialchars($final_class_label) ?></h1>
                     <p class="text-slate-500 font-bold mt-4 italic">កាលបរិច្ឆេទ៖ <?= date('d/m/Y') ?></p>
                 </div>
 
@@ -150,7 +153,7 @@ $days = ['ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស�
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" class="py-20 text-slate-300 italic font-bold">រកមិនឃើញកាលវិភាគសម្រាប់ថ្នាក់នេះទេ</td>
+                                <td colspan="7" class="py-20 text-slate-300 italic font-bold">រកមិនឃើញកាលវិភាគសម្រាប់ "<?= htmlspecialchars($search_input) ?>" ទេ</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

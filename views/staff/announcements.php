@@ -3,13 +3,13 @@ require_once '../../config/db.php';
 require_once '../../config/session.php';
 is_logged_in();
 
-// កំណត់ឈ្មោះ Page ដើម្បីឱ្យ Sidebar បង្ហាញពណ៌ Active
+// 
 $current_page = 'announcements.php';
 
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php';
 
-// ១. ទាញយកទិន្នន័យប្រកាសព័ត៌មាន
+// 
 $query = "SELECT * FROM announcements ORDER BY created_at DESC";
 $result = mysqli_query($conn, $query);
 ?>
@@ -29,7 +29,7 @@ $result = mysqli_query($conn, $query);
         </a>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 max-w-4xl">
+    <div class="grid grid-cols-1 gap-6 max-w-5xl">
         <?php if (mysqli_num_rows($result) > 0): ?>
             <?php while($row = mysqli_fetch_assoc($result)): ?>
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
@@ -58,21 +58,21 @@ $result = mysqli_query($conn, $query);
                     </div>
 
                         <div class="mt-6 flex items-center justify-between border-t border-slate-50 pt-4">
-    <span class="text-[15px] text-slate-500 italic">
-        <i class="fas fa-user-edit mr-1 text-blue-500"></i> 
-        ដោយ៖ <span class="font-semibold text-slate-700"><?php echo htmlspecialchars($row['posted_by']); ?></span>
-    </span>
-    
-    <div class="flex gap-3">
-        <a href="edit_announcement.php?id=<?php echo $row['id']; ?>" class="text-amber-500 hover:text-amber-600 text-[20px]">
-            <i class="fas fa-edit"></i>
-        </a>
-        <a href="../../actions/announcements/delete.php?id=<?php echo $row['id']; ?>" 
-           onclick="return confirm('តើអ្នកចង់លុបសារនេះមែនទេ?')" class="text-red-500 hover:text-red-600 text-[20px]">
-            <i class="fas fa-trash"></i>
-        </a>
-    </div>
-</div>
+                            <span class="text-[15px] text-slate-500 italic">
+                                <i class="fas fa-user-edit mr-1 text-blue-500"></i> 
+                                ដោយ៖ <span class="font-semibold text-slate-700"><?php echo htmlspecialchars($row['posted_by']); ?></span>
+                            </span>
+                            
+                            <div class="flex gap-3">
+                                <a href="edit_announcement.php?id=<?php echo $row['id']; ?>" class="text-amber-500 hover:text-amber-600 text-[20px]">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="../../actions/announcements/delete.php?id=<?php echo $row['id']; ?>" 
+                                onclick="return confirm('តើអ្នកចង់លុបសារនេះមែនទេ?')" class="text-red-500 hover:text-red-600 text-[20px]">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
                 </div>
             </div>
             <?php endwhile; ?>

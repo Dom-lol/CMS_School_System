@@ -25,7 +25,7 @@ $total_absent_today = 5;
             <p class="text-slate-500 mt-1 italic text-[17px]">សូមស្វាគមន៍មកកាន់ប្រព័ន្ធគ្រប់គ្រងរដ្ឋបាលវិទ្យាល័យលំដាប់ពិភពលោក</p>
         </div>
         <div class="flex gap-3">
-            <span class="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-slate-600 text-[18px] font-bold flex items-center shadow-sm">
+            <span class="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-slate-600 text-[15px] font-bold flex items-center shadow-sm">
                 <i class="far fa-calendar-alt mr-2 text-blue-500"></i>
                 <?php echo date('d M, Y'); ?>
             </span>

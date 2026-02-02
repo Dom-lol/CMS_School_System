@@ -26,10 +26,7 @@ if (!$row) {
 
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <header class="bg-white border-b-2 border-slate-100 h-24 flex items-center justify-between px-10 shrink-0">
-            <div>
-                <h2 class="text-xl font-bold text-slate-800 italic uppercase">កែប្រែព័ត៌មានគ្រូបង្រៀន</h2>
-                <p class="text-xs text-slate-400 font-bold">ID: <?= $row['teacher_id'] ?></p>
-            </div>
+            
             <a href="teachers_list.php" class="text-slate-500 hover:text-blue-600 font-bold transition flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i> ត្រឡប់ក្រោយ
             </a>
@@ -45,14 +42,14 @@ if (!$row) {
                         <input type="hidden" name="user_id" value="<?= $row['u_id']; ?>">
 
                         <div class="flex flex-col items-center mb-8">
-                            <div id="preview" class="w-32 h-32 rounded-[2rem] border-4 border-white shadow-lg overflow-hidden mb-4 bg-slate-100 flex items-center justify-center">
+                            <div id="preview" class="w-32 h-32 rounded-[50%] border-4 border-white shadow-lg overflow-hidden mb-4 bg-slate-100 flex items-center justify-center">
                                 <?php if(!empty($row['profile_image'])): ?>
                                     <img src="../../assets/uploads/teachers/<?= $row['profile_image'] ?>" class="w-full h-full object-cover">
                                 <?php else: ?>
                                     <i class="fas fa-user-tie text-4xl text-slate-300"></i>
                                 <?php endif; ?>
                             </div>
-                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-6 py-2 rounded-xl font-black text-[10px] uppercase hover:bg-blue-100 transition">
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-6 py-2 rounded-xl font-black text-[13px] uppercase hover:bg-blue-100 transition">
                                 <i class="fas fa-camera mr-2"></i> ប្តូររូបថតថ្មី
                                 <input type="file" name="profile_image" class="hidden" accept="image/*" onchange="showPreview(this)">
                             </label>
@@ -60,19 +57,19 @@ if (!$row) {
 
                         <div class="space-y-5">
                             <div>
-                                <label class="block text-xs font-black text-slate-500 mb-2 uppercase italic">ឈ្មោះពេញ (Full Name)</label>
+                                <label class="block text-[13px] font-black text-slate-500 mb-2 uppercase ">ឈ្មោះពេញ </label>
                                 <input type="text" name="full_name" value="<?= $row['full_name']; ?>" required 
                                        class="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 transition">
                             </div>
 
                             <div class="grid grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-xs font-black text-slate-500 mb-2 uppercase italic">ជំនាញ/ឯកទេស (Subjects)</label>
+                                    <label class="block text-[13px] font-black text-slate-500 mb-2 uppercase ">ឯកទេស </label>
                                     <input type="text" name="subjects" value="<?= $row['subjects']; ?>" required 
                                            class="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 transition">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-black text-slate-500 mb-2 uppercase italic">លេខទូរស័ព្ទ (Phone)</label>
+                                    <label class="block text-[13px] font-black text-slate-500 mb-2 uppercase ">លេខទូរស័ព្ទ</label>
                                     <input type="text" name="phone" value="<?= $row['phone']; ?>" required 
                                            class="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 transition">
                                 </div>
@@ -80,7 +77,7 @@ if (!$row) {
                         </div>
 
                         <div class="pt-6">
-                            <button type="submit" class="w-full py-5 bg-slate-900 text-white rounded-[1.5rem] font-black uppercase tracking-[0.2em] hover:bg-blue-600 shadow-xl transition-all active:scale-95">
+                            <button type="submit" class="w-full py-5 bg-blue-600 text-white rounded-[1.5rem] font-black uppercase  hover:bg-blue-700 shadow-xl transition-all active:scale-95 cursor-pointer">
                                 <i class="fas fa-save mr-2"></i> រក្សាទុកការផ្លាស់ប្តូរ
                             </button>
                         </div>
