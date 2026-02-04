@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ចូលប្រើប្រាស់ប្រព័ន្ធ - School CMS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="../assets/css/output.css">
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="./../assets/favicon_v2.ico">
     <style>body { font-family: 'Kantumruy Pro', sans-serif; }</style>

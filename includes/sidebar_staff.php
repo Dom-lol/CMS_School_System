@@ -74,7 +74,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a href="../../actions/auth/logout.php" 
            class="flex items-center p-3 rounded-xl text-slate-400 hover:bg-gray-500/10 hover:text-gray-500 transition-all group">
             <i class="fas fa-sign-out-alt w-8 text-lg group-hover:translate-x-1 transition-transform"></i> 
-            <span class="font-medium">ចាកចេញពីប្រព័ន្ធ</span>
+            <span class="font-medium">ចាកចេញ</span>
         </a>
     </div>
 </aside>

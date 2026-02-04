@@ -124,8 +124,8 @@ $active_grade    = $student_info['class_name'] ?? 'N/A';
                     </div>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
-                    <div class="font-mono font-semibold text-slate-600 text-xs md:text-base">012 345 678</div>
-                    <a href="https://t.me/+85566686543" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-sm">
+                    <div class="font-mono font-semibold text-slate-600 text-xs md:text-base">096 404 4728</div>
+                    <a href="https://t.me/+855964044728" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-sm">
                         <i class="fa-solid fa-phone"></i>
                     </a>
                 </div>

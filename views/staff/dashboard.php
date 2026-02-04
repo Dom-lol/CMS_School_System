@@ -35,13 +35,13 @@ $total_absent_today = 5;
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
        
         <a href="student_list.php" class="group">
-    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 border-l-[6px]  hover:shadow-xl hover:shadow-blue-100 transition-all duration-300">
+    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 border-l-[6px]  border-l-blue-600  hover:shadow-xl hover:shadow-blue-100 transition-all duration-300">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-slate-400 text-[18px] font-bold uppercase tracking-widest">ថ្នាក់រៀនសរុប</p>
+                <p class="text-slate-400 text-[18px] font-bold uppercase tracking-widest">សិស្សសរុប</p>
                 <h3 class="text-4xl font-black text-slate-800 mt-2"><?php echo $total_students; ?></h3>
                 <div class="mt-4 flex items-center text-blue-600 text-sm font-bold">
-                    មើលបញ្ជីថ្នាក់ <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    មើលបញ្ជីសិស្សសរុប <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
             <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center">
@@ -52,7 +52,8 @@ $total_absent_today = 5;
 
         <a href="class_list.php" class="group">
     <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 border-l-[6px] border-l-purple-500 hover:shadow-xl hover:shadow-purple-100 transition-all duration-300">
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between 
+        items-start">
             <div>
                 <p class="text-slate-400 text-[18px] font-bold uppercase tracking-widest">ថ្នាក់រៀនសរុប</p>
                 <h3 class="text-4xl font-black text-slate-800 mt-2"><?php echo $total_classes; ?></h3>

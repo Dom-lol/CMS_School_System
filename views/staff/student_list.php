@@ -12,11 +12,12 @@ if ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'admin') {
 include '../../includes/header.php';
 include '../../includes/sidebar_staff.php'; 
 
-// search class
+// Search and Filters
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 $class_filter = isset($_GET['class']) ? mysqli_real_escape_string($conn, $_GET['class']) : '';
+$academic_year = isset($_GET['academic_year']) ? mysqli_real_escape_string($conn, $_GET['academic_year']) : '';
 
-// 
+// Updated Query with Academic Year Filter
 $query = "SELECT * FROM students WHERE 1=1";
 if ($search) {
     $query .= " AND (full_name LIKE '%$search%' OR full_name_en LIKE '%$search%' OR student_id LIKE '%$search%')";
@@ -24,15 +25,17 @@ if ($search) {
 if ($class_filter) {
     $query .= " AND class_name = '$class_filter'";
 }
+if ($academic_year) {
+    $query .= " AND academic_year = '$academic_year'";
+}
 $query .= " ORDER BY id DESC";
 $students = mysqli_query($conn, $query);
 
-// 
+// Statistics
 $total_students = mysqli_num_rows($students);
 $male_count = 0;
 $female_count = 0;
 
-// 
 $student_list = [];
 while($row = mysqli_fetch_assoc($students)) {
     $student_list[] = $row;
@@ -40,8 +43,9 @@ while($row = mysqli_fetch_assoc($students)) {
     if($row['gender'] == 'ស្រី') $female_count++;
 }
 
-// 
+// Fetch Filter Options
 $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE class_name != '' ORDER BY class_name ASC");
+$academic_years = mysqli_query($conn, "SELECT DISTINCT academic_year FROM students WHERE academic_year != '' ORDER BY academic_year DESC");
 ?>
 
 <main class="flex-1 p-8 bg-gray-50 min-h-screen">
@@ -58,10 +62,8 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
     <div class="mb-8 flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">គ្រប់គ្រងសិស្សានុសិស្ស</h1>
-           
         </div>
         <div class="flex gap-3">
-            
             <a href="add_student.php" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition flex items-center">
                 <i class="fas fa-user-plus mr-2"></i> បន្ថែមសិស្ស
             </a>
@@ -102,7 +104,7 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
 
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
         <form method="GET" class="flex flex-wrap gap-4 items-end">
-            <div class="flex-1 min-w-[250px]">
+            <div class="flex-1 min-w-[200px]">
                 <label class="block text-[15px] font-bold text-gray-500 uppercase mb-2 ml-1">ស្វែងរកសិស្ស</label>
                 <div class="relative">
                     <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -110,21 +112,34 @@ $classes = mysqli_query($conn, "SELECT DISTINCT class_name FROM students WHERE c
                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
                 </div>
             </div>
+
             <div class="w-48">
-                <label class="block text-[15px]  font-bold text-slate-400 uppercase mb-2 ml-1">ជ្រើសរើសថ្នាក់</label>
+                <label class="block text-[15px] font-bold text-slate-400 uppercase mb-2 ml-1">ឆ្នាំសិក្សា</label>
+                <select name="academic_year" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">ទាំងអស់</option>
+                    <?php while($ay = mysqli_fetch_assoc($academic_years)): ?>
+                        <option value="<?php echo $ay['academic_year']; ?>" <?php echo ($academic_year == $ay['academic_year']) ? 'selected' : ''; ?>>
+                            <?php echo $ay['academic_year']; ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+
+            <div class="w-40">
+                <label class="block text-[15px] font-bold text-slate-400 uppercase mb-2 ml-1">ជ្រើសរើសថ្នាក់</label>
                 <select name="class" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">ទាំងអស់</option>
-                    <?php while($c = mysqli_fetch_assoc($classes)): ?>
+                    <?php mysqli_data_seek($classes, 0); while($c = mysqli_fetch_assoc($classes)): ?>
                         <option value="<?php echo $c['class_name']; ?>" <?php echo ($class_filter == $c['class_name']) ? 'selected' : ''; ?>>
                             ថ្នាក់ទី <?php echo $c['class_name']; ?>
                         </option>
                     <?php endwhile; ?>
                 </select>
             </div>
+
             <button type="submit" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-700 transition">
                 ស្វែងរក
             </button>
-            <a href="student_list.php" class="bg-slate-100 text-slate-500 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-center">Reset</a>
         </form>
     </div>
 

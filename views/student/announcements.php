@@ -1,6 +1,7 @@
 <?php 
 require_once '../../config/db.php';
 require_once '../../config/session.php';
+ include '../../includes/header.php'; 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {

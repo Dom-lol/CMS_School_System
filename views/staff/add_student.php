@@ -36,9 +36,14 @@ include '../../includes/sidebar_staff.php';
             <div class="flex items-center w-full relative">
                 <div id="step1-circle" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold z-10 transition-all">1</div>
                 <div class="flex-1 h-1 bg-slate-200 mx-[-2px] relative"><div id="progress1" class="absolute h-full bg-blue-600 w-0 transition-all duration-500"></div></div>
+                
                 <div id="step2-circle" class="w-10 h-10 bg-slate-200 text-slate-500 rounded-full flex items-center justify-center font-bold z-10 transition-all">2</div>
                 <div class="flex-1 h-1 bg-slate-200 mx-[-2px] relative"><div id="progress2" class="absolute h-full bg-blue-600 w-0 transition-all duration-500"></div></div>
+                
                 <div id="step3-circle" class="w-10 h-10 bg-slate-200 text-slate-500 rounded-full flex items-center justify-center font-bold z-10 transition-all">3</div>
+                <div class="flex-1 h-1 bg-slate-200 mx-[-2px] relative"><div id="progress3" class="absolute h-full bg-blue-600 w-0 transition-all duration-500"></div></div>
+                
+                <div id="step4-circle" class="w-10 h-10 bg-slate-200 text-slate-500 rounded-full flex items-center justify-center font-bold z-10 transition-all">4</div>
             </div>
         </div>
 
@@ -79,7 +84,15 @@ include '../../includes/sidebar_staff.php';
             </div>
 
             <div id="step3" class="hidden p-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-step">
-                <div class="md:col-span-2 border-b border-slate-50 pb-3"><h2 class="text-blue-600 font-black flex items-center"><i class="fas fa-users mr-2"></i> ព័ត៌មានគ្រួសារ និងអាសយដ្ឋាន</h2></div>
+                <div class="md:col-span-2 border-b border-slate-50 pb-3"><h2 class="text-blue-600 font-black flex items-center"><i class="fas fa-briefcase mr-2"></i> ព័ត៌មានអាណាព្យាបាល និងទំនាក់ទំនង</h2></div>
+                <div><label class="block text-sm font-bold text-slate-700 mb-2">មុខរបរឪពុក</label><input type="text" name="father_job" placeholder="ឧទាហរណ៍៖ កសិករ" class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
+                <div><label class="block text-sm font-bold text-slate-700 mb-2">មុខរបរម្តាយ</label><input type="text" name="mother_job" placeholder="ឧទាហរណ៍៖ មេផ្ទះ" class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
+                <div><label class="block text-sm font-bold text-slate-700 mb-2">លេខទូរស័ព្ទអាណាព្យាបាល *</label><input type="text" name="parent_phone" required placeholder="012 345 678" class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
+                <div><label class="block text-sm font-bold text-slate-700 mb-2">លេខទូរស័ព្ទសិស្ស (បើមាន)</label><input type="text" name="student_phone" placeholder="098 765 432" class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
+            </div>
+
+            <div id="step4" class="hidden p-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-step">
+                <div class="md:col-span-2 border-b border-slate-50 pb-3"><h2 class="text-blue-600 font-black flex items-center"><i class="fas fa-home mr-2"></i> ឈ្មោះគ្រួសារ និងអាសយដ្ឋាន</h2></div>
                 <div><label class="block text-sm font-bold text-slate-700 mb-2">ឈ្មោះឪពុក *</label><input type="text" name="father_name" required class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
                 <div><label class="block text-sm font-bold text-slate-700 mb-2">ឈ្មោះម្តាយ *</label><input type="text" name="mother_name" required class="input-focus w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none"></div>
                 <div class="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4 bg-emerald-50/40 p-5 rounded-3xl border border-emerald-100">
@@ -92,9 +105,9 @@ include '../../includes/sidebar_staff.php';
             </div>
 
             <div class="p-8 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-                <button type="button" id="prevBtn" onclick="changeStep(-1)" class="invisible font-bold text-slate-400 hover:text-slate-600 transition">ថយក្រោយ</button>
+                <button type="button" id="prevBtn" onclick="changeStep(-1)" class="cursor-pointer invisible font-bold text-slate-600 hover:text-slate-400  transition"><i class="fa-solid fa-angle-left"></i> Back</button>
                 <div class="flex gap-3">
-                    <button type="button" id="nextBtn" onclick="changeStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold active:scale-95 transition cursor-pointer">ទៅមុខ</button>
+                    <button type="button" id="nextBtn" onclick="changeStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold active:scale-95 transition cursor-pointer">Next</button>
                     <button type="submit" id="submitBtn" disabled class="btn-disabled hidden text-white px-10 py-4 rounded-2xl font-bold cursor-pointer transition shadow-lg">រក្សាទុក</button>
                 </div>
             </div>
@@ -104,8 +117,8 @@ include '../../includes/sidebar_staff.php';
 
 <script>
     let currentStep = 1;
+    const totalSteps = 4;
 
-    // បំប្លែង class_id ទៅជា class_name ដោយស្វ័យប្រវត្តិ
     function updateClassName() {
         const gradeMap = { "1": "7", "2": "8", "3": "9", "4": "10", "5": "11", "6": "12" };
         let selectedId = document.getElementById('gradeSelect').value;
@@ -122,7 +135,7 @@ include '../../includes/sidebar_staff.php';
         if(ok) { 
             b.classList.replace('btn-disabled', 'bg-emerald-600'); 
             b.disabled = false; 
-            b.innerHTML = "រក្សាទុកឥឡូវនេះ"; 
+            b.innerHTML = "Save"; 
         } else { 
             b.classList.add('btn-disabled'); 
             b.classList.remove('bg-emerald-600');
@@ -145,14 +158,18 @@ include '../../includes/sidebar_staff.php';
         currentStep += n;
         document.getElementById(`step${currentStep}`).classList.remove('hidden');
 
+        // Buttons Control
         document.getElementById('prevBtn').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
-        document.getElementById('nextBtn').classList.toggle('hidden', currentStep === 3);
-        document.getElementById('submitBtn').classList.toggle('hidden', currentStep !== 3);
+        document.getElementById('nextBtn').classList.toggle('hidden', currentStep === totalSteps);
+        document.getElementById('submitBtn').classList.toggle('hidden', currentStep !== totalSteps);
         
-        document.getElementById('progress1').style.width = currentStep >= 2 ? '100%' : '0%';
-        document.getElementById('progress2').style.width = currentStep >= 3 ? '100%' : '0%';
+        // Progress Bar Control
+        for(let i=1; i < totalSteps; i++) {
+            document.getElementById(`progress${i}`).style.width = currentStep > i ? '100%' : '0%';
+        }
 
-        for(let i=1; i<=3; i++) {
+        // Circle Control
+        for(let i=1; i <= totalSteps; i++) {
             document.getElementById(`step${i}-circle`).className = `w-10 h-10 rounded-full flex items-center justify-center font-bold z-10 ${i<=currentStep ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`;
         }
     }

@@ -62,12 +62,12 @@ include '../../includes/header.php';
                     <?php endwhile; ?>
                 </select>
 
-                <button type="submit" class="bg-slate-800 text-white px-6 py-3 rounded-2xl font-bold hover:bg-slate-700 transition shadow-sm">
+                <button type="submit" class="bg-slate-800 text-white px-6 py-3 rounded-2xl font-bold hover:bg-slate-700 transition shadow-sm cursor-pointer">
                     ស្វែងរក
                 </button>
             </form>
 
-            <a href="add_teacher.php" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2">
+            <a href="add_teacher.php" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 cursor-pointer">
                 <i class="fas fa-plus"></i> បន្ថែមថ្មី
             </a>
         </header>

@@ -15,17 +15,17 @@ if (isset($_POST['import_btn'])) {
         $success_count = 0;
         $error_count = 0;
 
-        // អានទិន្នន័យពី CSV ម្តងមួយជួរ [cite: 2026-01-20]
-       while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-    $day         = mysqli_real_escape_string($conn, $column[0]); // Column A
-    $start_time  = mysqli_real_escape_string($conn, $column[1]); // Column B
-    $end_time    = mysqli_real_escape_string($conn, $column[2]); // Column C
-    $room        = mysqli_real_escape_string($conn, $column[3]); // Column D
-    $subject_id  = mysqli_real_escape_string($conn, $column[4]); // Column E
-    $teacher_id  = mysqli_real_escape_string($conn, $column[5]); // Column F
-    $class_id    = mysqli_real_escape_string($conn, $column[6]); // Column G
+        // អានទិន្នន័យពី CSV ម្តងមួយជួរ (Column A-G) [cite: 2026-01-20]
+        while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+            $day         = mysqli_real_escape_string($conn, $column[0]); // Column A
+            $start_time  = mysqli_real_escape_string($conn, $column[1]); // Column B
+            $end_time    = mysqli_real_escape_string($conn, $column[2]); // Column C
+            $room        = mysqli_real_escape_string($conn, $column[3]); // Column D
+            $subject_id  = mysqli_real_escape_string($conn, $column[4]); // Column E
+            $teacher_id  = mysqli_real_escape_string($conn, $column[5]); // Column F
+            $class_id    = mysqli_real_escape_string($conn, $column[6]); // Column G
 
-            // បញ្ចូលទៅក្នុង Database
+            // បញ្ចូលទៅក្នុង Database [cite: 2026-01-20]
             $sql = "INSERT INTO timetable (day_of_week, start_time, end_time, room_number, subject_id, teacher_id, class_id, is_deleted) 
                     VALUES ('$day', '$start_time', '$end_time', '$room', '$subject_id', '$teacher_id', '$class_id', 0)";
             
